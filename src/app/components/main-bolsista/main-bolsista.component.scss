@@ -1,0 +1,235 @@
+
+main{
+  width: 100%;
+  min-height: calc(100vh - 140px);
+  box-sizing: border-box;
+}
+.meus-dados{
+  display: flex;
+  flex-direction: column;
+
+  padding: 40px 20px;
+  color: #002352;
+  gap: 2px;
+
+.nome{
+  font-size: 24px;
+  font-weight: 700;
+}
+.matricula, .email{
+  font-size: 20px;
+  font-weight: 500;
+}
+
+}
+
+.horas-feitas-filtro{
+  display: flex;
+  width: 100%;
+  padding: 40px 20px;
+
+
+  .mes{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  .ano{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  b{
+    color: #3373C8;
+    font-size: 18px;
+    font-weight: 400;
+  }
+
+   .filtro{
+    width: 100%;
+    display: flex;
+    gap: 15px;
+    align-items: flex-end;
+    justify-content: flex-end;
+   }
+
+  select{
+   width: 100px;
+   height: 34px;
+   border-radius: 4px;
+   padding: 4px 26px 4px 10px;
+   color: #002352;
+   background: #ebf4ff;
+   border: 1px solid #cfe6ff;
+   font-size: 14px;
+   font-weight: 500;
+   text-align: center;
+   -webkit-appearance: none;
+   -moz-appearance: none;
+   appearance: none;
+   background-image: url('/assets/icon-select.svg');
+   background-repeat: no-repeat;
+   background-position: right 10px center;
+   background-size: 16px 16px;
+  }
+   img{
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+   }
+
+}
+
+.tabela-horas{
+  width: 100%;
+  padding: 12px 20px 24px 20px;
+  box-sizing: border-box;
+}
+
+.tabela-horas .table-card{
+  width: 100%;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.tabela-horas .table-title{
+  background: #2f6fc1;
+  color: #fff;
+  text-align: center;
+  padding: 12px 16px;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.tabela-horas .table-body{
+  background: transparent;
+  padding: 0;
+}
+
+.tabela-horas table{
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabela-horas thead th{
+  background: #e7f2ff;
+  color: #2f6fc1;
+  font-weight: 700;
+  padding: 14px 20px;
+  text-align: center;
+}
+
+.tabela-horas thead th:nth-child(n+2){
+  text-align: center;
+}
+
+.tabela-horas tbody td{
+  padding: 18px 20px;
+  color: #002352;
+  border-top: 1px solid rgba(47,111,193,0.06);
+  text-align: center;
+}
+
+.tabela-horas tbody tr:nth-child(odd){
+  background: #ffffff;
+}
+
+.tabela-horas tbody tr:nth-child(even){
+  background: #f3f9ff;
+}
+
+.tabela-horas tbody tr td:first-child{
+  width: 220px;
+  text-align: center;
+}
+
+.tabela-horas tbody tr:hover{
+  background: #eaf4ff;
+}
+.tabela-justificadas{
+  margin-top: 50px;
+  width: 100%;
+  padding: 12px 20px 24px 20px;
+  box-sizing: border-box;
+}
+
+.tabela-justificadas .table-card{
+   background: #fff;
+   border-radius: 6px;
+   overflow: hidden
+}
+
+.tabela-justificadas .table-title{
+  background: #2f6fc1;
+  color: #fff;
+  text-align: center;
+  padding: 12px 16px;
+  font-weight:700
+ }
+
+.tabela-justificadas table{
+  width:100%;
+  border-collapse: collapse
+ }
+.tabela-justificadas thead th{
+  background: #e7f2ff;
+  color: #2f6fc1;
+  font-weight:700;
+  padding: 14px 20px;
+  text-align: left
+  }
+
+.tabela-justificadas thead th:nth-child(n+2){ text-align: center }
+
+.tabela-justificadas tbody td{
+  padding: 18px 20px;
+  color: #002352;
+  border-top: 1px solid rgba(47,111,193,0.06);
+  text-align: center
+}
+
+.tabela-justificadas tbody tr:nth-child(even){ background: #f8fbff }
+.tabela-justificadas tbody tr:nth-child(odd){ background: #ffffff }
+.tabela-justificadas tbody tr td:first-child{ text-align: left; width: 240px }
+
+
+.badge{
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 13px;
+}
+.badge-success{
+  background: #2fe6a8;
+  color: #003827;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.05) inset;
+}
+
+.action-link{
+  color: #2f6fc1;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+
+@media (max-width: 768px){
+.nome{
+  font-size: 12px;
+  font-weight: 700;
+}
+.matricula, .email{
+  font-size: 8px;
+  font-weight: 500;
+}
+  .tabela-horas{ padding: 8px 12px 12px 12px; }
+  .tabela-horas thead th{ padding: 10px 8px; font-size: 14px }
+  .tabela-horas tbody td{ padding: 10px 8px; font-size: 14px }
+  .tabela-horas .table-title{ padding: 10px 8px; font-size: 15px }
+  .tabela-justificadas{ padding: 8px 12px 12px 12px; }
+  .tabela-justificadas thead th{ padding: 10px 8px; font-size: 14px }
+  .tabela-justificadas tbody td{ padding: 10px 8px; font-size: 14px }
+  .tabela-justificadas .table-title{ padding: 10px 8px; font-size: 15px }
+}

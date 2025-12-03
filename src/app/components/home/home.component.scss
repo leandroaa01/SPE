@@ -1,7 +1,6 @@
 
 .container {
 display: flex;
-height: 88vh;
 justify-content: center;
 align-items: center;
 gap: 40px;
@@ -11,7 +10,7 @@ flex-direction: column;
 }
 
 .tempo {
-   display: flex;
+  display: flex;
   font-weight: 700;
   color: #002352;
   text-align: center;
@@ -57,10 +56,13 @@ flex-direction: column;
   font-weight: 600;
   font-size: 16px;
 }
+section{
+  height: calc(100vh - 140px);
+}
+
 @media (max-width: 720px) {
   .container {
     gap: 20px;
-    min-height: 720px;
     margin-top: 40px;
   }
 
