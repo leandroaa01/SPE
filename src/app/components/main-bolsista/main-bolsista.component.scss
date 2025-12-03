@@ -207,6 +207,16 @@ main{
   color: #003827;
   box-shadow: 0 1px 0 rgba(0,0,0,0.05) inset;
 }
+.badge-analyze{
+  background: #f3d50d;
+  color: #665c00;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.05) inset;
+}
+.badge-denied{
+  background: #ff6b6b;
+  color: #5c0000;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.05) inset;
+}
 
 .action-link{
   color: #2f6fc1;
@@ -233,3 +243,4 @@ main{
   .tabela-justificadas tbody td{ padding: 10px 8px; font-size: 14px }
   .tabela-justificadas .table-title{ padding: 10px 8px; font-size: 15px }
 }
+
