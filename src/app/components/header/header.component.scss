@@ -1,0 +1,85 @@
+.app-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #EBF4FF;
+  padding: 10px 20px;
+  color: #3373C8;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.logo img {
+  height: 32px;
+}
+
+.dimap {
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+
+.dimap .short {
+  display: none;
+}
+.dimap .full {
+  display: inline;
+}
+
+.routes-icons {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 25px;
+    }
+
+
+.routes-icons li {
+  display: flex;
+}
+
+.routes-icons img {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+}
+
+@media (max-width: 720px) {
+  .app-header {
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+  }
+  .logo {
+    gap: 5px;
+  }
+
+  .dimap{
+    font-size: 15px;
+  }
+
+  .dimap .full {
+    display: none;
+  }
+  .dimap .short {
+    display: inline;
+  }
+
+  .routes-icons {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+     gap: 15px;
+    cursor: pointer;
+
+  }
+}
