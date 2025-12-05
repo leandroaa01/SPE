@@ -6,6 +6,43 @@
         </div>
         <div class="botoes">
           <button class="button-one">Registrar entrada</button>
-          <button class="button-two">Justificar horas</button>
+          <button class="button-two" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Justificar horas</button>
         </div>
-</section>
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <b>Tipo de justificativa:*</b>
+        <select >
+          <option value="Erro técnico">Erro técnico</option>
+        </select>
+        <div class="time">
+             <div class="data"><b>Data:*</b>
+            <input type="date" value="2025-07-03">
+          </div>
+          <div class="hora"><b>Horas:*</b>
+          <input type="number" value="4">
+          </div>
+           <div class="minuto"><b>Minutos:*</b>
+          <input type="number" value="0">
+          </div>
+      </div>
+      <div class="file"><b>Anexo:</b>
+      <input class="form-control" type="file" id="formFile">
+     </div>
+    <div class="obs">
+     <div class="jutificativa"><b>Observações:</b>
+     <textarea name="observacoes" id="observacoes" placeholder="Sistema de ponto fora do ar."></textarea></div>
+    </div>
+     </div>
+      <div class="modal-footer">
+         <button class="button-one-popup" data-bs-dismiss="modal">Enviar</button>
+         <button class="button-one-popup-lithg" data-bs-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+    </section>

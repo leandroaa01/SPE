@@ -12,6 +12,7 @@ main{
   color: #002352;
   gap: 2px;
 
+}
 .nome{
   font-size: 24px;
   font-weight: 700;
@@ -21,13 +22,12 @@ main{
   font-weight: 500;
 }
 
-}
-
 .horas-feitas-filtro{
   display: flex;
   width: 100%;
   padding: 40px 20px;
-
+  margin-top: calc(70px - 7%);
+}
 
   .mes{
     display: flex;
@@ -78,8 +78,6 @@ main{
     height: 16px;
     cursor: pointer;
    }
-
-}
 
 .tabela-horas{
   width: 100%;
@@ -227,11 +225,11 @@ main{
 
 @media (max-width: 768px){
 .nome{
-  font-size: 12px;
+  font-size: 22px;
   font-weight: 700;
 }
 .matricula, .email{
-  font-size: 8px;
+  font-size: 16px;
   font-weight: 500;
 }
   .tabela-horas{ padding: 8px 12px 12px 12px; }

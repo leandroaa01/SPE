@@ -60,6 +60,173 @@ section{
   height: calc(100vh - 140px);
 }
 
+/* Modal styling to match mockup */
+.modal-content{
+  margin: auto;
+  width: 500px;
+  border-radius: 10px;
+  background: #f6fbff; /* very light blue */
+  border: 1px solid rgba(47,111,193,0.12);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+.modal-header{
+  border-bottom: none;
+  background: transparent;
+  padding: 12px 18px 0 18px;
+}
+
+
+.modal-body{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 8px 18px 0 18px;
+  color: #3373C8;
+}
+
+.modal-body label{
+  color: #3373C8;
+  font-size: 14px;
+  margin-bottom: 6px;
+  display: block;
+}
+
+select{
+ background: #ebf4ff;
+  border: 1px solid rgba(47,111,193,0.08);
+  border-radius: 6px;
+  padding: 8px 10px;
+  color: #002352;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+   appearance: none;
+   background-image: url('/assets/icon-select.svg');
+   background-repeat: no-repeat;
+   background-position: right 10px center;
+   background-size: 16px 16px;
+}
+ img{
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+   }
+
+.modal-body input[type="date"],
+.modal-body input[type="number"],
+.modal-body input[type="text"],
+.modal-body .form-control{
+  background: #ebf4ff;
+  border: 1px solid rgba(47,111,193,0.08);
+  border-radius: 6px;
+  padding: 8px 10px;
+  color: #002352;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.time{
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.time .data, .time .hora, .time .minuto{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1 1 0;
+}
+
+.file{ display: flex; flex-direction: column; gap: 6px; }
+
+.obs{ display:flex; flex-direction:column; gap:6px }
+.obs .jutificativa textarea{
+  min-height: 80px;
+  max-height: 180px; /* limite de altura antes de aparecer a rolagem */
+  padding: 10px;
+  overflow: auto; /* ativa a rolagem quando exceder max-height */
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 8px;
+  border: 1px solid rgba(47,111,193,0.08);
+  background: #ebf4ff;
+  color: #002352;
+  resize: vertical; /* permite que o usuário redimensione verticalmente se desejar */
+}
+
+.modal-footer{
+  border-top: none;
+  padding: 12px 18px 18px 18px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.button-one-popup, .button-one-popup-lithg{
+  min-width: 110px;
+  height: 36px;
+  border-radius: 30px;
+  padding: 6px 18px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.button-one-popup{
+  background: #3373C8;
+  color: #fff;
+  border: none;
+}
+.button-one-popup-lithg{
+  background: transparent;
+  color: #3373C8;
+  border: 2px solid rgba(51,115,200,0.2);
+}
+
+
+.modal-dialog{
+  max-width: 720px;
+}
+
+b{
+  font-weight: 600;
+  font-size: 14px;
+}
+
+
+/* Estilização do input file: caixa + botão interno */
+.modal-body .file input[type="file"]{
+  background: #ebf4ff;
+  border: 1px solid rgba(47,111,193,0.08);
+  border-radius: 8px;
+  padding: 8px 8px;
+  color: #002352;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Botão embutido do input file (browsers modernos) */
+.modal-body .file input[type="file"]::file-selector-button{
+  background: #3373C8;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  margin-right: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Webkit fallback */
+.modal-body .file input[type="file"]::-webkit-file-upload-button{
+  background: #3373C8;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+
+
 @media (max-width: 720px) {
   .container {
     gap: 20px;
@@ -83,4 +250,10 @@ section{
     height: 45px;
     font-size: 14px;
   }
+
+   .modal-dialog{ max-width: 92%; }
+  .modal-body{ padding: 8px 12px; }
+  .time { flex-direction: column; gap: 10px; }
+  .time .data, .time .hora, .time .minuto { width: 100%; }
+  .file input[type="file"] { width: 100%; }
 }
