@@ -103,11 +103,60 @@
                 <td>25/06/2025</td>
                 <td>3:15</td>
                 <td><span class="badge badge-denied">Indeferido</span></td>
-                <td><a class="action-link" href="#">Abrir</a></td>
+                <td><a class="action-link" type="button"data-bs-toggle="modal" data-bs-target="#staticBackdrop">Abrir</a></td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
+      <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <b>Tipo de justificativa:*</b>
+        <input type="text" value="Erro tecnico" disabled>
+        <div class="time">
+             <div class="data"><b>Data:*</b>
+            <input type="text" value="2025-07-03" disabled>
+          </div>
+          <div class="hora"><b>Horas:*</b>
+          <input type="text" value="4" disabled>
+          </div>
+           <div class="minuto"><b>Minutos:*</b>
+          <input type="text" value="0" disabled>
+          </div>
+      </div>
+      <div class="file"><b>Anexo:</b>
+      <input type="text" value="arquivo.pdf" >
+     </div>
+    <div class="obs">
+     <div class="jutificativa"><b>Justificativa</b>
+     <textarea name="observacoes" id="observacoes" placeholder="Sistema de ponto fora do ar." disabled></textarea>
+    </div>
+    <div class="separador"></div>
+    <b>Status:</b>
+    <select  style="width:100%; text-align: start;"> 
+          <option value="">Deferido</option>
+          <option value="">Em análise</option>
+          <option value="">Ineferido</option>
+        </select>
+    <div class="obs">
+     <div class="jutificativa"><b>Observações:</b>
+     <input type="text" value="Justificativa aceita.">
+    </div>
+    </div>
+    </div>
+     </div>
+      <div class="modal-footer">
+         <button class="button-one-popup" data-bs-dismiss="modal">Enviar</button>
+         <button class="button-one-popup-lithg" data-bs-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
     </section>
 </main>

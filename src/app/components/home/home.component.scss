@@ -59,6 +59,30 @@ flex-direction: column;
 section{
   height: calc(100vh - 140px);
 }
+ img{
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+   }
+ select #status{
+  width: 300px;
+}
+
+select{
+ background: #ebf4ff;
+  border: 1px solid rgba(47,111,193,0.08);
+  border-radius: 6px;
+  padding: 8px 10px;
+  color: #002352;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+   appearance: none;
+   background-image: url('/assets/icon-select.svg');
+   background-repeat: no-repeat;
+   background-position: right 10px center;
+   background-size: 16px 16px;
+}
+
 
 /* Modal styling to match mockup */
 .modal-content{
@@ -91,26 +115,6 @@ section{
   margin-bottom: 6px;
   display: block;
 }
-
-select{
- background: #ebf4ff;
-  border: 1px solid rgba(47,111,193,0.08);
-  border-radius: 6px;
-  padding: 8px 10px;
-  color: #002352;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-   appearance: none;
-   background-image: url('/assets/icon-select.svg');
-   background-repeat: no-repeat;
-   background-position: right 10px center;
-   background-size: 16px 16px;
-}
- img{
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-   }
 
 .modal-body input[type="date"],
 .modal-body input[type="number"],
@@ -226,7 +230,6 @@ b{
 }
 
 
-
 @media (max-width: 720px) {
   .container {
     gap: 20px;
@@ -257,3 +260,8 @@ b{
   .time .data, .time .hora, .time .minuto { width: 100%; }
   .file input[type="file"] { width: 100%; }
 }
+
+
+
+
+
