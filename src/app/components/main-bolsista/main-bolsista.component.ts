@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-main-bolsista',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './main-bolsista.component.html',
-  styleUrl: './main-bolsista.component.scss'
+  styleUrls: ['./main-bolsista.component.scss']
 })
 export class MainBolsistaComponent {
 
