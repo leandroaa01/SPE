@@ -1,8 +1,7 @@
-
 <section class="container">
         <div class="tempo">
-         <h1 class="horas">13:00</h1>
-         <p class="data">03 de Julho de 2025</p>
+         <h1 class="horas">{{ agora | date:'HH:mm' }}</h1>
+         <p class="data">{{ dataFormatada }}</p>
         </div>
         <div class="botoes">
           <button class="button-one">Registrar entrada</button>
