@@ -472,3 +472,60 @@ b{
   color: #002352;
   margin-top: 8px;
 }
+
+.filter-bolsista {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.filter-bolsista form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-bolsista label {
+  font-weight: 500;
+  color: #1f3b73;
+}
+
+
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  border: 1px solid #cfd9e8;
+  border-radius: 5px;
+  background: #fff;
+}
+
+.search-box img {
+  width: 16px;
+  height: 16px;
+  opacity: 0.6;
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  font-size: 14px;
+  width: 160px;
+}
+
+.filter-bolsista button {
+  padding: 7px 16px;
+   gap: 2px;
+  border: none;
+  border-radius: 20px;
+  background: #3373C8;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.filter-bolsista button:hover {
+  background: #285fa6;
+}

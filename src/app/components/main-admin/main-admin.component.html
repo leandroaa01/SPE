@@ -1,98 +1,30 @@
 <main>
   <section class="meus-dados">
-    <h1 class="nome">ADMIN</h1>
-    <p class="matricula">20240019400</p>
-    <p class="email">leandro.andrade&#64;dimap.ufrn.br</p>
+    <h1 class="nome">LEONARDO DE ALMEIDA CHOU </h1>
+    <p class="matricula"> ASSISTENTE EM ADMINISTRACAO </p>
   </section>
-    <section class="tabela-justificadas">
-      <div class="table-card">
-        <div class="table-title">Horas Justificadas</div>
-        <div class="table-body">
-          <table>
-            <thead>
-              <tr>
-                <th>Tipo</th>
-                <th>Data</th>
-                <th>Duração</th>
-                <th>Status</th>
-                <th>Ação</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Erro técnico</td>
-                <td>01/07/2025</td>
-                <td>4:00</td>
-                <td><span class="badge badge-success">Deferido</span></td>
-                <td><a class="action-link" href="#">Abrir</a></td>
-              </tr>
-              <tr>
-                <td>Atendimento médico</td>
-                <td>28/06/2025</td>
-                <td>2:30</td>
-                <td><span class="badge badge-analyze">Em análise</span></td>
-                <td><a class="action-link" href="#">Abrir</a></td>
-              </tr>
-              <tr>
-                <td>Problema pessoal</td>
-                <td>25/06/2025</td>
-                <td>3:15</td>
-                <td><span class="badge badge-denied">Indeferido</span></td>
-                <td><a class="action-link" type="button"data-bs-toggle="modal" data-bs-target="#staticBackdrop">Abrir</a></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <b>Tipo de justificativa:*</b>
-        <input type="text" value="Erro tecnico" disabled>
-        <div class="time">
-             <div class="data"><b>Data:*</b>
-            <input type="text" value="2025-07-03" disabled>
-          </div>
-          <div class="hora"><b>Horas:*</b>
-          <input type="text" value="4" disabled>
-          </div>
-           <div class="minuto"><b>Minutos:*</b>
-          <input type="text" value="0" disabled>
-          </div>
-      </div>
-      <div class="file"><b>Anexo:</b>
-      <input type="text" value="arquivo.pdf" >
-     </div>
-    <div class="obs">
-     <div class="jutificativa"><b>Justificativa</b>
-     <textarea name="observacoes" id="observacoes" placeholder="Sistema de ponto fora do ar." disabled></textarea>
-    </div>
-    <div class="separador"></div>
-    <b>Status:</b>
-    <select  style="width:100%; text-align: start;"> 
-          <option value="">Deferido</option>
-          <option value="">Em análise</option>
-          <option value="">Ineferido</option>
-        </select>
-    <div class="obs">
-     <div class="jutificativa"><b>Observações:</b>
-     <input type="text" value="Justificativa aceita.">
-    </div>
-      <p class="avaliada-em">Avaliada em : <span>03/07/2025 </span></p>
-    </div>
-    </div>
-     </div>
-      <div class="modal-footer">
-         <button class="button-one-popup" data-bs-dismiss="modal">Enviar</button>
-         <button class="button-one-popup-lithg" data-bs-dismiss="modal">Cancelar</button>
-      </div>
-    </div>
-  </div>
-</div>
 
-    </section>
+<section class="bolsistas">
+  <div class="filter-bolsista">
+    <form>
+      <label>Filtrar:</label>
+
+      <select>
+        <option value="id">ID</option>
+        <option value="nome" selected>Nome</option>
+        <option value="matricula">Matrícula</option>
+        <option value="situacao">Situação</option>
+      </select>
+
+      <div class="search-box">
+        <img src="./../../assets/icon-lupa.svg" alt="Buscar">
+        <input type="search" placeholder="Procurar">
+      </div>
+
+      <button type="submit">Buscar</button>
+    </form>
+  </div>
+</section>
+
+
 </main>
