@@ -4,84 +4,188 @@
     <p class="matricula"> ASSISTENTE EM ADMINISTRACAO </p>
   </section>
 
-<section class="bolsistas">
-  <div class="filter-bolsista">
-    <form>
-      <label>Filtrar:</label>
+  <section class="bolsistas">
+    <div class="filter-bolsista">
+      <form>
+        <label>Filtrar:</label>
 
-      <select>
-        <option value="id">ID</option>
-        <option value="nome" selected>Nome</option>
-        <option value="matricula">Matrícula</option>
-        <option value="situacao">Situação</option>
-      </select>
+        <select>
+          <option value="id">ID</option>
+          <option value="nome" selected>Nome</option>
+          <option value="matricula">Matrícula</option>
+          <option value="situacao">Situação</option>
+        </select>
 
-      <div class="search-box">
-        <img src="./../../assets/icon-lupa.svg" alt="Buscar">
-        <input type="search" placeholder="Procurar">
+        <div class="search-box">
+          <img src="./../../assets/icon-lupa.svg" alt="Buscar">
+          <input type="search" placeholder="Procurar">
+        </div>
+
+        <button type="submit">Buscar</button>
+      </form>
+    </div>
+  </section>
+  <section class="tabela-horas">
+    <div class="table-card">
+      <div class="table-title">Bolsistas Cadastrados</div>
+      <div class="table-body">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Matrícula</th>
+              <th>Email</th>
+              <th>Situação</th>
+              <th>Data de Criação</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td> 001</td>
+              <td> <a href=""><img src="../../../assets/open-link.svg" alt="">Leandro Andrade</a></td>
+              <td>00000000000</td>
+              <td>leandro.andrade&#64;dimap.ufrn.br</td>
+              <td><span class="badge badge-success">Ativo</span></td>
+              <td>03/07/2025</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
+    </div>
+  </section>
 
-      <button type="submit">Buscar</button>
-    </form>
-  </div>
-</section>
-<section class="tabela-horas">
-      <div class="table-card">
-        <div class="table-title">Bolsistas Cadastrados</div>
-        <div class="table-body">
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Matrícula</th>
-                <th>Email</th>
-                <th>Situação</th>
-                <th>Data de Criação</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-               <td> 001</td>
-               <td> <a href=""><img src="../../../assets/open-link.svg" alt="">Leandro Andrade</a></td>
-               <td>00000000000</td>
-               <td>leandro.andrade&#64;dimap.ufrn.br</td>
-               <td><span class="badge badge-success">Ativo</span></td>
-               <td>03/07/2025</td>
-              </tr>
-            </tbody>
-          </table>
+  <section class="tabela-horas">
+    <div class="table-card">
+      <div class="table-title">Ultimo Pontos Dos Bolsistas</div>
+      <div class="table-body">
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Data</th>
+              <th>Entrada</th>
+              <th>Saída</th>
+              <th>Situação</th>
+              <th>
+                <Table>Total de Horas</Table>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td> <a href=""><img src="../../../assets/open-link.svg" alt="">Leandro Andrade</a></td>
+              <td>12/01/2026</td>
+              <td>07:30</td>
+              <td>12:00</td>
+              <td><span class="badge badge-success">Fechado</span></td>
+              <td>04:30 Hrs</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="tabela-justificadas">
+    <div class="table-card">
+      <div class="table-title">Horas Justificadas</div>
+      <div class="table-body">
+        <table>
+          <thead>
+            <tr>
+              <th>Tipo</th>
+              <th>Data</th>
+              <th>Duração</th>
+              <th>Status</th>
+              <th>Ação</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Erro técnico</td>
+              <td>01/07/2025</td>
+              <td>4:00</td>
+              <td><span class="badge badge-success">Deferido</span></td>
+              <td><a class="action-link" href="#">Abrir</a></td>
+            </tr>
+            <tr>
+              <td>Atendimento médico</td>
+              <td>28/06/2025</td>
+              <td>2:30</td>
+              <td><span class="badge badge-analyze">Em análise</span></td>
+              <td><a class="action-link" routerLink="/admin">Abrir</a></td>
+            </tr>
+            <tr>
+              <td>Problema pessoal</td>
+              <td>25/06/2025</td>
+              <td>3:15</td>
+              <td><span class="badge badge-denied">Indeferido</span></td>
+              <td><a class="action-link" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Abrir</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <b>Tipo de justificativa:*</b>
+            <input type="text" value="Erro tecnico" disabled>
+            <div class="time">
+              <div class="data"><b>Data:*</b>
+                <input type="text" value="2025-07-03" disabled>
+              </div>
+              <div class="hora"><b>Horas:*</b>
+                <input type="text" value="4" disabled>
+              </div>
+              <div class="minuto"><b>Minutos:*</b>
+                <input type="text" value="0" disabled>
+              </div>
+            </div>
+            <div class="file"><b>Anexo:</b>
+              <div class="input-icon">
+                 <p class="arquivo">arquivo.pdf</p>
+                <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px"
+                  fill="#002352">
+                  <path
+                    d="M146.67-160q-27 0-46.84-19.83Q80-199.67 80-226.67v-506.66q0-27 19.83-46.84Q119.67-800 146.67-800H380v66.67H146.67v506.66h666.66v-506.66H580V-800h233.33q27 0 46.84 19.83Q880-760.33 880-733.33v506.66q0 27-19.83 46.84Q840.33-160 813.33-160H146.67ZM480-344.67l-200-200L327.33-592l119.34 119.33V-800h66.66v327.33L632.67-592 680-544.67l-200 200Z" />
+                </svg> 
+              </div>
+            </div>
+            <div class="obs">
+              <div class="jutificativa"><b>Justificativa</b>
+                <textarea name="observacoes" id="observacoes" placeholder="Sistema de ponto fora do ar."
+                  disabled></textarea>
+              </div>
+              <div class="separador"></div>
+              <b>Status:</b>
+              <select class="status">
+                <option value="deferido">Deferido</option>
+                <option value="em-analise" selected>Em Análise</option>
+                <option value="indeferido">Indeferido</option>
+              </select>
+              <div class="obs">
+                <div class="jutificativa"><b>Observações:</b>
+                  <textarea name="observacoes" id="observacoes">Justificativa aceita.</textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="button-one-popup" data-bs-dismiss="modal">Enviar</button>
+            <button class="button-one-popup-lithg" data-bs-dismiss="modal">Fechar</button>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
 
-    <section class="tabela-horas">
-      <div class="table-card">
-        <div class="table-title">Ultimo Pontos Dos Bolsistas</div>
-        <div class="table-body">
-          <table>
-            <thead>
-              <tr>
-                <th>Nome</th>
-                <th>Data</th>
-                <th>Entrada</th>
-                <th>Saída</th>
-                <th>Situação</th>
-                <th><Table>Total de Horas</Table></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-               <td> <a href=""><img src="../../../assets/open-link.svg" alt="">Leandro Andrade</a></td>
-               <td>12/01/2026</td>
-               <td>07:30</td>
-               <td>12:00</td>
-               <td><span class="badge badge-success">Fechado</span></td>
-               <td>04:30 Hrs</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
+  </section>
+
 </main>
