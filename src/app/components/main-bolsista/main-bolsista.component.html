@@ -9,12 +9,12 @@
       <div class="mes"> <b>Mês:</b>
           <select>
         <option value="jan">Janeiro</option>
-        <option value="fev">Fevereiro</option>
+        <option value="fev"selected>Fevereiro</option>
         <option value="mar">Março</option>
         <option value="abr">Abril</option>
         <option value="mai">Maio</option>
         <option value="jun">Junho</option>
-        <option value="jul" selected>Julho</option>
+        <option value="jul">Julho</option>
         <option value="ago">Agosto</option>
         <option value="set">Setembro</option>
         <option value="out">Outubro</option>
@@ -25,8 +25,8 @@
     <div class="ano"><b>Ano:</b>
       <select>
       <option value="2024">2024 </option>
-      <option value="2025" selected>2025</option>
-      <option value="2026">2026</option>
+      <option value="2025" >2025</option>
+      <option value="2026"selected>2026</option>
       </select>
     </div>
     </div>
@@ -89,21 +89,14 @@
                 <td>01/07/2025</td>
                 <td>4:00</td>
                 <td><span class="badge badge-success">Deferido</span></td>
-                <td><a class="action-link" href="#">Abrir</a></td>
+              <td><a class="action-link" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img src="../../../assets/open-link.svg" alt="">Abrir</a>
               </tr>
               <tr>
                 <td>Atendimento médico</td>
                 <td>28/06/2025</td>
                 <td>2:30</td>
                 <td><span class="badge badge-analyze">Em análise</span></td>
-                <td><a class="action-link" routerLink="/admin">Abrir</a></td>
-              </tr>
-              <tr>
-                <td>Problema pessoal</td>
-                <td>25/06/2025</td>
-                <td>3:15</td>
-                <td><span class="badge badge-denied">Indeferido</span></td>
-                <td><a class="action-link" type="button"data-bs-toggle="modal" data-bs-target="#staticBackdrop">Abrir</a></td>
+                <td><a class="action-link" routerLink="/admin"><img src="../../../assets/open-link.svg" alt="">Abrir</a></td>
               </tr>
             </tbody>
           </table>

@@ -270,60 +270,6 @@ img {
   cursor: pointer;
 }
 
-
-
-@media (max-width: 768px) {
-  .nome {
-    font-size: 22px;
-    font-weight: 700;
-  }
-
-  .matricula,
-  .email {
-    font-size: 16px;
-    font-weight: 500;
-  }
-
-  .tabela-horas {
-    padding: 8px 12px 12px 12px;
-  }
-
-  .tabela-horas thead th {
-    padding: 10px 8px;
-    font-size: 14px
-  }
-
-  .tabela-horas tbody td {
-    padding: 10px 8px;
-    font-size: 14px
-  }
-
-  .tabela-horas .table-title {
-    padding: 10px 8px;
-    font-size: 15px
-  }
-
-  .tabela-justificadas {
-    padding: 8px 12px 12px 12px;
-  }
-
-  .tabela-justificadas thead th {
-    padding: 10px 8px;
-    font-size: 14px
-  }
-
-  .tabela-justificadas tbody td {
-    padding: 10px 8px;
-    font-size: 14px
-  }
-
-  .tabela-justificadas .table-title {
-    padding: 10px 8px;
-    font-size: 15px
-  }
-}
-
-
 /* Modal styling to match mockup */
 .modal-content {
   margin: auto;
@@ -371,21 +317,23 @@ img {
 }
 
 .input-icon {
-display: flex;
-width: 100%;
-height: 40px;
-border: 1px solid rgba(21, 23, 27, 0.039);
-border-radius: 5px;
-background: none;
-gap: 10px;
-p.arquivo{
-  margin: 8px;
-  width: 85%;
-  color: #002352;
-}
+  display: flex;
+  width: 100%;
+  height: 40px;
+  border: 1px solid rgba(21, 23, 27, 0.039);
+  border-radius: 5px;
+  background: none;
+  gap: 10px;
+  cursor: pointer;
+
+  p.arquivo {
+    margin: 8px;
+    width: 85%;
+    color: #002352;
+
+  }
 
 }
-
 
 
 .time {
@@ -446,20 +394,20 @@ p.arquivo{
   height: 36px;
   border-radius: 30px;
   padding: 6px 18px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
 }
 
 .button-one-popup {
   background: #3373C8;
   color: #fff;
-  border: none;
+  border: 2px solid #3373C8;
 }
 
 .button-one-popup-lithg {
   background: transparent;
   color: #3373C8;
-  border: 2px solid rgba(51, 115, 200, 0.2);
+  border: 2px solid rgba(51, 115, 200, 0.908);
 }
 
 
@@ -503,6 +451,20 @@ b {
   padding: 6px 12px;
   border-radius: 6px;
   cursor: pointer;
+}
+
+section.buttons {
+  gap: 30px;
+  display: flex;
+  justify-content: flex-start;
+  padding: 20px 30px;
+
+  .button-one-popup-lithg {
+    border: 3px solid rgba(51, 116, 200, 0.908);
+    height: 38px;
+    padding: 6px 18px;
+  }
+
 }
 
 
@@ -614,14 +576,10 @@ b {
   margin: 20px 0;
 }
 
-.avaliada-em {
-  font-size: 14px;
-  color: #002352;
-  margin-top: 8px;
-}
+
 
 .filter-bolsista {
-  width: calc(100% - 15px);
+  width: calc(100% - 22px);
   display: flex;
   justify-content: flex-end;
 }
@@ -634,7 +592,7 @@ b {
 
 .filter-bolsista label {
   font-weight: 400;
-  color: #1f3b73;
+  color: #1c469b;
 }
 
 
@@ -675,4 +633,55 @@ b {
 
 .filter-bolsista button:hover {
   background: #285fa6;
+}
+
+@media (max-width: 768px) {
+  .nome {
+    font-size: 22px;
+    font-weight: 700;
+  }
+
+  .matricula,
+  .email {
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .tabela-horas {
+    padding: 8px 12px 12px 12px;
+  }
+
+  .tabela-horas thead th {
+    padding: 10px 8px;
+    font-size: 14px
+  }
+
+  .tabela-horas tbody td {
+    padding: 10px 8px;
+    font-size: 14px
+  }
+
+  .tabela-horas .table-title {
+    padding: 10px 8px;
+    font-size: 15px
+  }
+
+  .tabela-justificadas {
+    padding: 8px 12px 12px 12px;
+  }
+
+  .tabela-justificadas thead th {
+    padding: 10px 8px;
+    font-size: 14px
+  }
+
+  .tabela-justificadas tbody td {
+    padding: 10px 8px;
+    font-size: 14px
+  }
+
+  .tabela-justificadas .table-title {
+    padding: 10px 8px;
+    font-size: 15px
+  }
 }

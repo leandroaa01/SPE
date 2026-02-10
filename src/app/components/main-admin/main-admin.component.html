@@ -94,8 +94,9 @@
         <table>
           <thead>
             <tr>
-              <th>Tipo</th>
-              <th>Data</th>
+              <th>Bolsista</th>
+              <th>Tipo de justificativa</th>
+              <th>Data da justificativa</th>
               <th>Duração</th>
               <th>Status</th>
               <th>Ação</th>
@@ -103,32 +104,49 @@
           </thead>
           <tbody>
             <tr>
+               <td>Leandro Andrade</td>
               <td>Erro técnico</td>
               <td>01/07/2025</td>
               <td>4:00</td>
               <td><span class="badge badge-success">Deferido</span></td>
-              <td><a class="action-link" href="#">Abrir</a></td>
+              <td><a class="action-link" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img src="../../../assets/open-link.svg" alt="">Abrir</a>
             </tr>
             <tr>
+              <td>Jóse Carlos</td>
               <td>Atendimento médico</td>
               <td>28/06/2025</td>
               <td>2:30</td>
               <td><span class="badge badge-analyze">Em análise</span></td>
-              <td><a class="action-link" routerLink="/admin">Abrir</a></td>
+              <td><a class="action-link" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img src="../../../assets/open-link.svg" alt="">Abrir</a>
             </tr>
             <tr>
+              <td>Diego Luan</td>
               <td>Problema pessoal</td>
               <td>25/06/2025</td>
               <td>3:15</td>
               <td><span class="badge badge-denied">Indeferido</span></td>
-              <td><a class="action-link" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Abrir</a>
+              <td><a class="action-link" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img src="../../../assets/open-link.svg" alt="">Abrir</a>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  </section>
+
+<section class="buttons">
+  <button class="button-one-popup-lithg">Cadastrar Usuário</button>
+  <button class="button-one-popup" >Editar Usuário</button>
+  <button class="button-one-popup-lithg">Recuperar Senha </button>
+
+</section>
+
+</main>
+  
+
+<!--Modal do sistema-->
+
+   <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -153,8 +171,7 @@
               <div class="input-icon">
                  <p class="arquivo">arquivo.pdf</p>
                 <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px"
-                  fill="#002352">
-                  <path
+                  fill="#002352"> <path
                     d="M146.67-160q-27 0-46.84-19.83Q80-199.67 80-226.67v-506.66q0-27 19.83-46.84Q119.67-800 146.67-800H380v66.67H146.67v506.66h666.66v-506.66H580V-800h233.33q27 0 46.84 19.83Q880-760.33 880-733.33v506.66q0 27-19.83 46.84Q840.33-160 813.33-160H146.67ZM480-344.67l-200-200L327.33-592l119.34 119.33V-800h66.66v327.33L632.67-592 680-544.67l-200 200Z" />
                 </svg> 
               </div>
@@ -185,7 +202,3 @@
         </div>
       </div>
     </div>
-
-  </section>
-
-</main>
