@@ -25,14 +25,72 @@
 .dimap .short {
   display: none;
 }
+
 .dimap .full {
   display: inline;
 }
 
-section{
-  width:100%;
-  display:inline-flex;
+section {
+  width: 100%;
+  height: calc(90vh - 10px);
+  display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
+}
+
+.form-login {
+  width: 400px;
+  height: 340px;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  border-radius: 8px;
+  border: 5px solid #3373C8;
+  border-radius: 20px;
+  font-weight: 700;
+  color: #3373C8;
+}
+
+label,
+p {
+  display: block;
+  text-align: center;
+
+}
+
+label {
+  display: block;
+  text-align: start;
+  margin: 8px 0;
+
+}
+
+
+.button-one-popup {
+  width: 340px;
+  height: 36px;
+  border-radius: 30px;
+  padding: 6px 18px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 22px;
+}
+
+.button-one-popup {
+  background: #3373C8;
+  color: #fff;
+  border: none;
+}
+
+.form-login input[type="password"],
+.form-login input[type="text"] {
+  width: 340px;
+  padding: 10px;
+  border-radius: 8px;
+  background: #3065ab50;
+  border: 3px solid #3373C8;
+  color:#0a3977;
+  font-weight: 600;
+
 }
