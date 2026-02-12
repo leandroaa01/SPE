@@ -1,4 +1,8 @@
-<header class="app-header">
+<header
+  class="app-header"
+  [class.home-context]="isRoute('/', true)"
+  [class.meus-dados-context]="isRoute('/meus-dados', true)"
+>
   <div class="logo">
     <img src="../../../assets/logo.png" alt="logo">
     <p class="dimap">
@@ -7,8 +11,34 @@
     </p>
   </div>
   <ul class="routes-icons">
-    <li><a routerLink="/"> <img src="../../../assets/icon-home.svg" alt="Home"> </a></li>
-    <li><a routerLink="/meus-dados" title="Meus dados"> <img src="../../../assets/icon-perfie.svg" alt="Perfil"> </a></li>
-    <li><a routerLink="/login" title="Logout"> <img src="../../../assets/icon-loguot.svg" alt="Logout"> </a></li>
+    <li>
+      <a
+        routerLink="/"
+        class="nav-link"
+        title="Home"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <img src="../../../assets/icon-home.svg" alt="Home">
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/meus-dados"
+        class="nav-link"
+        title="Meus dados"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <img src="../../../assets/icon-perfie.svg" alt="Perfil">
+      </a>
+    </li>
+    @if (!isRoute('/login', true)) {
+      <li>
+        <a routerLink="/login" class="nav-link" title="Logout">
+          <img src="../../../assets/icon-loguot.svg" alt="Logout">
+        </a>
+      </li>
+    }
   </ul>
 </header>

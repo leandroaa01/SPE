@@ -46,10 +46,32 @@
   display: flex;
 }
 
+.routes-icons .nav-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  padding: 6px;
+  opacity: 0.65;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.routes-icons .nav-link.active-link {
+  opacity: 1;
+}
+
 .routes-icons img {
   width: 22px;
   height: 22px;
   cursor: pointer;
+}
+
+.app-header.home-context .routes-icons .nav-link.active-link {
+  background-color: #a8c4ef;
+}
+
+.app-header.meus-dados-context .routes-icons .nav-link.active-link {
+  background-color: #d7ddf3;
 }
 
 @media (max-width: 720px) {
