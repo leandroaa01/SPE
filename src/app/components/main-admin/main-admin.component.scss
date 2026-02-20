@@ -545,7 +545,7 @@ section.buttons {
   }
 
   .modal-dialog {
-    max-width: 92%;
+    max-width: 82%;
   }
 
   .modal-body {
@@ -634,6 +634,35 @@ section.buttons {
 .filter-bolsista button:hover {
   background: #285fa6;
 }
+
+.cadastro{
+margin: 10px;
+
+b{
+display: block;
+}
+input{
+  width: 100%;
+  background:#CFDEF1 ;
+  color: #002352;;
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @media (max-width: 768px) {
   .nome {

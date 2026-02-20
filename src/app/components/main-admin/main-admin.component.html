@@ -136,7 +136,7 @@
   </section>
 
 <section class="buttons">
-  <button class="button-one-popup-lithg">Cadastrar Usuário</button>
+  <button class="button-one-popup-lithg"type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">Cadastrar Usuário</button>
   <button class="button-one-popup" >Editar Usuário</button>
   <button class="button-one-popup-lithg">Recuperar Senha </button>
 
@@ -195,6 +195,34 @@
                 </div>
               </div>
             </div>
+          </div>
+          <div class="modal-footer">
+            <button class="button-one-popup" data-bs-dismiss="modal">Enviar</button>
+            <button class="button-one-popup-lithg" data-bs-dismiss="modal">Fechar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+   <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="cadastro">
+          <b>Nome:</b>
+          <input type="text" placeholder="Digite seu nome">
+          <b>Matrícula:</b>
+          <input type="number" placeholder="Digite sua matrícula">
+          <b>Email:</b>
+          <input type="email" placeholder="Digite seu email">
+          <b>Username:</b>
+          <input type="text" placeholder="Digite seu username">
+          <b>Senha:</b>
+          <input type="password" placeholder="Digite sua senha">
           </div>
           <div class="modal-footer">
             <button class="button-one-popup" data-bs-dismiss="modal">Enviar</button>
