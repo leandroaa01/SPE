@@ -14,8 +14,29 @@
   margin: 0;
 }
 
+/* Tablets */
+@media (max-width: 1024px) {
+  .app-footer {
+    height: 85px;
+    font-size: 14px;
+  }
+}
+
+/* Celular grande */
 @media (max-width: 768px) {
   .app-footer {
-    font-size: 12px;
+    height: 80px;
+    font-size: 13px;
+    padding: 0.5rem 0.75rem;
+  }
+}
 
-  }}
+/* Celular */
+@media (max-width: 480px) {
+  .app-footer {
+    height: 75px;
+    font-size: 11px;
+    padding: 0.5rem 0.5rem;
+    line-height: 1.4;
+  }
+}

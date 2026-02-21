@@ -229,23 +229,337 @@ main{
 
  
 
-@media (max-width: 768px){
-.nome{
-  font-size: 22px;
-  font-weight: 700;
+/* Tablets */
+@media (max-width: 1024px) {
+  .meus-dados {
+    padding: 30px 18px;
+  }
+
+  .nome {
+    font-size: 22px;
+  }
+
+  .matricula, .email {
+    font-size: 18px;
+  }
+
+  .horas-feitas-filtro {
+    padding: 30px 18px;
+  }
+
+  .filtro {
+    gap: 12px;
+  }
+
+  select {
+    width: 100px;
+    font-size: 13px;
+  }
+
+  .tabela-horas {
+    padding: 10px 18px 20px 18px;
+  }
+
+  .tabela-horas thead th {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+
+  .tabela-horas tbody td {
+    padding: 16px 16px;
+    font-size: 14px;
+  }
+
+  .tabela-justificadas {
+    padding: 10px 18px 20px 18px;
+  }
+
+  .tabela-justificadas thead th {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+
+  .tabela-justificadas tbody td {
+    padding: 16px 16px;
+    font-size: 14px;
+  }
 }
-.matricula, .email{
-  font-size: 16px;
-  font-weight: 500;
+
+/* Celular grande */
+@media (max-width: 768px) {
+  .meus-dados {
+    padding: 25px 15px;
+  }
+
+  .nome {
+    font-size: 20px;
+  }
+
+  .matricula, .email {
+    font-size: 16px;
+  }
+
+  .horas-feitas-filtro {
+    padding: 25px 15px;
+    margin-top: 0;
+  }
+
+  .filtro {
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  b {
+    font-size: 16px;
+  }
+
+  select {
+    width: 90px;
+  }
+
+  .tabela-horas {
+    padding: 8px 15px 18px 15px;
+  }
+
+  .tabela-horas .table-body {
+    overflow-x: auto;
+  }
+
+  .tabela-horas table {
+    min-width: 600px;
+  }
+
+  .tabela-horas thead th {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .tabela-horas tbody td {
+    padding: 12px 12px;
+    font-size: 13px;
+  }
+
+  .tabela-horas .table-title {
+    padding: 10px 12px;
+    font-size: 15px;
+  }
+
+  .tabela-justificadas {
+    padding: 8px 15px 18px 15px;
+    margin-top: 30px;
+  }
+
+  .tabela-justificadas .table-body {
+    overflow-x: auto;
+  }
+
+  .tabela-justificadas table {
+    min-width: 700px;
+  }
+
+  .tabela-justificadas thead th {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .tabela-justificadas tbody td {
+    padding: 12px 12px;
+    font-size: 13px;
+  }
+
+  .tabela-justificadas .table-title {
+    padding: 10px 12px;
+    font-size: 15px;
+  }
+
+  .badge {
+    font-size: 11px;
+    padding: 3px 6px;
+  }
+
+  .modal-dialog {
+    max-width: 90%;
+  }
+
+  .modal-body {
+    padding: 8px 14px;
+  }
+
+  .time {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .time .data, .time .hora, .time .minuto {
+    width: 100%;
+  }
 }
-  .tabela-horas{ padding: 8px 12px 12px 12px; }
-  .tabela-horas thead th{ padding: 10px 8px; font-size: 14px }
-  .tabela-horas tbody td{ padding: 10px 8px; font-size: 14px }
-  .tabela-horas .table-title{ padding: 10px 8px; font-size: 15px }
-  .tabela-justificadas{ padding: 8px 12px 12px 12px; }
-  .tabela-justificadas thead th{ padding: 10px 8px; font-size: 14px }
-  .tabela-justificadas tbody td{ padding: 10px 8px; font-size: 14px }
-  .tabela-justificadas .table-title{ padding: 10px 8px; font-size: 15px }
+
+/* Celular */
+@media (max-width: 480px) {
+  main {
+    min-height: calc(100vh - 120px);
+  }
+
+  .meus-dados {
+    padding: 20px 12px;
+  }
+
+  .nome {
+    font-size: 18px;
+  }
+
+  .matricula, .email {
+    font-size: 14px;
+  }
+
+  .horas-feitas-filtro {
+    padding: 20px 12px;
+  }
+
+  .filtro {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .mes, .ano {
+    flex: 1;
+    align-items: stretch;
+  }
+
+  b {
+    font-size: 14px;
+    text-align: left;
+  }
+
+  select {
+    width: 100%;
+    font-size: 12px;
+    padding: 4px 22px 4px 8px;
+  }
+
+  .tabela-horas {
+    padding: 8px 12px 15px 12px;
+  }
+
+  .tabela-horas .table-body {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tabela-horas table {
+    min-width: 550px;
+  }
+
+  .tabela-horas thead th {
+    padding: 8px 8px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .tabela-horas tbody td {
+    padding: 10px 8px;
+    font-size: 12px;
+  }
+
+  .tabela-horas .table-title {
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+
+  .tabela-justificadas {
+    padding: 8px 12px 15px 12px;
+    margin-top: 20px;
+  }
+
+  .tabela-justificadas .table-body {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tabela-justificadas table {
+    min-width: 650px;
+  }
+
+  .tabela-justificadas thead th {
+    padding: 8px 8px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .tabela-justificadas tbody td {
+    padding: 10px 8px;
+    font-size: 12px;
+  }
+
+  .tabela-justificadas tbody tr td:first-child {
+    width: auto;
+    min-width: 140px;
+  }
+
+  .tabela-justificadas .table-title {
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+
+  .badge {
+    font-size: 10px;
+    padding: 2px 5px;
+  }
+
+  img {
+    width: 14px;
+    height: 14px;
+  }
+
+  .modal-dialog {
+    max-width: 95%;
+  }
+
+  .modal-content {
+    width: 100%;
+  }
+
+  .modal-body {
+    padding: 8px 12px;
+  }
+
+  .modal-body b {
+    font-size: 13px;
+  }
+
+  .modal-body input {
+    font-size: 13px;
+  }
+
+  .time {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .time .data, .time .hora, .time .minuto {
+    width: 100%;
+  }
+
+  .file input[type="text"] {
+    font-size: 13px;
+  }
+
+  .obs .jutificativa textarea {
+    min-height: 60px;
+    font-size: 13px;
+  }
+
+  .button-one-popup-lithg {
+    min-width: 90px;
+    height: 34px;
+    font-size: 14px;
+  }
+
+  .avaliada-em {
+    font-size: 11px;
+  }
 }
 
 

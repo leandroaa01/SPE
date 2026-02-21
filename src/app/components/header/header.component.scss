@@ -74,34 +74,91 @@
   background-color: #d7ddf3;
 }
 
-@media (max-width: 720px) {
+/* Tablets */
+@media (max-width: 1024px) {
   .app-header {
-    flex-direction: row;
-    align-items: center;
-    cursor: pointer;
-  }
-  .logo {
-    gap: 5px;
+    padding: 10px 15px;
   }
 
-  .dimap{
-    font-size: 15px;
+  .logo img {
+    height: 28px;
+  }
+
+  .dimap {
+    font-size: 18px;
+  }
+
+  .routes-icons {
+    gap: 20px;
+  }
+
+  .routes-icons img {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* Celular grande */
+@media (max-width: 768px) {
+  .app-header {
+    padding: 8px 12px;
+  }
+
+  .logo img {
+    height: 26px;
+  }
+
+  .dimap {
+    font-size: 16px;
   }
 
   .dimap .full {
     display: none;
   }
+  
   .dimap .short {
     display: inline;
+  }
+
+  .routes-icons {
+    gap: 18px;
+  }
+
+  .routes-icons img {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* Celular */
+@media (max-width: 480px) {
+  .app-header {
+    flex-direction: row;
+    align-items: center;
+    padding: 8px 10px;
+  }
+
+  .logo {
+    gap: 5px;
+  }
+
+  .logo img {
+    height: 24px;
+  }
+
+  .dimap {
+    font-size: 14px;
   }
 
   .routes-icons {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    margin-top: 10px;
-     gap: 15px;
-    cursor: pointer;
+    gap: 12px;
+  }
 
+  .routes-icons img {
+    width: 18px;
+    height: 18px;
   }
 }
