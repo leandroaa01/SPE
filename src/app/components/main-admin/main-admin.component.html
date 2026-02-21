@@ -39,6 +39,7 @@
               <th>Email</th>
               <th>Situação</th>
               <th>Data de Criação</th>
+              <th>Ação</th>
             </tr>
           </thead>
           <tbody>
@@ -49,6 +50,7 @@
               <td>leandro.andrade&#64;dimap.ufrn.br</td>
               <td><span class="badge badge-success">Ativo</span></td>
               <td>03/07/2025</td>
+              <td> <a href=""><img src="../../../assets/open-link.svg" alt="">Editar </a></td>
             </tr>
           </tbody>
         </table>
@@ -141,8 +143,8 @@
   <section class="buttons">
     <button class="button-one-popup-lithg" type="button" data-bs-toggle="modal"
       data-bs-target="#staticBackdrop2">Cadastrar Usuário</button>
-    <button class="button-one-popup">Editar Usuário</button>
-    <button class="button-one-popup-lithg">Recuperar Senha </button>
+    <button class="button-one-popup"  type="button" data-bs-toggle="modal"
+      data-bs-target="#staticBackdrop3">Recuperar Senha </button>
 
   </section>
 
@@ -235,6 +237,31 @@
       </div>
       <div class="modal-footer">
         <button class="button-one-popup" data-bs-dismiss="modal">Enviar</button>
+        <button class="button-one-popup-lithg" data-bs-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="staticBackdrop3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="cadastro">
+        <b>Matrícula:*</b>
+        <input type="number" placeholder="Digite sua matrícula">
+        <b>Senha:*</b>
+        <input type="password" placeholder="Digite sua senha">
+         <b>Confirma Senha:*</b>
+        <input type="password" placeholder="Confirme sua senha">
+      </div>
+      <div class="modal-footer">
+        <button class="button-one-popup" data-bs-dismiss="modal">Atualizar</button>
         <button class="button-one-popup-lithg" data-bs-dismiss="modal">Cancelar</button>
       </div>
     </div>
