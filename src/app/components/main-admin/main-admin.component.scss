@@ -64,7 +64,7 @@ select {
   border-radius: 4px;
   padding: 4px 26px 4px 10px;
   color: #002352;
-  background: #ebf4ff;
+  background: #CFDEF1;
   border: 1px solid #cfe6ff;
   font-size: 14px;
   font-weight: 500;
@@ -374,7 +374,7 @@ img {
   box-sizing: border-box;
   border-radius: 8px;
   border: 1px solid rgba(47, 111, 193, 0.08);
-  background: #ebf4ffe0;
+  background: #ebf4ffcc;
   color: #002352;
   resize: vertical;
   /* permite que o usuário redimensione verticalmente se desejar */
@@ -640,11 +640,19 @@ margin: 10px;
 
 b{
 display: block;
+margin:5px;
+font-weight: 600;
+
 }
+
 input{
   width: 100%;
   background:#CFDEF1 ;
-  color: #002352;;
+  color: #002352;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  -moz-appearance: textfield;
 }
 }
 

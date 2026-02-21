@@ -105,12 +105,13 @@
           </thead>
           <tbody>
             <tr>
-               <td>Leandro Andrade</td>
+              <td>Leandro Andrade</td>
               <td>Erro técnico</td>
               <td>01/07/2025</td>
               <td>4:00</td>
               <td><span class="badge badge-success">Deferido</span></td>
-              <td><a class="action-link" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img src="../../../assets/open-link.svg" alt="">Abrir</a>
+              <td><a class="action-link" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img
+                    src="../../../assets/open-link.svg" alt="">Abrir</a>
             </tr>
             <tr>
               <td>Leandro Andrade</td>
@@ -118,7 +119,8 @@
               <td>28/06/2025</td>
               <td>2:30</td>
               <td><span class="badge badge-analyze">Em análise</span></td>
-              <td><a class="action-link" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img src="../../../assets/open-link.svg" alt="">Abrir</a>
+              <td><a class="action-link" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img
+                    src="../../../assets/open-link.svg" alt="">Abrir</a>
             </tr>
             <tr>
               <td>Diego Luan</td>
@@ -126,7 +128,8 @@
               <td>25/06/2025</td>
               <td>3:15</td>
               <td><span class="badge badge-denied">Indeferido</span></td>
-              <td><a class="action-link" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img src="../../../assets/open-link.svg" alt="">Abrir</a>
+              <td><a class="action-link" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img
+                    src="../../../assets/open-link.svg" alt="">Abrir</a>
               </td>
             </tr>
           </tbody>
@@ -135,99 +138,105 @@
     </div>
   </section>
 
-<section class="buttons">
-  <button class="button-one-popup-lithg"type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">Cadastrar Usuário</button>
-  <button class="button-one-popup" >Editar Usuário</button>
-  <button class="button-one-popup-lithg">Recuperar Senha </button>
+  <section class="buttons">
+    <button class="button-one-popup-lithg" type="button" data-bs-toggle="modal"
+      data-bs-target="#staticBackdrop2">Cadastrar Usuário</button>
+    <button class="button-one-popup">Editar Usuário</button>
+    <button class="button-one-popup-lithg">Recuperar Senha </button>
 
-</section>
+  </section>
 
 </main>
 
 
 <!--Modal do sistema-->
 
-   <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-      aria-labelledby="staticBackdropLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <b>Tipo de justificativa:*</b>
+        <input type="text" value="Erro tecnico" disabled>
+        <div class="time">
+          <div class="data"><b>Data:*</b>
+            <input type="text" value="2025-07-03" disabled>
           </div>
-          <div class="modal-body">
-            <b>Tipo de justificativa:*</b>
-            <input type="text" value="Erro tecnico" disabled>
-            <div class="time">
-              <div class="data"><b>Data:*</b>
-                <input type="text" value="2025-07-03" disabled>
-              </div>
-              <div class="hora"><b>Horas:*</b>
-                <input type="text" value="4" disabled>
-              </div>
-              <div class="minuto"><b>Minutos:*</b>
-                <input type="text" value="0" disabled>
-              </div>
-            </div>
-            <div class="file"><b>Anexo:</b>
-              <div class="input-icon">
-                 <p class="arquivo">arquivo.pdf</p>
-                <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px"
-                  fill="#002352"> <path
-                    d="M146.67-160q-27 0-46.84-19.83Q80-199.67 80-226.67v-506.66q0-27 19.83-46.84Q119.67-800 146.67-800H380v66.67H146.67v506.66h666.66v-506.66H580V-800h233.33q27 0 46.84 19.83Q880-760.33 880-733.33v506.66q0 27-19.83 46.84Q840.33-160 813.33-160H146.67ZM480-344.67l-200-200L327.33-592l119.34 119.33V-800h66.66v327.33L632.67-592 680-544.67l-200 200Z" />
-                </svg>
-              </div>
-            </div>
-            <div class="obs">
-              <div class="jutificativa"><b>Justificativa</b>
-                <textarea name="observacoes" id="observacoes" placeholder="Sistema de ponto fora do ar."
-                  disabled></textarea>
-              </div>
-              <div class="separador"></div>
-              <b>Status:</b>
-              <select class="status">
-                <option value="deferido">Deferido</option>
-                <option value="em-analise" selected>Em Análise</option>
-                <option value="indeferido">Indeferido</option>
-              </select>
-              <div class="obs">
-                <div class="jutificativa"><b>Observações:</b>
-                  <textarea name="observacoes" id="observacoes">Justificativa aceita.</textarea>
-                </div>
-              </div>
-            </div>
+          <div class="hora"><b>Horas:*</b>
+            <input type="text" value="4" disabled>
           </div>
-          <div class="modal-footer">
-            <button class="button-one-popup" data-bs-dismiss="modal">Enviar</button>
-            <button class="button-one-popup-lithg" data-bs-dismiss="modal">Fechar</button>
+          <div class="minuto"><b>Minutos:*</b>
+            <input type="text" value="0" disabled>
+          </div>
+        </div>
+        <div class="file"><b>Anexo:</b>
+          <div class="input-icon">
+            <p class="arquivo">arquivo.pdf</p>
+            <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#002352">
+              <path
+                d="M146.67-160q-27 0-46.84-19.83Q80-199.67 80-226.67v-506.66q0-27 19.83-46.84Q119.67-800 146.67-800H380v66.67H146.67v506.66h666.66v-506.66H580V-800h233.33q27 0 46.84 19.83Q880-760.33 880-733.33v506.66q0 27-19.83 46.84Q840.33-160 813.33-160H146.67ZM480-344.67l-200-200L327.33-592l119.34 119.33V-800h66.66v327.33L632.67-592 680-544.67l-200 200Z" />
+            </svg>
+          </div>
+        </div>
+        <div class="obs">
+          <div class="jutificativa"><b>Justificativa</b>
+            <textarea name="observacoes" id="observacoes" placeholder="Sistema de ponto fora do ar."
+              disabled></textarea>
+          </div>
+          <div class="separador"></div>
+          <b>Status:</b>
+          <select class="status">
+            <option value="deferido">Deferido</option>
+            <option value="em-analise" selected>Em Análise</option>
+            <option value="indeferido">Indeferido</option>
+          </select>
+          <div class="obs">
+            <div class="jutificativa"><b>Observações:</b>
+              <textarea name="observacoes" id="observacoes">Justificativa aceita.</textarea>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-
-
-   <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-      aria-labelledby="staticBackdropLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="cadastro">
-          <b>Nome:</b>
-          <input type="text" placeholder="Digite seu nome">
-          <b>Matrícula:</b>
-          <input type="number" placeholder="Digite sua matrícula">
-          <b>Email:</b>
-          <input type="email" placeholder="Digite seu email">
-          <b>Username:</b>
-          <input type="text" placeholder="Digite seu username">
-          <b>Senha:</b>
-          <input type="password" placeholder="Digite sua senha">
-          </div>
-          <div class="modal-footer">
-            <button class="button-one-popup" data-bs-dismiss="modal">Enviar</button>
-            <button class="button-one-popup-lithg" data-bs-dismiss="modal">Fechar</button>
-          </div>
-        </div>
+      <div class="modal-footer">
+        <button class="button-one-popup" data-bs-dismiss="modal">Enviar</button>
+        <button class="button-one-popup-lithg" data-bs-dismiss="modal">Fechar</button>
       </div>
     </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="cadastro">
+        <b>Nome:*</b>
+        <input type="text" placeholder="Digite seu nome">
+        <b>Matrícula:*</b>
+        <input type="number" placeholder="Digite sua matrícula">
+        <b>Email:*</b>
+        <input type="email" placeholder="Digite seu email">
+        <b>Username:</b>
+        <input type="text" placeholder="Digite seu username">
+        <b>Senha:*</b>
+        <input type="password" placeholder="Digite sua senha">
+        <b>Tipo de Conta:</b>
+        <select class="status">
+          <option value="bolsista" selected>Bolsista</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button class="button-one-popup" data-bs-dismiss="modal">Enviar</button>
+        <button class="button-one-popup-lithg" data-bs-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
