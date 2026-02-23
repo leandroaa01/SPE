@@ -1,6 +1,6 @@
 <header
   class="app-header"
-  [class.home-context]="isRoute('/', true)"
+  [class.home-context]="isRoute('/home', true)"
   [class.meus-dados-context]="isRoute('/meus-dados', true)"
 >
   <div class="logo">
@@ -13,7 +13,7 @@
   <ul class="routes-icons">
     <li>
       <a
-        routerLink="/"
+        routerLink="/home"
         class="nav-link"
         title="Home"
         routerLinkActive="active-link"
@@ -24,18 +24,18 @@
     </li>
     <li>
       <a
-        routerLink="/meus-dados"
+        [routerLink]="profileRoute"
         class="nav-link"
         title="Meus dados"
         routerLinkActive="active-link"
-        [routerLinkActiveOptions]="{ exact: true }"
+        [routerLinkActiveOptions]="{ exact: false }"
       >
         <img src="../../../assets/icon-perfie.svg" alt="Perfil">
       </a>
     </li>
     @if (!isRoute('/login', true)) {
       <li>
-        <a routerLink="/login" class="nav-link" title="Logout">
+        <a href="/login" class="nav-link" title="Logout" (click)="logout($event)">
           <img src="../../../assets/icon-loguot.svg" alt="Logout">
         </a>
       </li>

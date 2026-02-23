@@ -48,15 +48,22 @@ section {
   border-radius: 8px;
   border: 5px solid #3373C8;
   border-radius: 20px;
-  font-weight: 700;
-  color: #3373C8;
 }
+
+.error-msg {
+  color: #d32f2f;
+  font-size: 14px;
+  margin: 4px 0 8px 0;
+}
+
+
 
 label,
 p {
   display: block;
   text-align: center;
-
+  font-weight: 700;
+  color: #3373C8;
 }
 
 label {
@@ -90,7 +97,7 @@ label {
   border-radius: 8px;
   background: #3065ab50;
   border: 3px solid #3373C8;
-  color:#0a3977;
+  color: #0a3977;
   font-weight: 600;
 }
 
@@ -129,7 +136,7 @@ label {
   .dimap .full {
     display: none;
   }
-  
+
   .dimap .short {
     display: inline;
   }
