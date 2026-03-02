@@ -1,5 +1,5 @@
 <header>
-   <div class="logo">
+  <div class="logo">
     <img src="../../../assets/logo.png" alt="logo">
     <p class="dimap">
       <span class="full">DIMAp | SPE - Sistema de Ponto Eletrônico</span>
@@ -8,14 +8,23 @@
   </div>
 </header>
 <section class="login">
-<div class="form-login">
-<p>SPE - DIMAP</p>
-<form action="" method="post">
- <label for="">Nome de usuário:</label>
- <input type="text" name="" id="" placeholder="Digite seu usuário">
-<label for="">Senha:</label>
-<input type="password" name="" id="" placeholder="Digite sua senha">
-<button type="submit" class="button-one-popup">Entrar</button>
-</form>
-</div>
+  <div class="form-login">
+    <p>SPE - DIMAP</p>
+    <form [formGroup]="loginForm" (ngSubmit)="submit()">
+      <label for="username">Nome de usuário:</label>
+      <input type="text" id="username" formControlName="username" placeholder="Digite seu usuário">
+      <div *ngIf="loginForm.get('username')?.touched && loginForm.get('username')?.invalid" class="error-msg">
+        Usuário é obrigatório
+      </div>
+
+      <label for="password">Senha:</label>
+      <input type="password" id="password" formControlName="password" placeholder="Digite sua senha">
+      <div *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid" class="error-msg">
+        Senha é obrigatória
+      </div>
+
+      <button type="submit" class="button-one-popup" [disabled]="loading">Entrar</button>
+      <div *ngIf="error" class="error-msg">{{ error }}</div>
+    </form>
+  </div>
 </section>
