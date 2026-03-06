@@ -193,40 +193,6 @@ b{
   font-size: 14px;
 }
 
-
-/* Estilização do input file: caixa + botão interno */
-.modal-body .file input[type="file"]{
-  background: #ebf4ff;
-  border: 1px solid rgba(47,111,193,0.08);
-  border-radius: 8px;
-  padding: 8px 8px;
-  color: #002352;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* Botão embutido do input file (browsers modernos) */
-.modal-body .file input[type="file"]::file-selector-button{
-  background: #3373C8;
-  color: #fff;
-  border: none;
-  padding: 6px 12px;
-  margin-right: 8px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-/* Webkit fallback */
-.modal-body .file input[type="file"]::-webkit-file-upload-button{
-  background: #3373C8;
-  color: #fff;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-
 /* Tablets */
 @media (max-width: 1024px) {
   .container {

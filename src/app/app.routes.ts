@@ -18,18 +18,18 @@ export const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
-    canActivate: [authGuard]
+   // canActivate: [authGuard]
   },
   {
     path: 'meus-dados',
     component: MainBolsistaComponent,
-    canActivate: [authGuard],
+    //canActivate: [authGuard],
     data: { role: 'BOLSISTA' }
   },
   {
     path: 'admin',
     component: MainAdminComponent,
-    canActivate: [authGuard],
+    //canActivate: [authGuard],
     data: { role: 'ADMIN' }
   }
 ];

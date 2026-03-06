@@ -1,3 +1,13 @@
+// Estilo para links Angular routerLink
+.link-router {
+  color: #1976d2;
+  text-decoration: underline;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+}
+
 main {
   width: 100%;
   min-height: calc(100vh - 140px);
@@ -635,25 +645,25 @@ section.buttons {
   background: #285fa6;
 }
 
-.cadastro{
-margin: 10px;
+.cadastro {
+  margin: 10px;
 
-b{
-display: block;
-margin:5px;
-font-weight: 600;
+  b {
+    display: block;
+    margin: 5px;
+    font-weight: 600;
 
-}
+  }
 
-input{
-  width: 100%;
-  background:#CFDEF1 ;
-  color: #002352;
-  padding: 6px 12px;
-  border-radius: 6px;
-  border: none;
-  -moz-appearance: textfield;
-}
+  input {
+    width: 100%;
+    background: #CFDEF1;
+    color: #002352;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: none;
+    -moz-appearance: textfield;
+  }
 }
 
 
@@ -682,7 +692,8 @@ input{
     font-size: 22px;
   }
 
-  .matricula, .email {
+  .matricula,
+  .email {
     font-size: 18px;
   }
 
@@ -743,7 +754,8 @@ input{
     font-size: 20px;
   }
 
-  .matricula, .email {
+  .matricula,
+  .email {
     font-size: 16px;
   }
 
@@ -870,7 +882,9 @@ input{
     gap: 10px;
   }
 
-  .time .data, .time .hora, .time .minuto {
+  .time .data,
+  .time .hora,
+  .time .minuto {
     width: 100%;
   }
 
@@ -894,7 +908,8 @@ input{
     font-size: 18px;
   }
 
-  .matricula, .email {
+  .matricula,
+  .email {
     font-size: 14px;
   }
 
@@ -1035,7 +1050,9 @@ input{
     gap: 8px;
   }
 
-  .time .data, .time .hora, .time .minuto {
+  .time .data,
+  .time .hora,
+  .time .minuto {
     width: 100%;
   }
 
@@ -1048,7 +1065,8 @@ input{
     font-size: 13px;
   }
 
-  .button-one-popup, .button-one-popup-lithg {
+  .button-one-popup,
+  .button-one-popup-lithg {
     min-width: 90px;
     height: 34px;
     font-size: 13px;

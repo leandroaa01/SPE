@@ -45,12 +45,14 @@
           <tbody>
             <tr>
               <td> 001</td>
-              <td> <a href=""><img src="../../../assets/open-link.svg" alt="">Leandro Andrade</a></td>
+              <td> <a routerLink="/meus-dados" class="link-router"><img src="../../../assets/open-link.svg">Leandro
+                  Andrade</a></td>
               <td>00000000000</td>
               <td>leandro.andrade&#64;dimap.ufrn.br</td>
               <td><span class="badge badge-success">Ativo</span></td>
               <td>03/07/2025</td>
-              <td> <a href=""><img src="../../../assets/open-link.svg" alt="">Editar </a></td>
+              <td> <a type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop3"><img
+                    src="../../../assets/open-link.svg">Editar </a></td>
             </tr>
           </tbody>
         </table>
@@ -143,8 +145,8 @@
   <section class="buttons">
     <button class="button-one-popup-lithg" type="button" data-bs-toggle="modal"
       data-bs-target="#staticBackdrop2">Cadastrar Usuário</button>
-    <button class="button-one-popup"  type="button" data-bs-toggle="modal"
-      data-bs-target="#staticBackdrop3">Recuperar Senha </button>
+    <button class="button-one-popup" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop3">Recuperar
+      Senha </button>
 
   </section>
 
@@ -234,6 +236,48 @@
           <option value="bolsista" selected>Bolsista</option>
           <option value="admin">Admin</option>
         </select>
+        <b>Cargo:</b>
+        <input type="text" placeholder="Digite o cargo">
+
+      </div>
+      <div class="modal-footer">
+        <button class="button-one-popup" data-bs-dismiss="modal">Enviar</button>
+        <button class="button-one-popup-lithg" data-bs-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="staticBackdrop3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="cadastro">
+        <b>Nome:*</b>
+        <input type="text" placeholder="Digite seu nome">
+        <b>Matrícula:*</b>
+        <input type="number" placeholder="Digite sua matrícula">
+        <b>Email:*</b>
+        <input type="email" placeholder="Digite seu email">
+        <b>Username:</b>
+        <input type="text" placeholder="Digite seu username">
+        <b>Tipo de Conta:</b>
+        <select class="status">
+          <option value="bolsista" selected>Bolsista</option>
+          <option value="admin">Admin</option>
+        </select>
+        <b>Cargo:</b>
+        <input type="text" placeholder="Digite o cargo">
+        <b>Situação da Conta:</b>
+        <select class="status">
+          <option value="ativa" selected>Ativo</option>
+          <option value="desativada">Desativada</option>
+        </select>
+
       </div>
       <div class="modal-footer">
         <button class="button-one-popup" data-bs-dismiss="modal">Enviar</button>
@@ -257,7 +301,7 @@
         <input type="number" placeholder="Digite sua matrícula">
         <b>Senha:*</b>
         <input type="password" placeholder="Digite sua senha">
-         <b>Confirma Senha:*</b>
+        <b>Confirma Senha:*</b>
         <input type="password" placeholder="Confirme sua senha">
       </div>
       <div class="modal-footer">
