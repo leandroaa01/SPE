@@ -151,6 +151,9 @@ main{
 .tabela-horas tbody tr:hover{
   background: #eaf4ff;
 }
+
+
+
 .tabela-justificadas{
   margin-top: 50px;
   width: 100%;
@@ -237,6 +240,25 @@ main{
     cursor: pointer;
    }
 
+  section.buttons {
+  gap: 30px;
+  display: flex;
+  justify-content: flex-start;
+  padding: 20px 30px;
+
+  .button-one-popup-lithg {
+    border: 3px solid rgba(51, 116, 200, 0.908);
+    height: 38px;
+    padding: 6px 18px;
+  }
+
+}
+  .button-one,
+  .button-two {
+    width: 180px;
+    height: 45px;
+    font-size: 14px;
+  }
  
 
 /* Tablets */
