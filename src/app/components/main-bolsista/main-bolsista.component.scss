@@ -47,15 +47,15 @@ main{
   }
 
    .filtro{
-    width: 100%;
+    width: 99%;
     display: flex;
-    gap: 15px;
+    gap: 10px;
     align-items: flex-end;
     justify-content: flex-end;
    }
 
   select{
-   width: 110px;
+   width: 108px;
    height: 34px;
    border-radius: 4px;
    padding: 4px 26px 4px 10px;
@@ -78,7 +78,10 @@ main{
     height: 16px;
     cursor: pointer;
    }
-
+.horarios{
+  height: 500px;
+  display: flex;
+}
 .tabela-horas{
   width: 100%;
   padding: 12px 20px 24px 20px;
@@ -117,6 +120,7 @@ main{
   font-weight: 700;
   padding: 14px 20px;
   text-align: center;
+  min-width: 106px;
 }
 
 .tabela-horas thead th:nth-child(n+2){
@@ -128,6 +132,7 @@ main{
   color: #002352;
   border-top: 1px solid rgba(47,111,193,0.06);
   text-align: center;
+  min-width: 106px;
 }
 
 .tabela-horas tbody tr:nth-child(odd){
@@ -203,6 +208,11 @@ main{
 .badge-success{
   background: #2fe6a8;
   color: #003827;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.05) inset;
+}
+.badge-horario{
+  background: #2F6FC1;
+  color: white;
   box-shadow: 0 1px 0 rgba(0,0,0,0.05) inset;
 }
 .badge-analyze{
