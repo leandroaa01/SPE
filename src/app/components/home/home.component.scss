@@ -192,6 +192,10 @@ b{
   font-weight: 600;
   font-size: 14px;
 }
+.alert{
+  display: flex;
+  justify-content:end;
+}
 
 /* Tablets */
 @media (max-width: 1024px) {

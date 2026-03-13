@@ -1,10 +1,16 @@
 <app-header></app-header>
 <main>
-  <section class="meus-dados">
-    <h1 class="nome">LEANDRO ANDRADE DE ARAUJO</h1>
-    <p class="cargo">BOLSISTA DE REDES</p>
-    <p class="matricula">20240019400</p>
-    <p class="email">leandro.andrade&#64;dimap.ufrn.br</p>
+  <section class="meus-dados" *ngIf="bolsistaInfo">
+    <h1 class="nome">{{ bolsistaInfo.name }}</h1>
+    <p class="cargo">{{ bolsistaInfo.cargo || 'Cargo não informado' }}</p>
+    <p class="matricula">{{ bolsistaInfo.matricula || 'Matrícula não informada' }}</p>
+    <p class="email">{{ bolsistaInfo.email }}</p>
+  </section>
+  <section *ngIf="!bolsistaInfo && !errorMsg" class="meus-dados">
+    <p>Carregando dados...</p>
+  </section>
+  <section *ngIf="errorMsg" class="meus-dados">
+    <p style="color: red;">{{ errorMsg }}</p>
   </section>
 
   <section class="tabela-horas horarios">
@@ -378,12 +384,12 @@
       <div class="modal-header">
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-        <div>
-          <label >Data de inico:</label>
-          <input type="date" value="11/03/2026">
-          <label >Data de término:</label>
-          <input type="date" value="11/03/2026">
-        </div>
+      <div>
+        <label>Data de inico:</label>
+        <input type="date" value="11/03/2026">
+        <label>Data de término:</label>
+        <input type="date" value="11/03/2026">
+      </div>
       <div class="modal-footer">
         <button class="button-one-popup" data-bs-dismiss="modal">Imprimir</button>
         <button class="button-one-popup-lithg" data-bs-dismiss="modal">Cancelar</button>

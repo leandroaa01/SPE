@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from "../header/header.component";
+import { PontoService } from '../../services/ponto.service';
 
 export enum Meses {
   Janeiro = 'Janeiro',
@@ -21,6 +22,7 @@ export enum Meses {
   selector: 'app-home',
   standalone: true,
   imports: [CommonModule, HeaderComponent],
+  providers: [PontoService],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
@@ -28,9 +30,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   @Input() hora?: Date;
 
   agora: Date = new Date();
+  alertaMsg?: string;
+  alertaTipo: 'success' | 'error' | undefined;
 
   private idIntervalo?: number;
   private idTimeoutAlinhamento?: number;
+
+  constructor(private pontoService: PontoService) { }
 
   ngOnInit(): void {
     if (this.hora) {
@@ -38,6 +44,27 @@ export class HomeComponent implements OnInit, OnDestroy {
       return;
     }
     this.iniciarRelogio();
+  }
+
+  registrarPonto(): void {
+    this.pontoService.registrarPonto().subscribe({
+      next: (msg) => {
+        this.alertaMsg = msg;
+        this.alertaTipo = 'success';
+        setTimeout(() => {
+          this.alertaMsg = undefined;
+          this.alertaTipo = undefined;
+        }, 3000);
+      },
+      error: (err) => {
+        this.alertaMsg = err.error || 'Erro ao registrar ponto.';
+        this.alertaTipo = 'error';
+        setTimeout(() => {
+          this.alertaMsg = undefined;
+          this.alertaTipo = undefined;
+        }, 3000);
+      }
+    });
   }
 
   ngOnDestroy(): void {
