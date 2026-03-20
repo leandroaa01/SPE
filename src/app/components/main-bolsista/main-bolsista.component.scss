@@ -174,11 +174,10 @@ main {
 
 .meus-dados {
   display: flex;
+  max-height: 300px;
   flex-direction: column;
-
-  padding: 40px 20px;
+  padding: 30px 20px;
   color: #002352;
-  gap: 2px;
 
 }
 
@@ -198,7 +197,6 @@ main {
   display: flex;
   width: 100%;
   padding: 40px 20px;
-  margin-top: calc(70px - 7%);
 }
 
 .mes {

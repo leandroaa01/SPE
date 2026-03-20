@@ -1,8 +1,8 @@
 <app-header></app-header>
 <main>
   <section class="meus-dados" *ngIf="bolsistaInfo">
-    <h1 class="nome">{{ bolsistaInfo.name }}</h1>
-    <p class="cargo">{{ bolsistaInfo.cargo || 'Cargo não informado' }}</p>
+    <h1 class="nome">{{ bolsistaInfo.name | uppercase }}</h1>
+    <p class="cargo">{{ bolsistaInfo.cargo || 'Cargo não informado' | uppercase }}</p>
     <p class="matricula">{{ bolsistaInfo.matricula || 'Matrícula não informada' }}</p>
     <p class="email">{{ bolsistaInfo.email }}</p>
   </section>
@@ -159,23 +159,14 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>03/07/2025</td>
-              <td>13:00</td>
-              <td>–</td>
-              <td>–</td>
+            <tr *ngFor="let ponto of pontos">
+              <td>{{ ponto.horasDeEntrada ? (ponto.horasDeEntrada | date:'dd/MM/yyyy') : '–' }}</td>
+              <td>{{ ponto.horasDeEntrada ? (ponto.horasDeEntrada | date:'HH:mm') : '–' }}</td>
+              <td>{{ ponto.horasDeSaida ? (ponto.horasDeSaida | date:'HH:mm') : '–' }}</td>
+              <td>{{ ponto.qtdDeHorasFeitas ? ponto.qtdDeHorasFeitas : '-' }}</td>
             </tr>
-            <tr>
-              <td>02/07/2025</td>
-              <td>13:30</td>
-              <td>16:40</td>
-              <td>3:10</td>
-            </tr>
-            <tr>
-              <td>02/07/2025</td>
-              <td>07:05</td>
-              <td>10:30</td>
-              <td>2:25</td>
+            <tr *ngIf="pontos.length === 0">
+              <td colspan="4">Nenhum ponto registrado nos últimos dias.</td>
             </tr>
           </tbody>
         </table>
@@ -190,7 +181,7 @@
         <table>
           <thead>
             <tr>
-              <th>Tipo</th>
+              <th>Motivo</th>
               <th>Data</th>
               <th>Duração</th>
               <th>Status</th>
@@ -198,21 +189,27 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Erro técnico</td>
-              <td>01/07/2025</td>
-              <td>4:00</td>
-              <td><span class="badge badge-success">Deferido</span></td>
-              <td><a class="action-link" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img
-                    src="../../../assets/open-link.svg" alt="">Abrir</a>
-            </tr>
-            <tr>
-              <td>Atendimento médico</td>
-              <td>28/06/2025</td>
-              <td>2:30</td>
-              <td><span class="badge badge-analyze">Em análise</span></td>
-              <td><a class="action-link" routerLink="/admin"><img src="../../../assets/open-link.svg" alt="">Abrir</a>
+            <tr *ngFor="let justificativa of justificativas">
+              <td>{{ justificativa.motivo }}</td>
+              <td>{{ justificativa.data | date:'dd/MM/yyyy' }}</td>
+              <td>{{ justificativa.qtdDeHoras }}</td>
+              <td>
+                <span class="badge" [ngClass]="{
+                  'badge-success': justificativa.justificaSituacao === 'DEFERIDO',
+                  'badge-analyze': justificativa.justificaSituacao === 'EMANALISE',
+                  'badge-danger': justificativa.justificaSituacao === 'INDEFERIDO'
+                }">
+                  {{ justificativa.justificaSituacao === 'DEFERIDO' ? 'Deferido' : justificativa.justificaSituacao ===
+                  'EMANALISE' ? 'Em análise' : 'Indeferido' }}
+                </span>
               </td>
+              <td>
+                <a class="action-link" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img
+                    src="../../../assets/open-link.svg" alt="">Abrir</a>
+              </td>
+            </tr>
+            <tr *ngIf="justificativas.length === 0">
+              <td colspan="5">Nenhuma justificativa registrada.</td>
             </tr>
           </tbody>
         </table>

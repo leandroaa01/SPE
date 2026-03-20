@@ -4,6 +4,8 @@ import { HeaderComponent } from "../header/header.component";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { BolsistaInfo } from './bolsista-info.model';
+import { PontoDTO } from './ponto-dto.model';
+import { JustificativaDTO } from './justificativa-dto.model';
 
 @Component({
   selector: 'app-main-bolsista',
@@ -14,6 +16,8 @@ import { BolsistaInfo } from './bolsista-info.model';
 })
 export class MainBolsistaComponent implements OnInit {
   bolsistaInfo?: BolsistaInfo;
+  pontos: PontoDTO[] = [];
+  justificativas: JustificativaDTO[] = [];
   errorMsg?: string;
 
   constructor(private http: HttpClient) { }
@@ -30,6 +34,28 @@ export class MainBolsistaComponent implements OnInit {
         error: (err) => {
           this.bolsistaInfo = undefined;
           this.errorMsg = 'Erro ao carregar dados do bolsista.';
+        }
+      });
+
+    this.http.get<PontoDTO[]>('http://localhost:8080/spe/api/bolsista/meus-pontos', { headers })
+      .subscribe({
+        next: (data) => {
+          this.pontos = data;
+        },
+        error: () => {
+          this.pontos = [];
+        }
+      });
+
+    this.http.get<JustificativaDTO[]>('http://localhost:8080/spe/api/bolsista/minhas-justificativas', { headers })
+      .subscribe({
+        next: (data) => {
+          console.log('Justificativas recebidas:', data);
+          this.justificativas = Array.isArray(data) ? data : [data];
+        },
+        error: (err) => {
+          console.error('Erro ao buscar justificativas:', err);
+          this.justificativas = [];
         }
       });
   }
