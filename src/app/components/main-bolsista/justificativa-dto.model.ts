@@ -3,8 +3,8 @@ export interface JustificativaDTO {
     data: string;
     qtdDeHoras: string;
     motivo: string;
-    justicativa: string;
+    justificativa: string;
     tecnico: any;
-    justicativaTecnico: string;
+    justificativaTecnico: string;
     justificaSituacao: string;
 }
