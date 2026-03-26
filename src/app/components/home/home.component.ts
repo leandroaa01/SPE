@@ -81,7 +81,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.alertaTipo = 'success';
           this.justificativaEnviando = false;
           // Limpar formulário 
-          console.log(headers);
+          //console.log(headers);
           this.justificativaMotivo = '';
           this.justificativaData = '';
           this.justificativaHoras = null;
@@ -96,7 +96,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.alertaMsg = err.error || 'Erro ao enviar justificativa.';
           this.alertaTipo = 'error';
           this.justificativaEnviando = false;
-          console.error(err);
+          //console.error(err);
           setTimeout(() => {
             this.alertaMsg = undefined;
             this.alertaTipo = undefined;
@@ -126,7 +126,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       error: (err) => {
         this.alertaMsg = err.error || 'Erro ao registrar ponto.';
         this.alertaTipo = 'error';
-        console.error(err);
+        //console.error(err);
         setTimeout(() => {
           this.alertaMsg = undefined;
           this.alertaTipo = undefined;
