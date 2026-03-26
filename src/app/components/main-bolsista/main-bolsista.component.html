@@ -197,15 +197,16 @@
                 <span class="badge" [ngClass]="{
                   'badge-success': justificativa.justificaSituacao === 'DEFERIDO',
                   'badge-analyze': justificativa.justificaSituacao === 'EMANALISE',
-                  'badge-danger': justificativa.justificaSituacao === 'INDEFERIDO'
+                  'badge-denied': justificativa.justificaSituacao === 'INDEFERIDO'
                 }">
                   {{ justificativa.justificaSituacao === 'DEFERIDO' ? 'Deferido' : justificativa.justificaSituacao ===
                   'EMANALISE' ? 'Em análise' : 'Indeferido' }}
                 </span>
               </td>
               <td>
-                <a class="action-link" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img
-                    src="../../../assets/open-link.svg" alt="">Abrir</a>
+                <a class="action-link" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                  (click)="abrirJustificativa(justificativa.id)"><img src="../../../assets/open-link.svg"
+                    alt="">Abrir</a>
               </td>
             </tr>
             <tr *ngIf="justificativas.length === 0">
@@ -235,162 +236,172 @@
       <div class="modal-header">
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" *ngIf="justificativaSelecionada">
         <b>Tipo de justificativa:*</b>
-        <input type="text" value="Erro tecnico" disabled>
+        <input type="text" [value]="justificativaSelecionada.motivo" disabled>
         <div class="time">
           <div class="data"><b>Data:*</b>
-            <input type="text" value="2025-07-03" disabled>
+            <input type="text" [value]="justificativaSelecionada.data | date:'yyyy-MM-dd'" disabled>
           </div>
           <div class="hora"><b>Horas:*</b>
-            <input type="text" value="4" disabled>
-          </div>
-          <div class="minuto"><b>Minutos:*</b>
-            <input type="text" value="0" disabled>
+            <input type="text" [value]="justificativaSelecionada.qtdDeHoras" disabled>
           </div>
         </div>
         <div class="obs">
           <div class="jutificativa"><b>Justificativa</b>
-            <textarea name="observacoes" id="observacoes" placeholder="Sistema de ponto fora do ar."
-              disabled></textarea>
+            <textarea name="observacoes" id="observacoes" [placeholder]="justificativaSelecionada.justificativa"
+              [value]="justificativaSelecionada.justificativa" disabled></textarea>
           </div>
           <div class="separador"></div>
           <b>Status:</b>
-          <span class="badge badge-success" style="width: 110px; padding: 8px 8px;">Deferido</span>
-          <div class="obs">
-            <div class="jutificativa"><b>Observações:</b>
-              <textarea name="observacoes" id="observacoes" disabled>Justificativa aceita.</textarea>
+          <span class="badge" [ngClass]="{
+            'badge-success': justificativaSelecionada.justificaSituacao === 'DEFERIDO',
+            'badge-analyze': justificativaSelecionada.justificaSituacao === 'EMANALISE',
+            'badge-denied': justificativaSelecionada.justificaSituacao === 'INDEFERIDO'
+          }" style="width: 110px; padding: 8px 8px;">
+            {{ justificativaSelecionada.justificaSituacao === 'DEFERIDO' ? 'Deferido' :
+            justificativaSelecionada.justificaSituacao === 'EMANALISE' ? 'Em análise' : 'Indeferido' }}
+          </span>
+          <div class="obs"
+            *ngIf="justificativaSelecionada.dataJustificativaTecnico || (justificativaSelecionada.justificativaTecnico)">
+            <div class="jutificativa" *ngIf="justificativaSelecionada.justificativaTecnico">
+              <b>Observações:</b>
+              <textarea name="observacoes" id="observacoes" rows="5" style="height: 120px;"
+                disabled>{{ justificativaSelecionada.justificativaTecnico }}</textarea>
             </div>
-            <p class="avaliada-em">Avaliada em : <span>03/07/2025 </span> - Leo Chou.</p>
+            <p style="font-size: 14px;" class="avaliada-em" *ngIf="justificativaSelecionada.dataJustificativaTecnico">
+              Avaliada em : <span>{{
+                justificativaSelecionada.dataJustificativaTecnico | date:'dd/MM/yyyy' }}</span> - <span>{{
+                justificativaSelecionada.nomeTecnico }}
+              </span>
           </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button class="button-one-popup-lithg" data-bs-dismiss="modal">Fechar</button>
+        <div class="modal-footer">
+          <button class="button-one-popup-lithg" data-bs-dismiss="modal">Fechar</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="modal fade1" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-  aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <b>Selecione os horários da Segunda-feira:</b>
-        <div class="linha-horarios">
-          <label><input type="checkbox" /> 07:00 - 08:00</label>
-          <label><input type="checkbox" /> 08:00 - 09:00</label>
-          <label><input type="checkbox" /> 09:00 - 10:00</label>
-          <label><input type="checkbox" /> 10:00 - 11:00</label>
-          <label><input type="checkbox" /> 11:00 - 12:00</label>
-          <label><input type="checkbox" /> 13:00 - 14:00</label>
-          <label><input type="checkbox" /> 14:00 - 15:00</label>
-          <label><input type="checkbox" /> 15:00 - 16:00</label>
-          <label><input type="checkbox" /> 16:00 - 17:00</label>
-          <label><input type="checkbox" /> 17:00 - 18:00</label>
+  <div class="modal fade1" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="total-horas-dia">
-          <b>Total de hora do dia:</b>
-          <input type="text" placeholder="Digite a quantidade de horas feitas no dia" />
+        <div class="modal-body">
+          <b>Selecione os horários da Segunda-feira:</b>
+          <div class="linha-horarios">
+            <label><input type="checkbox" /> 07:00 - 08:00</label>
+            <label><input type="checkbox" /> 08:00 - 09:00</label>
+            <label><input type="checkbox" /> 09:00 - 10:00</label>
+            <label><input type="checkbox" /> 10:00 - 11:00</label>
+            <label><input type="checkbox" /> 11:00 - 12:00</label>
+            <label><input type="checkbox" /> 13:00 - 14:00</label>
+            <label><input type="checkbox" /> 14:00 - 15:00</label>
+            <label><input type="checkbox" /> 15:00 - 16:00</label>
+            <label><input type="checkbox" /> 16:00 - 17:00</label>
+            <label><input type="checkbox" /> 17:00 - 18:00</label>
+          </div>
+          <div class="total-horas-dia">
+            <b>Total de hora do dia:</b>
+            <input type="text" placeholder="Digite a quantidade de horas feitas no dia" />
+          </div>
+          <b>Selecione os horários da Terça-feira:</b>
+          <div class="linha-horarios">
+            <label><input type="checkbox" /> 07:00 - 08:00</label>
+            <label><input type="checkbox" /> 08:00 - 09:00</label>
+            <label><input type="checkbox" /> 09:00 - 10:00</label>
+            <label><input type="checkbox" /> 10:00 - 11:00</label>
+            <label><input type="checkbox" /> 11:00 - 12:00</label>
+            <label><input type="checkbox" /> 13:00 - 14:00</label>
+            <label><input type="checkbox" /> 14:00 - 15:00</label>
+            <label><input type="checkbox" /> 15:00 - 16:00</label>
+            <label><input type="checkbox" /> 16:00 - 17:00</label>
+            <label><input type="checkbox" /> 17:00 - 18:00</label>
+          </div>
+          <div class="total-horas-dia">
+            <b>Total de hora do dia:</b>
+            <input type="text" placeholder="Digite a quantidade de horas feitas no dia" />
+          </div>
+          <b>Selecione os horários da Quarta-feira:</b>
+          <div class="linha-horarios">
+            <label><input type="checkbox" /> 07:00 - 08:00</label>
+            <label><input type="checkbox" /> 08:00 - 09:00</label>
+            <label><input type="checkbox" /> 09:00 - 10:00</label>
+            <label><input type="checkbox" /> 10:00 - 11:00</label>
+            <label><input type="checkbox" /> 11:00 - 12:00</label>
+            <label><input type="checkbox" /> 13:00 - 14:00</label>
+            <label><input type="checkbox" /> 14:00 - 15:00</label>
+            <label><input type="checkbox" /> 15:00 - 16:00</label>
+            <label><input type="checkbox" /> 16:00 - 17:00</label>
+            <label><input type="checkbox" /> 17:00 - 18:00</label>
+          </div>
+          <div class="total-horas-dia">
+            <b>Total de hora do dia:</b>
+            <input type="text" placeholder="Digite a quantidade de horas feitas no dia" />
+          </div>
+          <b>Selecione os horários da Quinta-feira:</b>
+          <div class="linha-horarios">
+            <label><input type="checkbox" /> 07:00 - 08:00</label>
+            <label><input type="checkbox" /> 08:00 - 09:00</label>
+            <label><input type="checkbox" /> 09:00 - 10:00</label>
+            <label><input type="checkbox" /> 10:00 - 11:00</label>
+            <label><input type="checkbox" /> 11:00 - 12:00</label>
+            <label><input type="checkbox" /> 13:00 - 14:00</label>
+            <label><input type="checkbox" /> 14:00 - 15:00</label>
+            <label><input type="checkbox" /> 15:00 - 16:00</label>
+            <label><input type="checkbox" /> 16:00 - 17:00</label>
+            <label><input type="checkbox" /> 17:00 - 18:00</label>
+          </div>
+          <div class="total-horas-dia">
+            <b>Total de hora do dia:</b>
+            <input type="text" placeholder="Digite a quantidade de horas feitas no dia" />
+          </div>
+          <b>Selecione os horários da Sexta-feira:</b>
+          <div class="linha-horarios">
+            <label><input type="checkbox" /> 07:00 - 08:00</label>
+            <label><input type="checkbox" /> 08:00 - 09:00</label>
+            <label><input type="checkbox" /> 09:00 - 10:00</label>
+            <label><input type="checkbox" /> 10:00 - 11:00</label>
+            <label><input type="checkbox" /> 11:00 - 12:00</label>
+            <label><input type="checkbox" /> 13:00 - 14:00</label>
+            <label><input type="checkbox" /> 14:00 - 15:00</label>
+            <label><input type="checkbox" /> 15:00 - 16:00</label>
+            <label><input type="checkbox" /> 16:00 - 17:00</label>
+            <label><input type="checkbox" /> 17:00 - 18:00</label>
+          </div>
+          <div class="total-horas-dia">
+            <b>Total de hora do dia:</b>
+            <input type="text" placeholder="Digite a quantidade de horas feitas no dia" />
+          </div>
         </div>
-        <b>Selecione os horários da Terça-feira:</b>
-        <div class="linha-horarios">
-          <label><input type="checkbox" /> 07:00 - 08:00</label>
-          <label><input type="checkbox" /> 08:00 - 09:00</label>
-          <label><input type="checkbox" /> 09:00 - 10:00</label>
-          <label><input type="checkbox" /> 10:00 - 11:00</label>
-          <label><input type="checkbox" /> 11:00 - 12:00</label>
-          <label><input type="checkbox" /> 13:00 - 14:00</label>
-          <label><input type="checkbox" /> 14:00 - 15:00</label>
-          <label><input type="checkbox" /> 15:00 - 16:00</label>
-          <label><input type="checkbox" /> 16:00 - 17:00</label>
-          <label><input type="checkbox" /> 17:00 - 18:00</label>
+        <div class="modal-footer">
+          <button class="button-one-popup">Salvar</button>
+          <button class="button-one-popup-lithg" data-bs-dismiss="modal">Cancelar</button>
         </div>
-        <div class="total-horas-dia">
-          <b>Total de hora do dia:</b>
-          <input type="text" placeholder="Digite a quantidade de horas feitas no dia" />
-        </div>
-        <b>Selecione os horários da Quarta-feira:</b>
-        <div class="linha-horarios">
-          <label><input type="checkbox" /> 07:00 - 08:00</label>
-          <label><input type="checkbox" /> 08:00 - 09:00</label>
-          <label><input type="checkbox" /> 09:00 - 10:00</label>
-          <label><input type="checkbox" /> 10:00 - 11:00</label>
-          <label><input type="checkbox" /> 11:00 - 12:00</label>
-          <label><input type="checkbox" /> 13:00 - 14:00</label>
-          <label><input type="checkbox" /> 14:00 - 15:00</label>
-          <label><input type="checkbox" /> 15:00 - 16:00</label>
-          <label><input type="checkbox" /> 16:00 - 17:00</label>
-          <label><input type="checkbox" /> 17:00 - 18:00</label>
-        </div>
-        <div class="total-horas-dia">
-          <b>Total de hora do dia:</b>
-          <input type="text" placeholder="Digite a quantidade de horas feitas no dia" />
-        </div>
-        <b>Selecione os horários da Quinta-feira:</b>
-        <div class="linha-horarios">
-          <label><input type="checkbox" /> 07:00 - 08:00</label>
-          <label><input type="checkbox" /> 08:00 - 09:00</label>
-          <label><input type="checkbox" /> 09:00 - 10:00</label>
-          <label><input type="checkbox" /> 10:00 - 11:00</label>
-          <label><input type="checkbox" /> 11:00 - 12:00</label>
-          <label><input type="checkbox" /> 13:00 - 14:00</label>
-          <label><input type="checkbox" /> 14:00 - 15:00</label>
-          <label><input type="checkbox" /> 15:00 - 16:00</label>
-          <label><input type="checkbox" /> 16:00 - 17:00</label>
-          <label><input type="checkbox" /> 17:00 - 18:00</label>
-        </div>
-        <div class="total-horas-dia">
-          <b>Total de hora do dia:</b>
-          <input type="text" placeholder="Digite a quantidade de horas feitas no dia" />
-        </div>
-        <b>Selecione os horários da Sexta-feira:</b>
-        <div class="linha-horarios">
-          <label><input type="checkbox" /> 07:00 - 08:00</label>
-          <label><input type="checkbox" /> 08:00 - 09:00</label>
-          <label><input type="checkbox" /> 09:00 - 10:00</label>
-          <label><input type="checkbox" /> 10:00 - 11:00</label>
-          <label><input type="checkbox" /> 11:00 - 12:00</label>
-          <label><input type="checkbox" /> 13:00 - 14:00</label>
-          <label><input type="checkbox" /> 14:00 - 15:00</label>
-          <label><input type="checkbox" /> 15:00 - 16:00</label>
-          <label><input type="checkbox" /> 16:00 - 17:00</label>
-          <label><input type="checkbox" /> 17:00 - 18:00</label>
-        </div>
-        <div class="total-horas-dia">
-          <b>Total de hora do dia:</b>
-          <input type="text" placeholder="Digite a quantidade de horas feitas no dia" />
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="button-one-popup">Salvar</button>
-        <button class="button-one-popup-lithg" data-bs-dismiss="modal">Cancelar</button>
       </div>
     </div>
   </div>
-</div>
 
-<div class="modal fade" id="staticBackdrop3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-  aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div>
-        <label>Data de inico:</label>
-        <input type="date" value="11/03/2026">
-        <label>Data de término:</label>
-        <input type="date" value="11/03/2026">
-      </div>
-      <div class="modal-footer">
-        <button class="button-one-popup" data-bs-dismiss="modal">Imprimir</button>
-        <button class="button-one-popup-lithg" data-bs-dismiss="modal">Cancelar</button>
+  <div class="modal fade" id="staticBackdrop3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div>
+          <label>Data de inico:</label>
+          <input type="date" value="11/03/2026">
+          <label>Data de término:</label>
+          <input type="date" value="11/03/2026">
+        </div>
+        <div class="modal-footer">
+          <button class="button-one-popup" data-bs-dismiss="modal">Imprimir</button>
+          <button class="button-one-popup-lithg" data-bs-dismiss="modal">Cancelar</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
