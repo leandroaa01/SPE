@@ -1,10 +1,13 @@
 export interface JustificativaDTO {
+    id: number;
     bolsista: any;
     data: string;
-    qtdDeHoras: string;
+    qtdDeHoras: number;
     motivo: string;
     justificativa: string;
     tecnico: any;
-    justificativaTecnico: string;
+    justificativaTecnico?: string;
     justificaSituacao: string;
+    dataJustificativaTecnico?: string | null;
+    nomeTecnico?: string;
 }
