@@ -20,6 +20,23 @@ export class MainBolsistaComponent implements OnInit {
   justificativas: JustificativaDTO[] = [];
   errorMsg?: string;
 
+  justificativaSelecionada?: JustificativaDTO;
+
+  abrirJustificativa(id: number) {
+    const token = localStorage.getItem('auth_token');
+    const headers = token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : undefined;
+    this.http.get<any>(`http://localhost:8080/spe/api/bolsista/minhas-justificativas/${id}`, { headers })
+      .subscribe({
+        next: (data) => {
+         
+          this.justificativaSelecionada = data;
+        },
+        error: () => {
+          this.justificativaSelecionada = undefined;
+        }
+      });
+  }
+
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
@@ -50,11 +67,11 @@ export class MainBolsistaComponent implements OnInit {
     this.http.get<JustificativaDTO[]>('http://localhost:8080/spe/api/bolsista/minhas-justificativas', { headers })
       .subscribe({
         next: (data) => {
-          console.log('Justificativas recebidas:', data);
+          //console.log('Justificativas recebidas:', data);
           this.justificativas = Array.isArray(data) ? data : [data];
         },
         error: (err) => {
-          console.error('Erro ao buscar justificativas:', err);
+          // console.error('Erro ao buscar justificativas:', err);
           this.justificativas = [];
         }
       });
