@@ -2,7 +2,7 @@
 <main>
   <section class="meus-dados" *ngIf="tecnicoInfo">
     <h1 class="nome">{{ tecnicoInfo.name}}</h1>
-    <p class="matricula">{{ tecnicoInfo.cargo  || 'Cargo não informado' | uppercase  }}</p>
+    <p class="matricula">{{ tecnicoInfo.cargo || 'Cargo não informado' | uppercase }}</p>
   </section>
 
   <section class="bolsistas">
@@ -211,30 +211,34 @@
       <div class="modal-header">
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="cadastro">
+      <form [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()" class="cadastro">
         <b>Nome:*</b>
-        <input type="text" placeholder="Digite seu nome">
+        <input type="text" placeholder="Digite seu nome" formControlName="name">
         <b>Matrícula:*</b>
-        <input type="number" placeholder="Digite sua matrícula">
+        <input type="text" placeholder="Digite sua matrícula" formControlName="matricula">
         <b>Email:*</b>
-        <input type="email" placeholder="Digite seu email">
+        <input type="email" placeholder="Digite seu email" formControlName="email">
         <b>Username:</b>
-        <input type="text" placeholder="Digite seu username">
+        <input type="text" placeholder="Digite seu username" formControlName="username">
         <b>Senha:*</b>
-        <input type="password" placeholder="Digite sua senha">
+        <input type="password" placeholder="Digite sua senha" formControlName="password">
         <b>Tipo de Conta:</b>
-        <select class="status">
-          <option value="bolsista" selected>Bolsista</option>
-          <option value="admin">Admin</option>
+        <select class="status" formControlName="roles">
+          <option value="ADMIN">Admin</option>
+          <option value="BOLSISTA">Bolsista</option>
         </select>
         <b>Cargo:</b>
-        <input type="text" placeholder="Digite o cargo">
+        <input type="text" placeholder="Digite o cargo" formControlName="cargo">
 
-      </div>
-      <div class="modal-footer">
-        <button class="button-one-popup" data-bs-dismiss="modal">Enviar</button>
-        <button class="button-one-popup-lithg" data-bs-dismiss="modal">Cancelar</button>
-      </div>
+        <div *ngIf="registerSuccess" style="color: green; margin-top: 10px;">Cadastro realizado com sucesso!</div>
+        <div *ngIf="registerError" style="color: red; margin-top: 10px;">{{ registerError }}</div>
+
+        <div class="modal-footer">
+          <button class="button-one-popup" type="button" (click)="onRegisterSubmit()"
+            [disabled]="registerForm.invalid">Enviar</button>
+          <button class="button-one-popup-lithg" data-bs-dismiss="modal" type="button">Cancelar</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
