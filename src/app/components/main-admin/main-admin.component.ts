@@ -20,6 +20,9 @@ export class MainAdminComponent {
   registerForm: FormGroup;
   registerSuccess: boolean = false;
   registerError: string | null = null;
+  changePasswordForm: FormGroup;
+  changePasswordSuccess: boolean = false;
+  changePasswordError: string | null = null;
 
   constructor(private http: HttpClient, private fb: FormBuilder) {
     this.registerForm = this.fb.group({
@@ -30,6 +33,12 @@ export class MainAdminComponent {
       email: ['', [Validators.required, Validators.email]],
       roles: ['BOLSISTA', Validators.required],
       cargo: ['', Validators.required]
+    });
+
+    this.changePasswordForm = this.fb.group({
+      matricula: ['', Validators.required],
+      senhaNova: ['', Validators.required],
+      senhaConfirmacao: ['', Validators.required]
     });
   }
 
@@ -63,11 +72,42 @@ export class MainAdminComponent {
         this.registerForm.reset({ roles: 'BOLSISTA' });
       },
       error: (err) => {
-        console.log(err);
+       // console.log(err);
         this.registerSuccess = false;
         this.registerError = err?.error?.message || 'Erro ao cadastrar usuário.';
       }
     });
+  }
+
+  onChangePassword() {
+    console.log('submit changePasswordForm', this.changePasswordForm.value, this.changePasswordForm.valid);
+    if (this.changePasswordForm.invalid) return;
+
+    const { matricula, senhaNova, senhaConfirmacao } = this.changePasswordForm.value;
+    if (senhaNova !== senhaConfirmacao) {
+      this.changePasswordSuccess = false;
+      this.changePasswordError = 'As senhas não coincidem.';
+      return;
+    }
+
+    const body = { matricula, senhaNova, senhaConfirmacao };
+    const token = localStorage.getItem('auth_token');
+    const headers = token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : undefined;
+
+    this.http.put('http://localhost:8080/spe/api/admin/mudar-senha/bolsista/', body, { headers, responseType: 'text' })
+      .subscribe({
+        next: (data) => {
+         // console.log('Resposta mudar senha:', data);
+          this.changePasswordSuccess = true;
+          this.changePasswordError = null;
+          this.changePasswordForm.reset();
+        },
+        error: (err) => {
+          //console.log(err);
+          this.changePasswordSuccess = false;
+          this.changePasswordError = err?.error?.message || 'Erro ao atualizar senha.';
+        }
+      });
   }
 
 }
