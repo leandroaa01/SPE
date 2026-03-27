@@ -1,8 +1,8 @@
 <app-header></app-header>
 <main>
-  <section class="meus-dados">
-    <h1 class="nome">LEONARDO DE ALMEIDA CHOU </h1>
-    <p class="matricula"> ASSISTENTE EM ADMINISTRACAO </p>
+  <section class="meus-dados" *ngIf="tecnicoInfo">
+    <h1 class="nome">{{ tecnicoInfo.name}}</h1>
+    <p class="matricula">{{ tecnicoInfo.cargo  || 'Cargo não informado' | uppercase  }}</p>
   </section>
 
   <section class="bolsistas">
