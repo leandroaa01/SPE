@@ -6,6 +6,7 @@ import { HeaderComponent } from "../header/header.component";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { TecnicoInfo } from "./tecnico-info.model"
+import { BolsistaListagemItem } from './bolsista-listagem.model';
 
 @Component({
   selector: 'app-main-admin',
@@ -17,6 +18,13 @@ import { TecnicoInfo } from "./tecnico-info.model"
 export class MainAdminComponent {
   tecnicoInfo?: TecnicoInfo;
   errorMsg: string | undefined;
+  bolsistas: BolsistaListagemItem[] = [];
+  bolsistasLoading = false;
+  bolsistasError: string | null = null;
+  editBolsistaForm: FormGroup;
+  editingBolsistaId: number | null = null;
+  editBolsistaSuccess = false;
+  editBolsistaError: string | null = null;
   registerForm: FormGroup;
   registerSuccess: boolean = false;
   registerError: string | null = null;
@@ -25,6 +33,16 @@ export class MainAdminComponent {
   changePasswordError: string | null = null;
 
   constructor(private http: HttpClient, private fb: FormBuilder) {
+    this.editBolsistaForm = this.fb.group({
+      name: ['', Validators.required],
+      username: ['', Validators.required],
+      matricula: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      role: ['BOLSISTA', Validators.required],
+      situacao: ['ATIVO', Validators.required],
+      cargo: ['', Validators.required]
+    });
+
     this.registerForm = this.fb.group({
       name: ['', Validators.required],
       username: ['', Validators.required],
@@ -43,33 +61,121 @@ export class MainAdminComponent {
   }
 
   ngOnInit(): void {
+    this.loadTecnicoInfo();
+    this.loadBolsistas();
+  }
+
+  private buildAuthHeaders(): HttpHeaders | undefined {
     const token = localStorage.getItem('auth_token');
-    const headers = token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : undefined;
+    return token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : undefined;
+  }
+
+  private loadTecnicoInfo(): void {
+    const headers = this.buildAuthHeaders();
     this.http.get<TecnicoInfo>('http://localhost:8080/spe/api/admin/me', { headers })
       .subscribe({
         next: (data) => {
           this.tecnicoInfo = data;
           this.errorMsg = undefined;
         },
-        error: (err) => {
+        error: () => {
           this.tecnicoInfo = undefined;
           this.errorMsg = 'Erro ao carregar dados do técnico.';
         }
       });
   }
 
+  private loadBolsistas(): void {
+    this.bolsistasLoading = true;
+    this.bolsistasError = null;
+
+    const headers = this.buildAuthHeaders();
+    this.http.get<BolsistaListagemItem[]>('http://localhost:8080/spe/api/admin/listagem/bolsistas', { headers })
+      .subscribe({
+        next: (data) => {
+          const list = Array.isArray(data) ? data : [];
+          this.bolsistas = list.map((b: any) => ({
+            ...b,
+            dataCriacao: b?.dataCriacao ?? b?.data_criacao
+          }));
+          this.bolsistasLoading = false;
+        },
+        error: () => {
+          this.bolsistas = [];
+          this.bolsistasLoading = false;
+          this.bolsistasError = 'Erro ao carregar bolsistas.';
+        }
+      });
+  }
+
+  isBolsistaAtivo(situacao: string | null | undefined): boolean {
+    return (situacao || '').toUpperCase() === 'ATIVO';
+  }
+
+  formatSituacao(situacao: string | null | undefined): string {
+    const raw = (situacao || '').trim();
+    if (!raw) {
+      return '';
+    }
+
+    const normalized = raw.replace(/_/g, ' ').toLowerCase();
+    return normalized.charAt(0).toUpperCase() + normalized.slice(1);
+  }
+
+  openEditModal(bolsista: BolsistaListagemItem): void {
+    this.editBolsistaSuccess = false;
+    this.editBolsistaError = null;
+    this.editingBolsistaId = bolsista.id;
+
+    this.editBolsistaForm.reset({
+      name: (bolsista.nome || '').trim(),
+      username: (bolsista.username || '').trim(),
+      matricula: (bolsista.matricula || '').trim(),
+      email: (bolsista.email || '').trim(),
+      role: 'BOLSISTA',
+      situacao: (bolsista.situacao || 'ATIVO').toString().toUpperCase(),
+      cargo: (bolsista.cargo || '').trim( )
+    });
+  }
+
+  onEditBolsistaSubmit(): void {
+    this.editBolsistaSuccess = false;
+    this.editBolsistaError = null;
+
+    if (this.editBolsistaForm.invalid || this.editingBolsistaId == null) {
+      this.editBolsistaError = 'Preencha todos os campos obrigatórios.';
+      return;
+    }
+
+    const headers = this.buildAuthHeaders();
+    const body = this.editBolsistaForm.value;
+    const url = `http://localhost:8080/spe/api/admin/mudar-dados/bolsista/${this.editingBolsistaId}`;
+
+    this.http.put(url, body, { headers, responseType: 'text' }).subscribe({
+      next: () => {
+        this.editBolsistaSuccess = true;
+        this.editBolsistaError = null;
+        this.loadBolsistas();
+      },
+      error: (err) => {
+        this.editBolsistaSuccess = false;
+        this.editBolsistaError = err?.error?.message || 'Erro ao editar bolsista.';
+      }
+    });
+  }
+
   onRegisterSubmit() {
     console.log('submit registerForm', this.registerForm.value, this.registerForm.valid);
     if (this.registerForm.invalid) return;
     const body: AdminRegister = this.registerForm.value;
-    const token = localStorage.getItem('auth_token');
-    const headers = token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : undefined;
+    const headers = this.buildAuthHeaders();
     this.http.post('http://localhost:8080/spe/api/admin/register', body, { headers, responseType: 'text' }).subscribe({
       next: (data) => {
         //console.log('Resposta cadastro:', data);
         this.registerSuccess = true;
         this.registerError = null;
         this.registerForm.reset({ roles: 'BOLSISTA' });
+        this.loadBolsistas();
       },
       error: (err) => {
        // console.log(err);
@@ -91,8 +197,7 @@ export class MainAdminComponent {
     }
 
     const body = { matricula, senhaNova, senhaConfirmacao };
-    const token = localStorage.getItem('auth_token');
-    const headers = token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : undefined;
+    const headers = this.buildAuthHeaders();
 
     this.http.put('http://localhost:8080/spe/api/admin/mudar-senha/bolsista/', body, { headers, responseType: 'text' })
       .subscribe({

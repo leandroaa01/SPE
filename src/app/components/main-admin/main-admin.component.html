@@ -10,7 +10,7 @@
       <form>
         <label>Filtrar:</label>
 
-        <select>
+        <select aria-label="Filtrar por">
           <option value="id">ID</option>
           <option value="nome" selected>Nome</option>
           <option value="matricula">Matrícula</option>
@@ -35,6 +35,7 @@
             <tr>
               <th>ID</th>
               <th>Nome</th>
+              <th>Username</th>
               <th>Matrícula</th>
               <th>Email</th>
               <th>Situação</th>
@@ -43,16 +44,36 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td> 001</td>
-              <td> <a routerLink="/meus-dados" class="link-router"><img src="../../../assets/open-link.svg">Leandro
-                  Andrade</a></td>
-              <td>00000000000</td>
-              <td>leandro.andrade&#64;dimap.ufrn.br</td>
-              <td><span class="badge badge-success">Ativo</span></td>
-              <td>03/07/2025</td>
-              <td> <a type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop4"><img
-                    src="../../../assets/open-link.svg">Editar </a></td>
+            <tr *ngIf="bolsistasLoading">
+              <td colspan="7">Carregando bolsistas...</td>
+            </tr>
+            <tr *ngIf="!bolsistasLoading && bolsistasError">
+              <td colspan="7">{{ bolsistasError }}</td>
+            </tr>
+            <tr *ngIf="!bolsistasLoading && !bolsistasError && bolsistas.length === 0">
+              <td colspan="7">Nenhum bolsista encontrado.</td>
+            </tr>
+            <tr *ngFor="let bolsista of bolsistas">
+              <td>{{ bolsista.id }}</td>
+              <td>
+                <a routerLink="/meus-dados" class="link-router">
+                  <img src="../../../assets/open-link.svg" alt="Abrir">{{ bolsista.nome }}
+                </a>
+              </td>
+              <td>{{ bolsista.username }}</td>
+              <td>{{ bolsista.matricula }}</td>
+              <td>{{ bolsista.email }}</td>
+              <td>
+                <span class="badge" [ngClass]="isBolsistaAtivo(bolsista.situacao) ? 'badge-success' : 'badge-denied'">
+                  {{ formatSituacao(bolsista.situacao) }}
+                </span>
+              </td>
+              <td>{{ bolsista.dataCriacao ? (bolsista.dataCriacao | date:'dd/MM/yyyy') : '-' }}</td>
+              <td>
+                <a href="#" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop4" (click)="$event.preventDefault(); openEditModal(bolsista)">
+                  <img src="../../../assets/open-link.svg" alt="Editar">Editar
+                </a>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -278,33 +299,36 @@
       <div class="modal-header">
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="cadastro">
+      <form class="cadastro" [formGroup]="editBolsistaForm" (ngSubmit)="onEditBolsistaSubmit()">
         <b>Nome:*</b>
-        <input type="text" placeholder="Digite seu nome">
+        <input type="text" placeholder="Digite seu nome" formControlName="name">
         <b>Matrícula:*</b>
-        <input type="number" placeholder="Digite sua matrícula">
+        <input type="text" placeholder="Digite sua matrícula" formControlName="matricula">
         <b>Email:*</b>
-        <input type="email" placeholder="Digite seu email">
-        <b>Username:</b>
-        <input type="text" placeholder="Digite seu username">
-        <b>Tipo de Conta:</b>
-        <select class="status">
-          <option value="bolsista" selected>Bolsista</option>
-          <option value="admin">Admin</option>
+        <input type="email" placeholder="Digite seu email" formControlName="email">
+        <b>Username:*</b>
+        <input type="text" placeholder="Digite seu username" formControlName="username">
+        <b>Tipo de Conta:*</b>
+        <select class="status" formControlName="role">
+          <option value="BOLSISTA">Bolsista</option>
+          <option value="ADMIN">Admin</option>
         </select>
-        <b>Cargo:</b>
-        <input type="text" placeholder="Digite o cargo">
-        <b>Situação da Conta:</b>
-        <select class="status">
-          <option value="ativa" selected>Ativo</option>
-          <option value="desativada">Desativada</option>
+        <b>Cargo:*</b>
+        <input type="text" placeholder="Digite o cargo" formControlName="cargo">
+        <b>Situação da Conta:*</b>
+        <select class="status" formControlName="situacao">
+          <option value="ATIVO">Ativo</option>
+          <option value="DESATIVADO">Desativado</option>
         </select>
 
-      </div>
-      <div class="modal-footer">
-        <button class="button-one-popup" data-bs-dismiss="modal">Enviar</button>
-        <button class="button-one-popup-lithg" data-bs-dismiss="modal">Cancelar</button>
-      </div>
+        <div *ngIf="editBolsistaSuccess" style="color: green; margin-top: 10px;">Dados atualizados com sucesso!</div>
+        <div *ngIf="editBolsistaError" style="color: red; margin-top: 10px;">{{ editBolsistaError }}</div>
+
+        <div class="modal-footer">
+          <button class="button-one-popup" type="submit" [disabled]="editBolsistaForm.invalid">Enviar</button>
+          <button class="button-one-popup-lithg" data-bs-dismiss="modal" type="button">Cancelar</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
