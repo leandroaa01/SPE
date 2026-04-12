@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { TecnicoInfo } from "./tecnico-info.model"
 import { BolsistaListagemItem } from './bolsista-listagem.model';
 import { PontoBolsistaListagemItem } from './ponto-bolsista-listagem.model';
+import { JustificativaListagemItem } from './justificativa-listagem.model';
 
 @Component({
   selector: 'app-main-admin',
@@ -25,6 +26,14 @@ export class MainAdminComponent {
   pontosBolsistas: PontoBolsistaListagemItem[] = [];
   pontosBolsistasLoading = false;
   pontosBolsistasError: string | null = null;
+  justificativas: JustificativaListagemItem[] = [];
+  justificativasLoading = false;
+  justificativasError: string | null = null;
+  selectedJustificativa: JustificativaListagemItem | null = null;
+  updateJustificativaForm: FormGroup;
+  updateJustificativaLoading = false;
+  updateJustificativaSuccess = false;
+  updateJustificativaError: string | null = null;
   editBolsistaForm: FormGroup;
   editingBolsistaId: number | null = null;
   editBolsistaSuccess = false;
@@ -37,6 +46,11 @@ export class MainAdminComponent {
   changePasswordError: string | null = null;
 
   constructor(private http: HttpClient, private fb: FormBuilder) {
+    this.updateJustificativaForm = this.fb.group({
+      status: ['EM_ANALISE', Validators.required],
+      observacoes: ['']
+    });
+
     this.editBolsistaForm = this.fb.group({
       name: ['', Validators.required],
       username: ['', Validators.required],
@@ -68,6 +82,7 @@ export class MainAdminComponent {
     this.loadTecnicoInfo();
     this.loadBolsistas();
     this.loadPontosBolsistas();
+    this.loadJustificativas();
   }
 
   private buildAuthHeaders(): HttpHeaders | undefined {
@@ -136,6 +151,32 @@ export class MainAdminComponent {
       });
   }
 
+  private loadJustificativas(): void {
+    this.justificativasLoading = true;
+    this.justificativasError = null;
+
+    const headers = this.buildAuthHeaders();
+    this.http.get<JustificativaListagemItem[] | JustificativaListagemItem>(
+      'http://localhost:8080/spe/api/admin/listagem/justificativas',
+      { headers }
+    )
+      .subscribe({
+        next: (data) => {
+          const list = Array.isArray(data) ? data : (data ? [data] : []);
+          this.justificativas = list.map((j: any) => ({
+            ...j,
+            idBolsista: j?.idBolsista ?? j?.bolsistaId ?? j?.id_bolsista
+          }));
+          this.justificativasLoading = false;
+        },
+        error: () => {
+          this.justificativas = [];
+          this.justificativasLoading = false;
+          this.justificativasError = 'Erro ao carregar justificativas.';
+        }
+      });
+  }
+
   isBolsistaAtivo(situacao: string | null | undefined): boolean {
     return (situacao || '').toUpperCase() === 'ATIVO';
   }
@@ -146,8 +187,21 @@ export class MainAdminComponent {
       return '';
     }
 
+    const upper = raw.toUpperCase();
+    if (upper === 'EMANALISE' || upper === 'EM_ANALISE' || upper === 'EM-ANALISE') {
+      return 'Em-Analise';
+    }
+
     const normalized = raw.replace(/_/g, ' ').toLowerCase();
     return normalized.charAt(0).toUpperCase() + normalized.slice(1);
+  }
+
+  normalizeJustificaSituacaoValue(status: string | null | undefined): string {
+    const upper = (status || '').trim().toUpperCase();
+    if (upper === 'EMANALISE' || upper === 'EM-ANALISE') {
+      return 'EMANALISE';
+    }
+    return upper;
   }
 
   getPontoStatusBadgeClass(status: string | null | undefined): string {
@@ -161,11 +215,102 @@ export class MainAdminComponent {
     return 'badge-analyze';
   }
 
+  getJustificativaStatusBadgeClass(status: string | null | undefined): string {
+    const normalized = (status || '').toUpperCase();
+    if (normalized === 'DEFERIDO') {
+      return 'badge-success';
+    }
+    if (normalized === 'INDEFERIDO') {
+      return 'badge-denied';
+    }
+    return 'badge-analyze';
+  }
+
   formatHorasFeitas(qtdDeHorasFeitas: number | null | undefined): string {
     if (qtdDeHorasFeitas == null || Number.isNaN(qtdDeHorasFeitas)) {
       return '-';
     }
     return `${qtdDeHorasFeitas} Hrs`;
+  }
+
+  formatDuracaoHoras(qtdDeHoras: number | null | undefined): string {
+    if (qtdDeHoras == null || Number.isNaN(qtdDeHoras)) {
+      return '-';
+    }
+    const totalMinutes = Math.round(qtdDeHoras * 60);
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    return `${hours}:${minutes.toString().padStart(2, '0')}`;
+  }
+
+  getDuracaoHorasInteiras(qtdDeHoras: number | null | undefined): string {
+    if (qtdDeHoras == null || Number.isNaN(qtdDeHoras)) {
+      return '-';
+    }
+    const totalMinutes = Math.round(qtdDeHoras * 60);
+    return String(Math.floor(totalMinutes / 60));
+  }
+
+  getDuracaoMinutos(qtdDeHoras: number | null | undefined): string {
+    if (qtdDeHoras == null || Number.isNaN(qtdDeHoras)) {
+      return '-';
+    }
+    const totalMinutes = Math.round(qtdDeHoras * 60);
+    return String(totalMinutes % 60);
+  }
+
+  openJustificativaModal(justificativa: JustificativaListagemItem): void {
+    this.selectedJustificativa = justificativa;
+
+    this.updateJustificativaSuccess = false;
+    this.updateJustificativaError = null;
+    this.updateJustificativaForm.reset({
+      status:
+        this.normalizeJustificaSituacaoValue(justificativa.justificaSituacao) ||
+        'EMANALISE',
+      observacoes: '',
+    });
+  }
+
+  onUpdateJustificativaSubmit(): void {
+    this.updateJustificativaSuccess = false;
+    this.updateJustificativaError = null;
+
+    if (!this.selectedJustificativa) {
+      this.updateJustificativaError = 'Nenhuma justificativa selecionada.';
+      return;
+    }
+
+    const id = this.selectedJustificativa.id;
+    const idBolsista = (this.selectedJustificativa as any).idBolsista;
+    if (idBolsista == null) {
+      this.updateJustificativaError = 'Backend não retornou idBolsista nesta listagem.';
+      return;
+    }
+
+    if (this.updateJustificativaForm.invalid) {
+      this.updateJustificativaError = 'Preencha o status.';
+      return;
+    }
+
+    this.updateJustificativaLoading = true;
+    const headers = this.buildAuthHeaders();
+    const url = `http://localhost:8080/spe/api/admin/justificativa/${idBolsista}/detalhes/${id}/atualizar`;
+    const body = this.updateJustificativaForm.value;
+
+    this.http.put(url, body, { headers, responseType: 'text' }).subscribe({
+      next: () => {
+        this.updateJustificativaLoading = false;
+        this.updateJustificativaSuccess = true;
+        this.updateJustificativaError = null;
+        this.loadJustificativas();
+      },
+      error: (err) => {
+        this.updateJustificativaLoading = false;
+        this.updateJustificativaSuccess = false;
+        this.updateJustificativaError = err?.error?.message || 'Erro ao atualizar justificativa.';
+      }
+    });
   }
 
   openEditModal(bolsista: BolsistaListagemItem): void {

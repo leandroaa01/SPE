@@ -146,32 +146,30 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Leandro Andrade</td>
-              <td>Erro técnico</td>
-              <td>01/07/2025</td>
-              <td>4:00</td>
-              <td><span class="badge badge-success">Deferido</span></td>
-              <td><a class="action-link" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img
-                    src="../../../assets/open-link.svg" alt="">Abrir</a>
+            <tr *ngIf="justificativasLoading">
+              <td colspan="6">Carregando justificativas...</td>
             </tr>
-            <tr>
-              <td>Leandro Andrade</td>
-              <td>Atendimento médico</td>
-              <td>28/06/2025</td>
-              <td>2:30</td>
-              <td><span class="badge badge-analyze">Em análise</span></td>
-              <td><a class="action-link" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img
-                    src="../../../assets/open-link.svg" alt="">Abrir</a>
+            <tr *ngIf="!justificativasLoading && justificativasError">
+              <td colspan="6">{{ justificativasError }}</td>
             </tr>
-            <tr>
-              <td>Diego Luan</td>
-              <td>Problema pessoal</td>
-              <td>25/06/2025</td>
-              <td>3:15</td>
-              <td><span class="badge badge-denied">Indeferido</span></td>
-              <td><a class="action-link" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img
-                    src="../../../assets/open-link.svg" alt="">Abrir</a>
+            <tr *ngIf="!justificativasLoading && !justificativasError && justificativas.length === 0">
+              <td colspan="6">Nenhuma justificativa encontrada.</td>
+            </tr>
+            <tr *ngFor="let justificativa of justificativas">
+              <td>{{ justificativa.nomeBolsista }}</td>
+              <td>{{ justificativa.motivo }}</td>
+              <td>{{ justificativa.data | date:'dd/MM/yyyy' }}</td>
+              <td>{{ formatDuracaoHoras(justificativa.qtdDeHoras) }}</td>
+              <td>
+                <span class="badge" [ngClass]="getJustificativaStatusBadgeClass(justificativa.justificaSituacao)">
+                  {{ formatSituacao(justificativa.justificaSituacao) }}
+                </span>
+              </td>
+              <td>
+                <a href="#" class="action-link" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                  (click)="$event.preventDefault(); openJustificativaModal(justificativa)">
+                  <img src="../../../assets/open-link.svg" alt="Abrir">Abrir
+                </a>
               </td>
             </tr>
           </tbody>
@@ -199,43 +197,48 @@
       <div class="modal-header">
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <b>Tipo de justificativa:*</b>
-        <input type="text" value="Erro tecnico" disabled>
-        <div class="time">
-          <div class="data"><b>Data:*</b>
-            <input type="text" value="2025-07-03" disabled>
-          </div>
-          <div class="hora"><b>Horas:*</b>
-            <input type="text" value="4" disabled>
-          </div>
-          <div class="minuto"><b>Minutos:*</b>
-            <input type="text" value="0" disabled>
-          </div>
-        </div>
-        <div class="obs">
-          <div class="jutificativa"><b>Justificativa</b>
-            <textarea name="observacoes" placeholder="Sistema de ponto fora do ar."
-              disabled></textarea>
-          </div>
-          <div class="separador"></div>
-          <b>Status:</b>
-          <select class="status">
-            <option value="deferido">Deferido</option>
-            <option value="em-analise" selected>Em Análise</option>
-            <option value="indeferido">Indeferido</option>
-          </select>
-          <div class="obs">
-            <div class="jutificativa"><b>Observações:</b>
-              <textarea name="observacoes">Justificativa aceita.</textarea>
+      <form [formGroup]="updateJustificativaForm" (ngSubmit)="onUpdateJustificativaSubmit()">
+        <div class="modal-body">
+          <b>Tipo de justificativa:*</b>
+          <input type="text" [value]="selectedJustificativa?.motivo || '-'" disabled>
+          <div class="time">
+            <div class="data"><b>Data:*</b>
+              <input type="text" [value]="selectedJustificativa?.data ? (selectedJustificativa?.data | date:'yyyy-MM-dd') : '-'" disabled>
+            </div>
+            <div class="hora"><b>Horas:*</b>
+              <input type="text" [value]="selectedJustificativa ? getDuracaoHorasInteiras(selectedJustificativa.qtdDeHoras) : '-'" disabled>
+            </div>
+            <div class="minuto"><b>Minutos:*</b>
+              <input type="text" [value]="selectedJustificativa ? getDuracaoMinutos(selectedJustificativa.qtdDeHoras) : '-'" disabled>
             </div>
           </div>
+          <div class="obs">
+            <div class="jutificativa"><b>Justificativa</b>
+              <textarea placeholder="Sistema de ponto fora do ar."
+                [value]="selectedJustificativa?.justificativa || ''" disabled></textarea>
+            </div>
+            <div class="separador"></div>
+            <b>Status:</b>
+            <select class="status" formControlName="status">
+              <option value="DEFERIDO">Deferido</option>
+              <option value="EMANALISE">Em análise</option>
+              <option value="INDEFERIDO">Indeferido</option>
+            </select>
+            <div class="obs">
+              <div class="jutificativa"><b>Observações:</b>
+                <textarea formControlName="observacoes" placeholder="Digite as observações"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="updateJustificativaSuccess" class="msg-success">Justificativa atualizada com sucesso!</div>
+          <div *ngIf="updateJustificativaError" class="msg-error">{{ updateJustificativaError }}</div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button class="button-one-popup" data-bs-dismiss="modal">Enviar</button>
-        <button class="button-one-popup-lithg" data-bs-dismiss="modal">Fechar</button>
-      </div>
+        <div class="modal-footer">
+          <button class="button-one-popup" type="submit" [disabled]="updateJustificativaForm.invalid || updateJustificativaLoading">Enviar</button>
+          <button class="button-one-popup-lithg" data-bs-dismiss="modal" type="button">Fechar</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
