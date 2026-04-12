@@ -36,11 +36,11 @@ export class NovoHorarioModalComponent implements OnChanges {
   ];
 
   readonly dias: DiaHorarioForm[] = [
-    { dia: 'Seg', label: 'Segunda-feira', horariosSelecionados: [] },
-    { dia: 'Ter', label: 'Terça-feira', horariosSelecionados: [] },
-    { dia: 'Qua', label: 'Quarta-feira', horariosSelecionados: [] },
-    { dia: 'Qui', label: 'Quinta-feira', horariosSelecionados: [] },
-    { dia: 'Sex', label: 'Sexta-feira', horariosSelecionados: [] }
+    { dia: 'SEGUNDA_FEIRA', label: 'Segunda-feira', horariosSelecionados: [] },
+    { dia: 'TERCA_FEIRA', label: 'Terça-feira', horariosSelecionados: [] },
+    { dia: 'QUARTA_FEIRA', label: 'Quarta-feira', horariosSelecionados: [] },
+    { dia: 'QUINTA_FEIRA', label: 'Quinta-feira', horariosSelecionados: [] },
+    { dia: 'SEXTA_FEIRA', label: 'Sexta-feira', horariosSelecionados: [] }
   ];
 
   ngOnChanges(changes: SimpleChanges) {

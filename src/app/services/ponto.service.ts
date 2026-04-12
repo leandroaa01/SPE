@@ -49,4 +49,10 @@ export class PontoService {
 
         return this.http.post<void>(this.meusHorariosUrl, payload, { headers });
     }
+
+    obterMeusHorarios(): Observable<MeusHorariosPayload> {
+        const token = localStorage.getItem('auth_token');
+        const headers = token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : undefined;
+        return this.http.get<MeusHorariosPayload>(this.meusHorariosUrl, { headers });
+    }
 }

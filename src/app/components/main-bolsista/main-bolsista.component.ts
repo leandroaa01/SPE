@@ -33,93 +33,7 @@ export class MainBolsistaComponent implements OnInit {
     '17:00 - 18:00'
   ];
 
-  meusHorariosTabela = [
-    {
-      dia: 'SEGUNDA_FEIRA',
-      sigla: 'Seg',
-      horarios: {
-        '07:00 - 08:00': 'bolsa',
-        '08:00 - 09:00': 'bolsa',
-        '09:00 - 10:00': 'aula',
-        '10:00 - 11:00': 'aula',
-        '11:00 - 12:00': 'aula',
-        '12:00 - 13:00': 'almoco',
-        '13:00 - 14:00': 'bolsa',
-        '14:00 - 15:00': 'bolsa',
-        '15:00 - 16:00': 'bolsa',
-        '16:00 - 17:00': '',
-        '17:00 - 18:00': ''
-      } as Record<string, string>
-    },
-    {
-      dia: 'TERCA_FEIRA',
-      sigla: 'Ter',
-      horarios: {
-        '07:00 - 08:00': 'bolsa',
-        '08:00 - 09:00': 'bolsa',
-        '09:00 - 10:00': 'aula',
-        '10:00 - 11:00': 'aula',
-        '11:00 - 12:00': 'aula',
-        '12:00 - 13:00': 'almoco',
-        '13:00 - 14:00': 'aula',
-        '14:00 - 15:00': 'aula',
-        '15:00 - 16:00': 'bolsa',
-        '16:00 - 17:00': '',
-        '17:00 - 18:00': ''
-      } as Record<string, string>
-    },
-    {
-      dia: 'QUARTA_FEIRA',
-      sigla: 'Qua',
-      horarios: {
-        '07:00 - 08:00': 'bolsa',
-        '08:00 - 09:00': 'bolsa',
-        '09:00 - 10:00': 'aula',
-        '10:00 - 11:00': 'aula',
-        '11:00 - 12:00': 'aula',
-        '12:00 - 13:00': 'almoco',
-        '13:00 - 14:00': 'bolsa',
-        '14:00 - 15:00': 'bolsa',
-        '15:00 - 16:00': 'bolsa',
-        '16:00 - 17:00': '',
-        '17:00 - 18:00': ''
-      } as Record<string, string>
-    },
-    {
-      dia: 'QUINTA_FEIRA',
-      sigla: 'Qui',
-      horarios: {
-        '07:00 - 08:00': 'bolsa',
-        '08:00 - 09:00': 'bolsa',
-        '09:00 - 10:00': 'aula',
-        '10:00 - 11:00': 'aula',
-        '11:00 - 12:00': 'aula',
-        '12:00 - 13:00': 'almoco',
-        '13:00 - 14:00': 'aula',
-        '14:00 - 15:00': 'aula',
-        '15:00 - 16:00': 'bolsa',
-        '16:00 - 17:00': '',
-        '17:00 - 18:00': ''
-      } as Record<string, string>
-    },
-    {
-      dia: 'SEXTA_FEIRA',
-      sigla: 'Sex',
-      horarios: {
-        '07:00 - 08:00': 'bolsa',
-        '08:00 - 09:00': 'bolsa',
-        '09:00 - 10:00': 'bolsa',
-        '10:00 - 11:00': 'bolsa',
-        '11:00 - 12:00': 'bolsa',
-        '12:00 - 13:00': 'almoco',
-        '13:00 - 14:00': 'bolsa',
-        '14:00 - 15:00': '',
-        '15:00 - 16:00': '',
-        '16:00 - 17:00': '',
-        '17:00 - 18:00': ''
-      } as Record<string, string>
-    }
-  ];
+  meusHorariosTabela = this.criarTabelaBaseHorarios();
 
   bolsistaInfo?: BolsistaInfo;
   pontos: PontoDTO[] = [];
@@ -230,8 +144,8 @@ export class MainBolsistaComponent implements OnInit {
     this.pontoService.salvarMeusHorarios(payload).subscribe({
       next: () => {
         this.carregandoNovoHorario = false;
-        this.atualizarTabelaHorarios(payload);
         this.modalNovoHorarioAberto = false;
+        this.carregarMeusHorarios();
         alert('Horários salvos com sucesso.');
       },
       error: (err) => {
@@ -281,11 +195,22 @@ export class MainBolsistaComponent implements OnInit {
     return this.meusHorariosTabela.reduce((total, linha) => total + this.calcularTotalHorasLinha(linha.horarios), 0);
   }
 
-  private atualizarTabelaHorarios(payload: MeusHorariosPayload) {
-    const horariosEditaveis = this.colunasHorario.filter(horario => horario !== '12:00 - 13:00');
+  private carregarMeusHorarios() {
+    this.pontoService.obterMeusHorarios().subscribe({
+      next: (payload) => {
+        this.aplicarMeusHorariosDoBackend(payload);
+      },
+      error: () => {
+        this.meusHorariosTabela = this.criarTabelaBaseHorarios();
+      }
+    });
+  }
 
-    this.meusHorariosTabela = this.meusHorariosTabela.map(linha => {
-      const diaSalvo = payload.dias.find(dia => dia.dia === linha.dia);
+  private aplicarMeusHorariosDoBackend(payload: MeusHorariosPayload) {
+    const tabelaBase = this.criarTabelaBaseHorarios();
+
+    this.meusHorariosTabela = tabelaBase.map(linha => {
+      const diaSalvo = payload.dias.find(dia => this.normalizarDia(dia.dia) === linha.dia);
 
       if (!diaSalvo) {
         return linha;
@@ -293,7 +218,7 @@ export class MainBolsistaComponent implements OnInit {
 
       const horariosAtualizados = { ...linha.horarios };
 
-      for (const horario of horariosEditaveis) {
+      for (const horario of this.colunasHorario) {
         if (horariosAtualizados[horario] === 'almoco' || horariosAtualizados[horario] === 'aula') {
           continue;
         }
@@ -306,6 +231,120 @@ export class MainBolsistaComponent implements OnInit {
         horarios: horariosAtualizados
       };
     });
+  }
+
+  private criarTabelaBaseHorarios() {
+    return [
+      {
+        dia: 'SEGUNDA_FEIRA',
+        sigla: 'Seg',
+        horarios: {
+          '07:00 - 08:00': '',
+          '08:00 - 09:00': '',
+          '09:00 - 10:00': 'aula',
+          '10:00 - 11:00': 'aula',
+          '11:00 - 12:00': 'aula',
+          '12:00 - 13:00': 'almoco',
+          '13:00 - 14:00': '',
+          '14:00 - 15:00': '',
+          '15:00 - 16:00': '',
+          '16:00 - 17:00': '',
+          '17:00 - 18:00': ''
+        } as Record<string, string>
+      },
+      {
+        dia: 'TERCA_FEIRA',
+        sigla: 'Ter',
+        horarios: {
+          '07:00 - 08:00': '',
+          '08:00 - 09:00': '',
+          '09:00 - 10:00': 'aula',
+          '10:00 - 11:00': 'aula',
+          '11:00 - 12:00': 'aula',
+          '12:00 - 13:00': 'almoco',
+          '13:00 - 14:00': 'aula',
+          '14:00 - 15:00': 'aula',
+          '15:00 - 16:00': '',
+          '16:00 - 17:00': '',
+          '17:00 - 18:00': ''
+        } as Record<string, string>
+      },
+      {
+        dia: 'QUARTA_FEIRA',
+        sigla: 'Qua',
+        horarios: {
+          '07:00 - 08:00': '',
+          '08:00 - 09:00': '',
+          '09:00 - 10:00': 'aula',
+          '10:00 - 11:00': 'aula',
+          '11:00 - 12:00': 'aula',
+          '12:00 - 13:00': 'almoco',
+          '13:00 - 14:00': '',
+          '14:00 - 15:00': '',
+          '15:00 - 16:00': '',
+          '16:00 - 17:00': '',
+          '17:00 - 18:00': ''
+        } as Record<string, string>
+      },
+      {
+        dia: 'QUINTA_FEIRA',
+        sigla: 'Qui',
+        horarios: {
+          '07:00 - 08:00': '',
+          '08:00 - 09:00': '',
+          '09:00 - 10:00': 'aula',
+          '10:00 - 11:00': 'aula',
+          '11:00 - 12:00': 'aula',
+          '12:00 - 13:00': 'almoco',
+          '13:00 - 14:00': 'aula',
+          '14:00 - 15:00': 'aula',
+          '15:00 - 16:00': '',
+          '16:00 - 17:00': '',
+          '17:00 - 18:00': ''
+        } as Record<string, string>
+      },
+      {
+        dia: 'SEXTA_FEIRA',
+        sigla: 'Sex',
+        horarios: {
+          '07:00 - 08:00': '',
+          '08:00 - 09:00': '',
+          '09:00 - 10:00': '',
+          '10:00 - 11:00': '',
+          '11:00 - 12:00': '',
+          '12:00 - 13:00': 'almoco',
+          '13:00 - 14:00': '',
+          '14:00 - 15:00': '',
+          '15:00 - 16:00': '',
+          '16:00 - 17:00': '',
+          '17:00 - 18:00': ''
+        } as Record<string, string>
+      }
+    ];
+  }
+
+  private normalizarDia(dia: string) {
+    const mapaDias: Record<string, string> = {
+      SEG: 'SEGUNDA_FEIRA',
+      SEGUNDA: 'SEGUNDA_FEIRA',
+      SEGUNDA_FEIRA: 'SEGUNDA_FEIRA',
+      TER: 'TERCA_FEIRA',
+      TERCA: 'TERCA_FEIRA',
+      TERÇA: 'TERCA_FEIRA',
+      TERCA_FEIRA: 'TERCA_FEIRA',
+      TERÇA_FEIRA: 'TERCA_FEIRA',
+      QUA: 'QUARTA_FEIRA',
+      QUARTA: 'QUARTA_FEIRA',
+      QUARTA_FEIRA: 'QUARTA_FEIRA',
+      QUI: 'QUINTA_FEIRA',
+      QUINTA: 'QUINTA_FEIRA',
+      QUINTA_FEIRA: 'QUINTA_FEIRA',
+      SEX: 'SEXTA_FEIRA',
+      SEXTA: 'SEXTA_FEIRA',
+      SEXTA_FEIRA: 'SEXTA_FEIRA'
+    };
+
+    return mapaDias[dia?.trim().toUpperCase()] || dia;
   }
 
   constructor(private http: HttpClient, private pontoService: PontoService) { }
@@ -334,6 +373,8 @@ export class MainBolsistaComponent implements OnInit {
           this.pontos = [];
         }
       });
+
+    this.carregarMeusHorarios();
 
     this.http.get<JustificativaDTO[]>('http://localhost:8080/spe/api/bolsista/minhas-justificativas', { headers })
       .subscribe({
