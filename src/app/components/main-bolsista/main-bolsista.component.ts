@@ -48,6 +48,30 @@ export class MainBolsistaComponent implements OnInit {
   modalImpressaoAberto: boolean = false;
   modalNovoHorarioAberto: boolean = false;
   carregandoNovoHorario: boolean = false;
+  totalHoras?: number;
+
+  private parseTotalHorasResponse(raw: string): number {
+    const trimmed = (raw ?? '').trim();
+
+    if (!trimmed) {
+      return 0;
+    }
+
+    let parsed: unknown = trimmed;
+
+    try {
+      parsed = JSON.parse(trimmed);
+    } catch {
+      // ignore: not JSON
+    }
+
+    if (parsed && typeof parsed === 'object' && 'totalHoras' in (parsed as Record<string, unknown>)) {
+      parsed = (parsed as Record<string, unknown>)['totalHoras'];
+    }
+
+    const asNumber = typeof parsed === 'number' ? parsed : Number(String(parsed).replaceAll('"', '').trim());
+    return Number.isFinite(asNumber) ? asNumber : 0;
+  }
 
   abrirModalImpressao() {
     this.modalImpressaoAberto = true;
@@ -241,9 +265,9 @@ export class MainBolsistaComponent implements OnInit {
         horarios: {
           '07:00 - 08:00': '',
           '08:00 - 09:00': '',
-          '09:00 - 10:00': 'aula',
-          '10:00 - 11:00': 'aula',
-          '11:00 - 12:00': 'aula',
+          '09:00 - 10:00': '',
+          '10:00 - 11:00': '',
+          '11:00 - 12:00': '',
           '12:00 - 13:00': 'almoco',
           '13:00 - 14:00': '',
           '14:00 - 15:00': '',
@@ -258,12 +282,12 @@ export class MainBolsistaComponent implements OnInit {
         horarios: {
           '07:00 - 08:00': '',
           '08:00 - 09:00': '',
-          '09:00 - 10:00': 'aula',
-          '10:00 - 11:00': 'aula',
-          '11:00 - 12:00': 'aula',
+          '09:00 - 10:00': '',
+          '10:00 - 11:00': '',
+          '11:00 - 12:00': '',
           '12:00 - 13:00': 'almoco',
-          '13:00 - 14:00': 'aula',
-          '14:00 - 15:00': 'aula',
+          '13:00 - 14:00': '',
+          '14:00 - 15:00': '',
           '15:00 - 16:00': '',
           '16:00 - 17:00': '',
           '17:00 - 18:00': ''
@@ -275,9 +299,9 @@ export class MainBolsistaComponent implements OnInit {
         horarios: {
           '07:00 - 08:00': '',
           '08:00 - 09:00': '',
-          '09:00 - 10:00': 'aula',
-          '10:00 - 11:00': 'aula',
-          '11:00 - 12:00': 'aula',
+          '09:00 - 10:00': '',
+          '10:00 - 11:00': '',
+          '11:00 - 12:00': '',
           '12:00 - 13:00': 'almoco',
           '13:00 - 14:00': '',
           '14:00 - 15:00': '',
@@ -292,12 +316,12 @@ export class MainBolsistaComponent implements OnInit {
         horarios: {
           '07:00 - 08:00': '',
           '08:00 - 09:00': '',
-          '09:00 - 10:00': 'aula',
-          '10:00 - 11:00': 'aula',
-          '11:00 - 12:00': 'aula',
+          '09:00 - 10:00': '',
+          '10:00 - 11:00': '',
+          '11:00 - 12:00': '',
           '12:00 - 13:00': 'almoco',
-          '13:00 - 14:00': 'aula',
-          '14:00 - 15:00': 'aula',
+          '13:00 - 14:00': '',
+          '14:00 - 15:00': '',
           '15:00 - 16:00': '',
           '16:00 - 17:00': '',
           '17:00 - 18:00': ''
@@ -385,6 +409,17 @@ export class MainBolsistaComponent implements OnInit {
         error: (err) => {
           // console.error('Erro ao buscar justificativas:', err);
           this.justificativas = [];
+        }
+      });
+
+    this.http.get<number>('http://localhost:8080/spe/api/bolsista/total-horas', { headers})
+      .subscribe({
+        next: (data: number) => {
+          this.totalHoras = data;
+        },
+        error: (err) => {
+          console.error('Erro ao buscar total de horas:', err);
+          this.totalHoras = 0;
         }
       });
   }
