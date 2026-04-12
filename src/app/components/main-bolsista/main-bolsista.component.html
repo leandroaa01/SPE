@@ -23,7 +23,7 @@
               <tr>
                 <th></th>
                 <th  style="font-size: 10px;"  *ngFor="let horario of colunasHorario">{{ horario }}</th>
-                <th>Total de Horas</th>
+                <th  style="font-size: 10px;" >Total de Horas</th>
               </tr>
             </thead>
             <tbody>
@@ -43,12 +43,12 @@
             </tbody>
           </table>
         </div>
-        <div class="table-title">Total da carga Horária: {{ calcularCargaHorariaTotal() }} Horas Semanais</div>
+        <div  class="table-title">Total da carga Horária: {{ calcularCargaHorariaTotal() }} Horas Semanais</div>
       </div>
     </div>
   </section>
 
-  <section class="horas-feitas-filtro">
+  <!-- <section class="horas-feitas-filtro">
     <div class="filtro">
       <div class="mes"> <b>Mês:</b>
         <select>
@@ -74,7 +74,7 @@
         </select>
       </div>
     </div>
-  </section>
+  </section> -->
   <section class="tabela-horas">
     <div class="table-card">
       <div class="table-title">CH Realizada</div>
@@ -100,6 +100,9 @@
             </tr>
           </tbody>
         </table>
+       <div class="table-title" *ngIf="totalHoras !== undefined && totalHoras !== null">
+        Total de horas feitas: {{ totalHoras }} Horas Semanais
+       </div>
       </div>
     </div>
   </section>
@@ -140,7 +143,7 @@
               </td>
             </tr>
             <tr *ngIf="justificativas.length === 0">
-              <td colspan="5">Nenhuma justificativa registrada.</td>
+              <td style="text-align: center;" colspan="5">Nenhuma justificativa registrada.</td>
             </tr>
           </tbody>
         </table>
