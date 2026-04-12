@@ -1,0 +1,36 @@
+<div class="horario-modal-backdrop" *ngIf="visible" (click)="fecharModal()">
+  <div class="horario-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="novo-horario-title" (click)="$event.stopPropagation()">
+    <div class="horario-modal-header">
+      <h2 id="novo-horario-title">Cadastrar Novo Horario</h2>
+      <button type="button" class="horario-modal-close" aria-label="Fechar" (click)="fecharModal()">×</button>
+    </div>
+
+    <div class="horario-modal-body">
+      <section class="dia-bloco" *ngFor="let dia of dias">
+        <b>Selecione os horários da {{ dia.label }}:</b>
+        <div class="linha-horarios">
+          <label *ngFor="let horario of horariosDisponiveis">
+            <input
+              type="checkbox"
+              [checked]="horarioSelecionado(dia, horario)"
+              (change)="alternarHorario(dia, horario, $any($event.target).checked)"
+            />
+            {{ horario }}
+          </label>
+        </div>
+
+        <div class="total-horas-dia">
+          <b>Total de hora do dia:</b>
+          <input type="text" [value]="totalHoras(dia) + ' hora(s)'" readonly  disabled/>
+        </div>
+      </section>
+    </div>
+
+    <div class="horario-modal-footer">
+      <button class="button-one-popup" type="button" (click)="salvarHorarios()" [disabled]="carregando">
+        {{ carregando ? 'Salvando...' : 'Salvar' }}
+      </button>
+      <button class="button-one-popup-lithg" type="button" (click)="fecharModal()">Cancelar</button>
+    </div>
+  </div>
+</div>
