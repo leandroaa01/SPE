@@ -666,22 +666,6 @@ section.buttons {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* Tablets */
 @media (max-width: 1024px) {
   .meus-dados {
@@ -1086,3 +1070,30 @@ section.buttons {
     padding: 4px 22px 4px 8px;
   }
 }
+
+.imprimir-bolsista {
+  display: flex;
+  flex-direction: column;
+  color: #3373C8;
+
+& input[type="date"], input[type="text"] {
+      width: 90%;
+      background: #d3e4fa;
+      border: none;
+      border-radius: 8px;
+      padding: 14px 18px;
+      color: #0a4694;
+      font-size: 18px;
+      font-weight: 500;
+      margin: 20px;
+      margin-top: 10px;
+      outline: none;
+      box-sizing: border-box;
+    }
+    
+& label {
+      font-size: 16px;
+      font-weight: 600;
+      margin-left: 20px;
+    }
+  }
