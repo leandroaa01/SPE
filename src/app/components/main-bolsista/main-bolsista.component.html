@@ -221,9 +221,20 @@
 <section class="buttons">
   <button class="button-one-popup-lithg" type="button" data-bs-toggle="modal"
     data-bs-target="#staticBackdrop2">Cadastrar Novo Horario</button>
-  <button class="button-one-popup" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop3">Imprimir Ponto
+  <button class="button-one-popup" type="button" (click)="abrirModalImpressao()">Imprimir Ponto
   </button>
 </section>
+
+<app-print-ponto-modal
+  [visible]="modalImpressaoAberto"
+  [dataInicio]="dataInicioImpressao"
+  [dataFim]="dataFimImpressao"
+  [carregando]="carregandoImpressao"
+  (close)="fecharModalImpressao()"
+  (confirmar)="imprimirPonto()"
+  (dataInicioChange)="dataInicioImpressao = $event"
+  (dataFimChange)="dataFimImpressao = $event"
+></app-print-ponto-modal>
 
 
 
@@ -274,6 +285,7 @@
                 justificativaSelecionada.dataJustificativaTecnico | date:'dd/MM/yyyy' }}</span> - <span>{{
                 justificativaSelecionada.nomeTecnico }}
               </span>
+            </p>
           </div>
         </div>
         <div class="modal-footer">
@@ -283,7 +295,7 @@
     </div>
   </div>
 
-  <div class="modal fade1" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -379,27 +391,6 @@
         </div>
         <div class="modal-footer">
           <button class="button-one-popup">Salvar</button>
-          <button class="button-one-popup-lithg" data-bs-dismiss="modal">Cancelar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal fade" id="staticBackdrop3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div>
-          <label>Data de inico:</label>
-          <input type="date" value="11/03/2026">
-          <label>Data de término:</label>
-          <input type="date" value="11/03/2026">
-        </div>
-        <div class="modal-footer">
-          <button class="button-one-popup" data-bs-dismiss="modal">Imprimir</button>
           <button class="button-one-popup-lithg" data-bs-dismiss="modal">Cancelar</button>
         </div>
       </div>
