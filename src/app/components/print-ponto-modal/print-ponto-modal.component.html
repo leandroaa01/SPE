@@ -1,0 +1,35 @@
+<div class="print-modal-backdrop" *ngIf="visible" (click)="fecharModal()">
+  <div class="print-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="print-ponto-title" (click)="$event.stopPropagation()">
+    <div class="print-modal-header">
+      <h2 id="print-ponto-title">Imprimir Ponto</h2>
+      <button type="button" class="print-modal-close" aria-label="Fechar" (click)="fecharModal()">×</button>
+    </div>
+
+    <div class="print-modal-body">
+      <label for="dataInicioImpressao">Data de início:</label>
+      <input
+        id="dataInicioImpressao"
+        name="dataInicioImpressao"
+        type="date"
+        [ngModel]="dataInicio"
+        (ngModelChange)="atualizarDataInicio($event)"
+      >
+
+      <label for="dataFimImpressao">Data de término:</label>
+      <input
+        id="dataFimImpressao"
+        name="dataFimImpressao"
+        type="date"
+        [ngModel]="dataFim"
+        (ngModelChange)="atualizarDataFim($event)"
+      >
+    </div>
+
+    <div class="print-modal-footer">
+      <button class="button-one-popup" type="button" (click)="confirmarImpressao()" [disabled]="carregando">
+        {{ carregando ? 'Imprimindo...' : 'Imprimir' }}
+      </button>
+      <button class="button-one-popup-lithg" type="button" (click)="fecharModal()">Cancelar</button>
+    </div>
+  </div>
+</div>
