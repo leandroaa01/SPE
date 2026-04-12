@@ -45,13 +45,13 @@
           </thead>
           <tbody>
             <tr *ngIf="bolsistasLoading">
-              <td colspan="7">Carregando bolsistas...</td>
+              <td colspan="8">Carregando bolsistas...</td>
             </tr>
             <tr *ngIf="!bolsistasLoading && bolsistasError">
-              <td colspan="7">{{ bolsistasError }}</td>
+              <td colspan="8">{{ bolsistasError }}</td>
             </tr>
             <tr *ngIf="!bolsistasLoading && !bolsistasError && bolsistas.length === 0">
-              <td colspan="7">Nenhum bolsista encontrado.</td>
+              <td colspan="8">Nenhum bolsista encontrado.</td>
             </tr>
             <tr *ngFor="let bolsista of bolsistas">
               <td>{{ bolsista.id }}</td>
@@ -99,13 +99,30 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td> <a href=""><img src="../../../assets/open-link.svg" alt="">Leandro Andrade</a></td>
-              <td>12/01/2026</td>
-              <td>07:30</td>
-              <td>12:00</td>
-              <td><span class="badge badge-success">Fechado</span></td>
-              <td>04:30 Hrs</td>
+            <tr *ngIf="pontosBolsistasLoading">
+              <td colspan="6">Carregando pontos...</td>
+            </tr>
+            <tr *ngIf="!pontosBolsistasLoading && pontosBolsistasError">
+              <td colspan="6">{{ pontosBolsistasError }}</td>
+            </tr>
+            <tr *ngIf="!pontosBolsistasLoading && !pontosBolsistasError && pontosBolsistas.length === 0">
+              <td colspan="6">Nenhum ponto encontrado.</td>
+            </tr>
+            <tr *ngFor="let ponto of pontosBolsistas">
+              <td>
+                <a href="#" (click)="$event.preventDefault()">
+                  <img src="../../../assets/open-link.svg" alt="Abrir">{{ ponto.nome }}
+                </a>
+              </td>
+              <td>{{ ponto.horaDeEntrada | date:'dd/MM/yyyy' }}</td>
+              <td>{{ ponto.horaDeEntrada | date:'HH:mm' }}</td>
+              <td>{{ ponto.horaDeSaida ? (ponto.horaDeSaida | date:'HH:mm') : '-' }}</td>
+              <td>
+                <span class="badge" [ngClass]="getPontoStatusBadgeClass(ponto.status)">
+                  {{ formatSituacao(ponto.status) }}
+                </span>
+              </td>
+              <td>{{ formatHorasFeitas(ponto.qtdDeHorasFeitas) }}</td>
             </tr>
           </tbody>
         </table>
@@ -198,7 +215,7 @@
         </div>
         <div class="obs">
           <div class="jutificativa"><b>Justificativa</b>
-            <textarea name="observacoes" id="observacoes" placeholder="Sistema de ponto fora do ar."
+            <textarea name="observacoes" placeholder="Sistema de ponto fora do ar."
               disabled></textarea>
           </div>
           <div class="separador"></div>
@@ -210,7 +227,7 @@
           </select>
           <div class="obs">
             <div class="jutificativa"><b>Observações:</b>
-              <textarea name="observacoes" id="observacoes">Justificativa aceita.</textarea>
+              <textarea name="observacoes">Justificativa aceita.</textarea>
             </div>
           </div>
         </div>
@@ -250,8 +267,8 @@
         <b>Cargo:</b>
         <input type="text" placeholder="Digite o cargo" formControlName="cargo">
 
-        <div *ngIf="registerSuccess" style="color: green; margin-top: 10px;">Cadastro realizado com sucesso!</div>
-        <div *ngIf="registerError" style="color: red; margin-top: 10px;">{{ registerError }}</div>
+  <div *ngIf="registerSuccess" class="msg-success">Cadastro realizado com sucesso!</div>
+  <div *ngIf="registerError" class="msg-error">{{ registerError }}</div>
 
         <div class="modal-footer">
           <button class="button-one-popup" type="button" (click)="onRegisterSubmit()"
@@ -279,8 +296,8 @@
         <b>Confirma Senha:*</b>
         <input type="password" placeholder="Confirme sua senha" formControlName="senhaConfirmacao">
 
-        <div *ngIf="changePasswordError" style="color: red; margin-top: 10px;">{{ changePasswordError }}</div>
-        <div *ngIf="changePasswordSuccess" style="color: green; margin-top: 10px;">Senha atualizada com sucesso!</div>
+  <div *ngIf="changePasswordError" class="msg-error">{{ changePasswordError }}</div>
+  <div *ngIf="changePasswordSuccess" class="msg-success">Senha atualizada com sucesso!</div>
 
         <div class="modal-footer">
           <button class="button-one-popup" type="submit" [disabled]="changePasswordForm.invalid">Atualizar</button>
@@ -321,8 +338,8 @@
           <option value="DESATIVADO">Desativado</option>
         </select>
 
-        <div *ngIf="editBolsistaSuccess" style="color: green; margin-top: 10px;">Dados atualizados com sucesso!</div>
-        <div *ngIf="editBolsistaError" style="color: red; margin-top: 10px;">{{ editBolsistaError }}</div>
+  <div *ngIf="editBolsistaSuccess" class="msg-success">Dados atualizados com sucesso!</div>
+  <div *ngIf="editBolsistaError" class="msg-error">{{ editBolsistaError }}</div>
 
         <div class="modal-footer">
           <button class="button-one-popup" type="submit" [disabled]="editBolsistaForm.invalid">Enviar</button>

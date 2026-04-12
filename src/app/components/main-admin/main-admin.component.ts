@@ -7,6 +7,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { TecnicoInfo } from "./tecnico-info.model"
 import { BolsistaListagemItem } from './bolsista-listagem.model';
+import { PontoBolsistaListagemItem } from './ponto-bolsista-listagem.model';
 
 @Component({
   selector: 'app-main-admin',
@@ -21,6 +22,9 @@ export class MainAdminComponent {
   bolsistas: BolsistaListagemItem[] = [];
   bolsistasLoading = false;
   bolsistasError: string | null = null;
+  pontosBolsistas: PontoBolsistaListagemItem[] = [];
+  pontosBolsistasLoading = false;
+  pontosBolsistasError: string | null = null;
   editBolsistaForm: FormGroup;
   editingBolsistaId: number | null = null;
   editBolsistaSuccess = false;
@@ -63,6 +67,7 @@ export class MainAdminComponent {
   ngOnInit(): void {
     this.loadTecnicoInfo();
     this.loadBolsistas();
+    this.loadPontosBolsistas();
   }
 
   private buildAuthHeaders(): HttpHeaders | undefined {
@@ -108,6 +113,29 @@ export class MainAdminComponent {
       });
   }
 
+  private loadPontosBolsistas(): void {
+    this.pontosBolsistasLoading = true;
+    this.pontosBolsistasError = null;
+
+    const headers = this.buildAuthHeaders();
+    this.http.get<PontoBolsistaListagemItem[] | PontoBolsistaListagemItem>(
+      'http://localhost:8080/spe/api/admin/pontos/bolsistas/listagem',
+      { headers }
+    )
+      .subscribe({
+        next: (data) => {
+          const list = Array.isArray(data) ? data : (data ? [data] : []);
+          this.pontosBolsistas = list;
+          this.pontosBolsistasLoading = false;
+        },
+        error: () => {
+          this.pontosBolsistas = [];
+          this.pontosBolsistasLoading = false;
+          this.pontosBolsistasError = 'Erro ao carregar pontos dos bolsistas.';
+        }
+      });
+  }
+
   isBolsistaAtivo(situacao: string | null | undefined): boolean {
     return (situacao || '').toUpperCase() === 'ATIVO';
   }
@@ -120,6 +148,24 @@ export class MainAdminComponent {
 
     const normalized = raw.replace(/_/g, ' ').toLowerCase();
     return normalized.charAt(0).toUpperCase() + normalized.slice(1);
+  }
+
+  getPontoStatusBadgeClass(status: string | null | undefined): string {
+    const normalized = (status || '').toUpperCase();
+    if (normalized === 'FECHADO') {
+      return 'badge-success';
+    }
+    if (normalized === 'INDEFERIDO' || normalized === 'NEGADO') {
+      return 'badge-denied';
+    }
+    return 'badge-analyze';
+  }
+
+  formatHorasFeitas(qtdDeHorasFeitas: number | null | undefined): string {
+    if (qtdDeHorasFeitas == null || Number.isNaN(qtdDeHorasFeitas)) {
+      return '-';
+    }
+    return `${qtdDeHorasFeitas} Hrs`;
   }
 
   openEditModal(bolsista: BolsistaListagemItem): void {
