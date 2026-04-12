@@ -8,15 +8,119 @@ import { PontoDTO } from './ponto-dto.model';
 import { JustificativaDTO } from './justificativa-dto.model';
 import { PontoService } from '../../services/ponto.service';
 import { PrintPontoModalComponent } from '../print-ponto-modal/print-ponto-modal.component';
+import { NovoHorarioModalComponent } from '../novo-horario-modal/novo-horario-modal.component';
+import { MeusHorariosPayload } from '../../services/ponto.service';
 
 @Component({
   selector: 'app-main-bolsista',
   standalone: true,
-  imports: [HeaderComponent, CommonModule, FormsModule, PrintPontoModalComponent],
+  imports: [HeaderComponent, CommonModule, FormsModule, PrintPontoModalComponent, NovoHorarioModalComponent],
   templateUrl: './main-bolsista.component.html',
   styleUrls: ['./main-bolsista.component.scss']
 })
 export class MainBolsistaComponent implements OnInit {
+  readonly colunasHorario: string[] = [
+    '07:00 - 08:00',
+    '08:00 - 09:00',
+    '09:00 - 10:00',
+    '10:00 - 11:00',
+    '11:00 - 12:00',
+    '12:00 - 13:00',
+    '13:00 - 14:00',
+    '14:00 - 15:00',
+    '15:00 - 16:00',
+    '16:00 - 17:00',
+    '17:00 - 18:00'
+  ];
+
+  meusHorariosTabela = [
+    {
+      dia: 'SEGUNDA_FEIRA',
+      sigla: 'Seg',
+      horarios: {
+        '07:00 - 08:00': 'bolsa',
+        '08:00 - 09:00': 'bolsa',
+        '09:00 - 10:00': 'aula',
+        '10:00 - 11:00': 'aula',
+        '11:00 - 12:00': 'aula',
+        '12:00 - 13:00': 'almoco',
+        '13:00 - 14:00': 'bolsa',
+        '14:00 - 15:00': 'bolsa',
+        '15:00 - 16:00': 'bolsa',
+        '16:00 - 17:00': '',
+        '17:00 - 18:00': ''
+      } as Record<string, string>
+    },
+    {
+      dia: 'TERCA_FEIRA',
+      sigla: 'Ter',
+      horarios: {
+        '07:00 - 08:00': 'bolsa',
+        '08:00 - 09:00': 'bolsa',
+        '09:00 - 10:00': 'aula',
+        '10:00 - 11:00': 'aula',
+        '11:00 - 12:00': 'aula',
+        '12:00 - 13:00': 'almoco',
+        '13:00 - 14:00': 'aula',
+        '14:00 - 15:00': 'aula',
+        '15:00 - 16:00': 'bolsa',
+        '16:00 - 17:00': '',
+        '17:00 - 18:00': ''
+      } as Record<string, string>
+    },
+    {
+      dia: 'QUARTA_FEIRA',
+      sigla: 'Qua',
+      horarios: {
+        '07:00 - 08:00': 'bolsa',
+        '08:00 - 09:00': 'bolsa',
+        '09:00 - 10:00': 'aula',
+        '10:00 - 11:00': 'aula',
+        '11:00 - 12:00': 'aula',
+        '12:00 - 13:00': 'almoco',
+        '13:00 - 14:00': 'bolsa',
+        '14:00 - 15:00': 'bolsa',
+        '15:00 - 16:00': 'bolsa',
+        '16:00 - 17:00': '',
+        '17:00 - 18:00': ''
+      } as Record<string, string>
+    },
+    {
+      dia: 'QUINTA_FEIRA',
+      sigla: 'Qui',
+      horarios: {
+        '07:00 - 08:00': 'bolsa',
+        '08:00 - 09:00': 'bolsa',
+        '09:00 - 10:00': 'aula',
+        '10:00 - 11:00': 'aula',
+        '11:00 - 12:00': 'aula',
+        '12:00 - 13:00': 'almoco',
+        '13:00 - 14:00': 'aula',
+        '14:00 - 15:00': 'aula',
+        '15:00 - 16:00': 'bolsa',
+        '16:00 - 17:00': '',
+        '17:00 - 18:00': ''
+      } as Record<string, string>
+    },
+    {
+      dia: 'SEXTA_FEIRA',
+      sigla: 'Sex',
+      horarios: {
+        '07:00 - 08:00': 'bolsa',
+        '08:00 - 09:00': 'bolsa',
+        '09:00 - 10:00': 'bolsa',
+        '10:00 - 11:00': 'bolsa',
+        '11:00 - 12:00': 'bolsa',
+        '12:00 - 13:00': 'almoco',
+        '13:00 - 14:00': 'bolsa',
+        '14:00 - 15:00': '',
+        '15:00 - 16:00': '',
+        '16:00 - 17:00': '',
+        '17:00 - 18:00': ''
+      } as Record<string, string>
+    }
+  ];
+
   bolsistaInfo?: BolsistaInfo;
   pontos: PontoDTO[] = [];
   justificativas: JustificativaDTO[] = [];
@@ -28,9 +132,15 @@ export class MainBolsistaComponent implements OnInit {
   dataFimImpressao: string = '';
   carregandoImpressao: boolean = false;
   modalImpressaoAberto: boolean = false;
+  modalNovoHorarioAberto: boolean = false;
+  carregandoNovoHorario: boolean = false;
 
   abrirModalImpressao() {
     this.modalImpressaoAberto = true;
+  }
+
+  abrirModalNovoHorario() {
+    this.modalNovoHorarioAberto = true;
   }
 
   fecharModalImpressao() {
@@ -39,6 +149,14 @@ export class MainBolsistaComponent implements OnInit {
     }
 
     this.modalImpressaoAberto = false;
+  }
+
+  fecharModalNovoHorario() {
+    if (this.carregandoNovoHorario) {
+      return;
+    }
+
+    this.modalNovoHorarioAberto = false;
   }
 
   abrirJustificativa(id: number) {
@@ -98,6 +216,95 @@ export class MainBolsistaComponent implements OnInit {
           (err.error?.message || err.message || 'Erro desconhecido')
         );
       }
+    });
+  }
+
+  salvarMeusHorarios(payload: MeusHorariosPayload) {
+    if (payload.dias.length === 0) {
+      alert('Selecione pelo menos um horário antes de salvar.');
+      return;
+    }
+
+    this.carregandoNovoHorario = true;
+
+    this.pontoService.salvarMeusHorarios(payload).subscribe({
+      next: () => {
+        this.carregandoNovoHorario = false;
+        this.atualizarTabelaHorarios(payload);
+        this.modalNovoHorarioAberto = false;
+        alert('Horários salvos com sucesso.');
+      },
+      error: (err) => {
+        this.carregandoNovoHorario = false;
+        console.error('Erro ao salvar horários:', err);
+        alert(
+          'Erro ao salvar os horários.\n\nErro: ' +
+          (err.error?.message || err.message || 'Erro desconhecido')
+        );
+      }
+    });
+  }
+
+  obterTextoStatus(tipo: string) {
+    if (tipo === 'bolsa') {
+      return 'Em bolsa';
+    }
+
+    if (tipo === 'aula') {
+      return 'Em aula';
+    }
+
+    if (tipo === 'almoco') {
+      return 'Almoço';
+    }
+
+    return '';
+  }
+
+  obterClasseStatus(tipo: string) {
+    if (tipo === 'bolsa') {
+      return 'badge-horario-bolsa';
+    }
+
+    if (tipo === 'aula' || tipo === 'almoco') {
+      return 'badge-horario';
+    }
+
+    return '';
+  }
+
+  calcularTotalHorasLinha(horarios: Record<string, string>) {
+    return Object.values(horarios).filter(status => status === 'bolsa').length;
+  }
+
+  calcularCargaHorariaTotal() {
+    return this.meusHorariosTabela.reduce((total, linha) => total + this.calcularTotalHorasLinha(linha.horarios), 0);
+  }
+
+  private atualizarTabelaHorarios(payload: MeusHorariosPayload) {
+    const horariosEditaveis = this.colunasHorario.filter(horario => horario !== '12:00 - 13:00');
+
+    this.meusHorariosTabela = this.meusHorariosTabela.map(linha => {
+      const diaSalvo = payload.dias.find(dia => dia.dia === linha.dia);
+
+      if (!diaSalvo) {
+        return linha;
+      }
+
+      const horariosAtualizados = { ...linha.horarios };
+
+      for (const horario of horariosEditaveis) {
+        if (horariosAtualizados[horario] === 'almoco' || horariosAtualizados[horario] === 'aula') {
+          continue;
+        }
+
+        horariosAtualizados[horario] = diaSalvo.horariosSelecionados.includes(horario) ? 'bolsa' : '';
+      }
+
+      return {
+        ...linha,
+        horarios: horariosAtualizados
+      };
     });
   }
 

@@ -2,10 +2,21 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+export interface HorarioDiaPayload {
+    dia: string;
+    horariosSelecionados: string[];
+    totalHoras: number;
+}
+
+export interface MeusHorariosPayload {
+    dias: HorarioDiaPayload[];
+}
+
 @Injectable({ providedIn: 'root' })
 export class PontoService {
     private readonly registrarPontoUrl = 'http://localhost:8080/spe/api/bolsista/registre-ponto';
     private readonly imprimirPontoUrl = 'http://localhost:8080/spe/api/bolsista/imprimir-ponto';
+    private readonly meusHorariosUrl = 'http://localhost:8080/spe/api/bolsista/meus-horarios';
 
     constructor(private http: HttpClient) { }
 
@@ -27,5 +38,15 @@ export class PontoService {
             { dataInicio, dataFim },
             { headers, responseType: 'blob' }
         );
+    }
+
+    salvarMeusHorarios(payload: MeusHorariosPayload): Observable<void> {
+        const token = localStorage.getItem('auth_token');
+        let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+        if (token) {
+            headers = headers.set('Authorization', `Bearer ${token}`);
+        }
+
+        return this.http.post<void>(this.meusHorariosUrl, payload, { headers });
     }
 }
