@@ -89,14 +89,14 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let ponto of pontos">
+            <tr *ngFor="let ponto of pontosExibidos">
               <td>{{ ponto.horasDeEntrada ? (ponto.horasDeEntrada | date:'dd/MM/yyyy') : '–' }}</td>
               <td>{{ ponto.horasDeEntrada ? (ponto.horasDeEntrada | date:'HH:mm') : '–' }}</td>
               <td>{{ ponto.horasDeSaida ? (ponto.horasDeSaida | date:'HH:mm') : '–' }}</td>
               <td>{{ ponto.qtdDeHorasFeitas ? ponto.qtdDeHorasFeitas : '-' }}</td>
             </tr>
-            <tr *ngIf="pontos.length === 0">
-              <td colspan="4">Nenhum ponto registrado nos últimos dias.</td>
+            <tr *ngIf="pontosExibidos.length === 0">
+              <td colspan="4">Nenhum ponto registrado nos últimos 5 dias.</td>
             </tr>
           </tbody>
         </table>

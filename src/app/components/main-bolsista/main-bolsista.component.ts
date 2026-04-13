@@ -19,6 +19,8 @@ import { MeusHorariosPayload } from '../../services/ponto.service';
   styleUrls: ['./main-bolsista.component.scss']
 })
 export class MainBolsistaComponent implements OnInit {
+  private readonly DIAS_PONTOS_EXIBIDOS = 5;
+  private readonly MAX_PONTOS_EXIBIDOS = 5;
   readonly colunasHorario: string[] = [
     '07:00 - 08:00',
     '08:00 - 09:00',
@@ -49,6 +51,41 @@ export class MainBolsistaComponent implements OnInit {
   modalNovoHorarioAberto: boolean = false;
   carregandoNovoHorario: boolean = false;
   totalHoras?: number;
+
+  private parseDateSafe(value: string | null | undefined): Date | null {
+    if (!value) {
+      return null;
+    }
+
+    const parsed = new Date(value);
+    return Number.isFinite(parsed.getTime()) ? parsed : null;
+  }
+
+  private getDataLimiteUltimosDias(dias: number): Date {
+    const agora = new Date();
+
+    // Ex.: 5 dias => hoje + 4 dias anteriores (inclusivo)
+    const limite = new Date(agora);
+    limite.setHours(0, 0, 0, 0);
+    limite.setDate(limite.getDate() - Math.max(0, dias - 1));
+
+    return limite;
+  }
+
+  get pontosExibidos(): PontoDTO[] {
+    const limite = this.getDataLimiteUltimosDias(this.DIAS_PONTOS_EXIBIDOS);
+
+    const pontosRecentes = (this.pontos ?? [])
+      .map((ponto) => ({ ponto, entrada: this.parseDateSafe(ponto.horasDeEntrada) }))
+      .filter(({ entrada }) => !!entrada && entrada >= limite)
+      .sort((a, b) => (b.entrada as Date).getTime() - (a.entrada as Date).getTime())
+      .slice(0, this.MAX_PONTOS_EXIBIDOS);
+
+    // Exibir em ordem crescente (mais antigo -> mais novo)
+    return pontosRecentes
+      .sort((a, b) => (a.entrada as Date).getTime() - (b.entrada as Date).getTime())
+      .map(({ ponto }) => ponto);
+  }
 
   private parseTotalHorasResponse(raw: string): number {
     const trimmed = (raw ?? '').trim();
