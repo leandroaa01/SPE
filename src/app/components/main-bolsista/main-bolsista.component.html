@@ -125,7 +125,7 @@
             <tr *ngFor="let justificativa of justificativas">
               <td>{{ justificativa.motivo }}</td>
               <td>{{ justificativa.data | date:'dd/MM/yyyy' }}</td>
-              <td>{{ justificativa.qtdDeHoras }}</td>
+              <td>{{ formatDuracaoHoras(justificativa.qtdDeHoras) }}</td>
               <td>
                 <span class="badge" [ngClass]="{
                   'badge-success': justificativa.justificaSituacao === 'DEFERIDO',
