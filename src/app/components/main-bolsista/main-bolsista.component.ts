@@ -10,6 +10,7 @@ import { PontoService } from '../../services/ponto.service';
 import { PrintPontoModalComponent } from '../print-ponto-modal/print-ponto-modal.component';
 import { NovoHorarioModalComponent } from '../novo-horario-modal/novo-horario-modal.component';
 import { MeusHorariosPayload } from '../../services/ponto.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-main-bolsista',
@@ -51,6 +52,14 @@ export class MainBolsistaComponent implements OnInit {
   modalNovoHorarioAberto: boolean = false;
   carregandoNovoHorario: boolean = false;
   totalHoras?: number;
+
+  isAdminView = false;
+  adminBolsistaId: number | null = null;
+
+  private buildAuthHeaders(): HttpHeaders | undefined {
+    const token = localStorage.getItem('auth_token');
+    return token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : undefined;
+  }
 
   private parseDateSafe(value: string | null | undefined): Date | null {
     if (!value) {
@@ -147,6 +156,15 @@ export class MainBolsistaComponent implements OnInit {
           this.justificativaSelecionada = undefined;
         }
       });
+  }
+
+  abrirJustificativaDetalhes(justificativa: JustificativaDTO) {
+    if (this.isAdminView) {
+      this.justificativaSelecionada = justificativa;
+      return;
+    }
+
+    this.abrirJustificativa(justificativa.id);
   }
 
   imprimirPonto() {
@@ -408,11 +426,27 @@ export class MainBolsistaComponent implements OnInit {
     return mapaDias[dia?.trim().toUpperCase()] || dia;
   }
 
-  constructor(private http: HttpClient, private pontoService: PontoService) { }
+  constructor(
+    private http: HttpClient,
+    private pontoService: PontoService,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
-    const token = localStorage.getItem('auth_token');
-    const headers = token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : undefined;
+    const idParam = this.route.snapshot.paramMap.get('id');
+    const parsedId = idParam ? Number(idParam) : NaN;
+
+    if (idParam && Number.isFinite(parsedId)) {
+      this.isAdminView = true;
+      this.adminBolsistaId = parsedId;
+      this.carregarPerfilAdmin(parsedId);
+      return;
+    }
+
+    this.isAdminView = false;
+    this.adminBolsistaId = null;
+
+    const headers = this.buildAuthHeaders();
     this.http.get<BolsistaInfo>('http://localhost:8080/spe/api/bolsista/me', { headers })
       .subscribe({
         next: (data) => {
@@ -459,5 +493,43 @@ export class MainBolsistaComponent implements OnInit {
           this.totalHoras = 0;
         }
       });
+  }
+
+  private carregarPerfilAdmin(id: number): void {
+    const headers = this.buildAuthHeaders();
+
+    this.bolsistaInfo = undefined;
+    this.errorMsg = undefined;
+    this.pontos = [];
+    this.justificativas = [];
+    this.totalHoras = undefined;
+    this.meusHorariosTabela = this.criarTabelaBaseHorarios();
+
+    this.http.get<any>(`http://localhost:8080/spe/api/admin/bolsistas/dados/perfil/${id}`, { headers }).subscribe({
+      next: (data) => {
+        this.bolsistaInfo = data?.dadosBolsista;
+
+        const horarioPayload = data?.horarioBolsista;
+        if (horarioPayload?.dias?.length) {
+          this.aplicarMeusHorariosDoBackend(horarioPayload as MeusHorariosPayload);
+        } else {
+          this.meusHorariosTabela = this.criarTabelaBaseHorarios();
+        }
+
+        this.pontos = Array.isArray(data?.pontosBolsista) ? data.pontosBolsista : [];
+        this.justificativas = Array.isArray(data?.justificativaBolsistra) ? data.justificativaBolsistra : [];
+
+        const total = data?.horarioBolsista?.dias?.reduce((sum: number, dia: any) => sum + (Number(dia?.totalHoras) || 0), 0);
+        if (Number.isFinite(total)) {
+          this.totalHoras = total;
+        }
+
+        this.errorMsg = undefined;
+      },
+      error: () => {
+        this.bolsistaInfo = undefined;
+        this.errorMsg = 'Erro ao carregar dados do bolsista (admin).';
+      }
+    });
   }
 }

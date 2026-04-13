@@ -56,7 +56,7 @@
             <tr *ngFor="let bolsista of bolsistas">
               <td>{{ bolsista.id }}</td>
               <td>
-                <a routerLink="/meus-dados" class="link-router">
+                <a [routerLink]="['/admin/bolsista', bolsista.id]" class="link-router">
                   <img src="../../../assets/open-link.svg" alt="Abrir">{{ bolsista.nome }}
                 </a>
               </td>
@@ -110,9 +110,7 @@
             </tr>
             <tr *ngFor="let ponto of pontosBolsistas">
               <td>
-                <a href="#" (click)="$event.preventDefault()">
-                  <img src="../../../assets/open-link.svg" alt="Abrir">{{ ponto.nome }}
-                </a>
+                {{ ponto.nome}}
               </td>
               <td>{{ ponto.horaDeEntrada | date:'dd/MM/yyyy' }}</td>
               <td>{{ ponto.horaDeEntrada | date:'HH:mm' }}</td>

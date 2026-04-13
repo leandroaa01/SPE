@@ -31,5 +31,11 @@ export const routes: Routes = [
     component: MainAdminComponent,
     //canActivate: [authGuard],
     data: { role: 'ADMIN' }
+  },
+  {
+    path: 'admin/bolsista/:id',
+    component: MainBolsistaComponent,
+    //canActivate: [authGuard],
+    data: { role: 'ADMIN' }
   }
 ];

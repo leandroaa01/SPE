@@ -10,7 +10,7 @@
     <p>Carregando dados...</p>
   </section>
   <section *ngIf="errorMsg" class="meus-dados">
-    <p style="color: red;">{{ errorMsg }}</p>
+    <p class="error-msg">{{ errorMsg }}</p>
   </section>
 
   <section class="tabela-horas horarios">
@@ -22,8 +22,8 @@
             <thead>
               <tr>
                 <th></th>
-                <th  style="font-size: 10px;"  *ngFor="let horario of colunasHorario">{{ horario }}</th>
-                <th  style="font-size: 10px;" >Total de Horas</th>
+                <th class="table-header-small" *ngFor="let horario of colunasHorario">{{ horario }}</th>
+                <th class="table-header-small">Total de Horas</th>
               </tr>
             </thead>
             <tbody>
@@ -38,7 +38,7 @@
                     {{ obterTextoStatus(linha.horarios[horario]) }}
                   </span>
                 </td>
-                <td style="font-size: 12px;">{{ calcularTotalHorasLinha(linha.horarios) }} horas</td>
+                <td class="table-cell-small">{{ calcularTotalHorasLinha(linha.horarios) }} horas</td>
               </tr>
             </tbody>
           </table>
@@ -138,26 +138,28 @@
               </td>
               <td>
                 <a class="action-link" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-                  (click)="abrirJustificativa(justificativa.id)"><img src="../../../assets/open-link.svg"
+                  (click)="abrirJustificativaDetalhes(justificativa)"><img src="../../../assets/open-link.svg"
                     alt="">Abrir</a>
               </td>
             </tr>
             <tr *ngIf="justificativas.length === 0">
-              <td style="text-align: center;" colspan="5">Nenhuma justificativa registrada.</td>
+              <td class="text-center" colspan="5">Nenhuma justificativa registrada.</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
   </section>
-</main>
-<section class="buttons">
+  </main>
+
+<section class="buttons" *ngIf="!isAdminView">
   <button class="button-one-popup-lithg" type="button" (click)="abrirModalNovoHorario()">Cadastrar Novo Horario</button>
   <button class="button-one-popup" type="button" (click)="abrirModalImpressao()">Imprimir Ponto
   </button>
 </section>
 
 <app-novo-horario-modal
+  *ngIf="!isAdminView"
   [visible]="modalNovoHorarioAberto"
   [carregando]="carregandoNovoHorario"
   (close)="fecharModalNovoHorario()"
@@ -165,6 +167,7 @@
 ></app-novo-horario-modal>
 
 <app-print-ponto-modal
+  *ngIf="!isAdminView"
   [visible]="modalImpressaoAberto"
   [dataInicio]="dataInicioImpressao"
   [dataFim]="dataFimImpressao"
@@ -204,11 +207,11 @@
           </div>
           <div class="separador"></div>
           <b>Status:</b>
-          <span class="badge" [ngClass]="{
+          <span class="badge badge-fixed" [ngClass]="{
             'badge-success': justificativaSelecionada.justificaSituacao === 'DEFERIDO',
             'badge-analyze': justificativaSelecionada.justificaSituacao === 'EMANALISE',
             'badge-denied': justificativaSelecionada.justificaSituacao === 'INDEFERIDO'
-          }" style="width: 110px; padding: 8px 8px;">
+          }">
             {{ justificativaSelecionada.justificaSituacao === 'DEFERIDO' ? 'Deferido' :
             justificativaSelecionada.justificaSituacao === 'EMANALISE' ? 'Em análise' : 'Indeferido' }}
           </span>
@@ -216,10 +219,10 @@
             *ngIf="justificativaSelecionada.dataJustificativaTecnico || (justificativaSelecionada.justificativaTecnico)">
             <div class="jutificativa" *ngIf="justificativaSelecionada.justificativaTecnico">
               <b>Observações:</b>
-              <textarea name="observacoes" id="observacoes" rows="5" style="height: 120px;"
+              <textarea name="observacoes" id="observacoes" rows="5" class="textarea-tall"
                 disabled>{{ justificativaSelecionada.justificativaTecnico }}</textarea>
             </div>
-            <p style="font-size: 14px;" class="avaliada-em" *ngIf="justificativaSelecionada.dataJustificativaTecnico">
+            <p class="avaliada-em" *ngIf="justificativaSelecionada.dataJustificativaTecnico">
               Avaliada em : <span>{{
                 justificativaSelecionada.dataJustificativaTecnico | date:'dd/MM/yyyy' }}</span> - <span>{{
                 justificativaSelecionada.nomeTecnico }}
