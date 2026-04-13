@@ -46,8 +46,13 @@ export class MainAdminComponent {
   changePasswordForm: FormGroup;
   changePasswordSuccess: boolean = false;
   changePasswordError: string | null = null;
+  filterForm: FormGroup;
 
   constructor(private http: HttpClient, private fb: FormBuilder) {
+    this.filterForm = this.fb.group({
+      nome: ['']
+    });
+
     this.updateJustificativaForm = this.fb.group({
       status: ['EMANALISE', Validators.required],
       observacoes: ['']
@@ -85,6 +90,31 @@ export class MainAdminComponent {
     this.loadBolsistas();
     this.loadPontosBolsistas();
     this.loadJustificativas();
+  }
+
+  private normalizeText(value: string | null | undefined): string {
+    return (value ?? '').trim().toLowerCase();
+  }
+
+  private matchesNome(value: string | null | undefined): boolean {
+    const query = this.normalizeText(this.filterForm?.get('nome')?.value);
+    if (!query) {
+      return true;
+    }
+
+    return this.normalizeText(value).includes(query);
+  }
+
+  get bolsistasFiltrados(): BolsistaListagemItem[] {
+    return (this.bolsistas ?? []).filter((b) => this.matchesNome((b as any).nome));
+  }
+
+  get pontosBolsistasFiltrados(): PontoBolsistaListagemItem[] {
+    return (this.pontosBolsistasExibidos ?? []).filter((p) => this.matchesNome(p?.nome));
+  }
+
+  get justificativasFiltradas(): JustificativaListagemItem[] {
+    return (this.justificativas ?? []).filter((j) => this.matchesNome((j as any).nomeBolsista));
   }
 
   private buildAuthHeaders(): HttpHeaders | undefined {

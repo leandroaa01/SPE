@@ -7,19 +7,19 @@
 
   <section class="bolsistas">
     <div class="filter-bolsista">
-      <form>
+      <form [formGroup]="filterForm" (ngSubmit)="$event.preventDefault()">
         <label>Filtrar:</label>
 
         <select aria-label="Filtrar por">
-          <option value="id">ID</option>
+          <!-- <option value="id">ID</option> -->
           <option value="nome" selected>Nome</option>
-          <option value="matricula">Matrícula</option>
-          <option value="situacao">Situação</option>
+          <!-- <option value="matricula">Matrícula</option>
+          <option value="situacao">Situação</option> -->
         </select>
 
         <div class="search-box">
           <img src="./../../assets/icon-lupa.svg" alt="Buscar">
-          <input type="search" placeholder="Procurar">
+          <input type="search" placeholder="Procurar" formControlName="nome">
         </div>
 
         <button type="submit">Buscar</button>
@@ -50,10 +50,10 @@
             <tr *ngIf="!bolsistasLoading && bolsistasError">
               <td colspan="8">{{ bolsistasError }}</td>
             </tr>
-            <tr *ngIf="!bolsistasLoading && !bolsistasError && bolsistas.length === 0">
+            <tr *ngIf="!bolsistasLoading && !bolsistasError && bolsistasFiltrados.length === 0">
               <td colspan="8">Nenhum bolsista encontrado.</td>
             </tr>
-            <tr *ngFor="let bolsista of bolsistas">
+            <tr *ngFor="let bolsista of bolsistasFiltrados">
               <!-- //<td>{{ bolsista.id }}</td> -->
               <td>
                 <a [routerLink]="['/admin/bolsista', bolsista.id]" class="link-router">
@@ -105,10 +105,10 @@
             <tr *ngIf="!pontosBolsistasLoading && pontosBolsistasError">
               <td colspan="6">{{ pontosBolsistasError }}</td>
             </tr>
-            <tr *ngIf="!pontosBolsistasLoading && !pontosBolsistasError && pontosBolsistas.length === 0">
+            <tr *ngIf="!pontosBolsistasLoading && !pontosBolsistasError && pontosBolsistasFiltrados.length === 0">
               <td colspan="6">Nenhum ponto encontrado.</td>
             </tr>
-            <tr *ngFor="let ponto of pontosBolsistasExibidos">
+            <tr *ngFor="let ponto of pontosBolsistasFiltrados">
               <td>
                 {{ ponto.nome}}
               </td>
@@ -150,10 +150,10 @@
             <tr *ngIf="!justificativasLoading && justificativasError">
               <td colspan="6">{{ justificativasError }}</td>
             </tr>
-            <tr *ngIf="!justificativasLoading && !justificativasError && justificativas.length === 0">
+            <tr *ngIf="!justificativasLoading && !justificativasError && justificativasFiltradas.length === 0">
               <td colspan="6">Nenhuma justificativa encontrada.</td>
             </tr>
-            <tr *ngFor="let justificativa of justificativas">
+            <tr *ngFor="let justificativa of justificativasFiltradas">
               <td>{{ justificativa.nomeBolsista }}</td>
               <td>{{ justificativa.motivo }}</td>
               <td>{{ justificativa.data | date:'dd/MM/yyyy' }}</td>
