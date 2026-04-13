@@ -18,6 +18,8 @@ import { JustificativaListagemItem } from './justificativa-listagem.model';
   styleUrl: './main-admin.component.scss'
 })
 export class MainAdminComponent {
+  private readonly MAX_PONTOS_BOLSISTAS_EXIBIDOS = 10;
+
   tecnicoInfo?: TecnicoInfo;
   errorMsg: string | undefined;
   bolsistas: BolsistaListagemItem[] = [];
@@ -47,7 +49,7 @@ export class MainAdminComponent {
 
   constructor(private http: HttpClient, private fb: FormBuilder) {
     this.updateJustificativaForm = this.fb.group({
-      status: ['EM_ANALISE', Validators.required],
+      status: ['EMANALISE', Validators.required],
       observacoes: ['']
     });
 
@@ -88,6 +90,22 @@ export class MainAdminComponent {
   private buildAuthHeaders(): HttpHeaders | undefined {
     const token = localStorage.getItem('auth_token');
     return token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : undefined;
+  }
+
+  private parseDateMs(value: string | null | undefined): number {
+    if (!value) {
+      return 0;
+    }
+
+    const parsed = new Date(value);
+    const time = parsed.getTime();
+    return Number.isFinite(time) ? time : 0;
+  }
+
+  get pontosBolsistasExibidos(): PontoBolsistaListagemItem[] {
+    return [...(this.pontosBolsistas ?? [])]
+      .sort((a, b) => this.parseDateMs(b?.horaDeEntrada) - this.parseDateMs(a?.horaDeEntrada))
+      .slice(0, this.MAX_PONTOS_BOLSISTAS_EXIBIDOS);
   }
 
   private loadTecnicoInfo(): void {

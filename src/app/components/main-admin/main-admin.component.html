@@ -33,7 +33,7 @@
         <table>
           <thead>
             <tr>
-              <th>ID</th>
+             <!-- // <th>ID</th> -->
               <th>Nome</th>
               <th>Username</th>
               <th>Matrícula</th>
@@ -54,7 +54,7 @@
               <td colspan="8">Nenhum bolsista encontrado.</td>
             </tr>
             <tr *ngFor="let bolsista of bolsistas">
-              <td>{{ bolsista.id }}</td>
+              <!-- //<td>{{ bolsista.id }}</td> -->
               <td>
                 <a [routerLink]="['/admin/bolsista', bolsista.id]" class="link-router">
                   <img src="../../../assets/open-link.svg" alt="Abrir">{{ bolsista.nome }}
@@ -108,7 +108,7 @@
             <tr *ngIf="!pontosBolsistasLoading && !pontosBolsistasError && pontosBolsistas.length === 0">
               <td colspan="6">Nenhum ponto encontrado.</td>
             </tr>
-            <tr *ngFor="let ponto of pontosBolsistas">
+            <tr *ngFor="let ponto of pontosBolsistasExibidos">
               <td>
                 {{ ponto.nome}}
               </td>
