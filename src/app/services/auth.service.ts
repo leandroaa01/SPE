@@ -73,7 +73,7 @@ export class AuthService {
         if (roles.includes('ADMIN')) {
             return '/admin';
         }
-        return '/meus-dados';
+        return '/home';
     }
 
     decodeToken(token: string): any {
