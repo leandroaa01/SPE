@@ -12,7 +12,7 @@
     </p>
   </div>
   <ul class="routes-icons">
-    <li>
+    <li *ngIf="!isAdmin">
       <a
         routerLink="/home"
         class="nav-link"
@@ -34,12 +34,10 @@
         <img src="../../../assets/icon-perfie.svg" alt="Perfil">
       </a>
     </li>
-    @if (!isRoute('/login', true)) {
-      <li>
-        <a href="/login" class="nav-link" title="Logout" (click)="logout($event)">
-          <img src="../../../assets/icon-loguot.svg" alt="Logout">
-        </a>
-      </li>
-    }
+    <li *ngIf="!isRoute('/login', true)">
+      <a href="/login" class="nav-link" title="Logout" (click)="logout($event)">
+        <img src="../../../assets/icon-loguot.svg" alt="Logout">
+      </a>
+    </li>
   </ul>
 </header>
