@@ -122,7 +122,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let justificativa of justificativas">
+            <tr *ngFor="let justificativa of justificativasExibidas">
               <td>{{ justificativa.motivo }}</td>
               <td>{{ justificativa.data | date:'dd/MM/yyyy' }}</td>
               <td>{{ formatDuracaoHoras(justificativa.qtdDeHoras) }}</td>
@@ -142,7 +142,7 @@
                     alt="">Abrir</a>
               </td>
             </tr>
-            <tr *ngIf="justificativas.length === 0">
+            <tr *ngIf="justificativasExibidas.length === 0">
               <td class="text-center" colspan="5">Nenhuma justificativa registrada.</td>
             </tr>
           </tbody>

@@ -28,6 +28,7 @@ import { ActivatedRoute } from '@angular/router';
 export class MainBolsistaComponent implements OnInit {
   private readonly DIAS_PONTOS_EXIBIDOS = 5;
   private readonly MAX_PONTOS_EXIBIDOS = 5;
+  private readonly MAX_JUSTIFICATIVAS_EXIBIDAS = 8;
   readonly colunasHorario: string[] = [
     '07:00 - 08:00',
     '08:00 - 09:00',
@@ -169,6 +170,21 @@ export class MainBolsistaComponent implements OnInit {
         (a, b) => (a.entrada as Date).getTime() - (b.entrada as Date).getTime(),
       )
       .map(({ ponto }) => ponto);
+  }
+
+  get justificativasExibidas(): JustificativaDTO[] {
+    return (this.justificativas ?? [])
+      .map((justificativa) => ({
+        justificativa,
+        data: this.parseDateSafe(justificativa.data),
+      }))
+      .sort((a, b) => {
+        const aTime = a.data ? a.data.getTime() : 0;
+        const bTime = b.data ? b.data.getTime() : 0;
+        return bTime - aTime;
+      })
+      .slice(0, this.MAX_JUSTIFICATIVAS_EXIBIDAS)
+      .map(({ justificativa }) => justificativa);
   }
 
   private parseTotalHorasResponse(raw: string): number {

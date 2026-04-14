@@ -105,6 +105,12 @@ img {
   box-sizing: border-box;
 }
 
+/* Espaçamento entre tabelas (seções consecutivas) */
+.tabela-horas + .tabela-horas,
+.tabela-horas + .tabela-justificadas {
+  margin-top: 40px;
+}
+
 .tabela-horas .table-card {
   width: 100%;
   border-radius: 6px;
@@ -150,7 +156,8 @@ img {
   font-weight: 500;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 10px;
+  margin: 10px;
 }
 
 .tabela-horas a:hover,
@@ -184,7 +191,6 @@ img {
 }
 
 .tabela-justificadas {
-  margin-top: 50px;
   width: 100%;
   padding: 12px 20px 24px 20px;
   box-sizing: border-box;
