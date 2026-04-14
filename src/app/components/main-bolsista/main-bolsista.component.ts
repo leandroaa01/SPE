@@ -99,6 +99,56 @@ export class MainBolsistaComponent implements OnInit {
     return limite;
   }
 
+  private parseHorasFeitas(value: unknown): number {
+    if (value == null) {
+      return 0;
+    }
+
+    if (typeof value === 'number') {
+      return Number.isFinite(value) ? value : 0;
+    }
+
+    const raw = String(value).trim();
+    if (!raw) {
+      return 0;
+    }
+
+    // Normaliza formatos comuns: "2", "2.5", "2,5", "2 Hrs", "02:30"
+    const normalized = raw
+      .replace(/hrs?/gi, '')
+      .replace(/\s+/g, '')
+      .replace(',', '.');
+
+    if (normalized.includes(':')) {
+      const parts = normalized.split(':');
+      const hours = Number(parts[0] || '0');
+      const minutes = Number(parts[1] || '0');
+      const seconds = Number(parts[2] || '0');
+
+      if (
+        !Number.isFinite(hours) ||
+        !Number.isFinite(minutes) ||
+        !Number.isFinite(seconds)
+      ) {
+        return 0;
+      }
+
+      return hours + minutes / 60 + seconds / 3600;
+    }
+
+    const numeric = Number(normalized);
+    return Number.isFinite(numeric) ? numeric : 0;
+  }
+
+  private calcularTotalHorasFeitas(pontos: ReadonlyArray<PontoDTO>): number {
+    const total = (pontos ?? []).reduce((sum, ponto) => {
+      return sum + this.parseHorasFeitas((ponto as any)?.qtdDeHorasFeitas);
+    }, 0);
+
+    // Evita ruído de ponto flutuante
+    return Math.round(total * 100) / 100;
+  }
+
   get pontosExibidos(): PontoDTO[] {
     const limite = this.getDataLimiteUltimosDias(this.DIAS_PONTOS_EXIBIDOS);
 
@@ -592,13 +642,10 @@ export class MainBolsistaComponent implements OnInit {
             ? data.justificativaBolsistra
             : [];
 
-          const total = data?.horarioBolsista?.dias?.reduce(
-            (sum: number, dia: any) => sum + (Number(dia?.totalHoras) || 0),
-            0,
-          );
-          if (Number.isFinite(total)) {
-            this.totalHoras = total;
-          }
+          const pontosParaTotal = this.pontosExibidos;
+          this.totalHoras = pontosParaTotal.length
+            ? this.calcularTotalHorasFeitas(pontosParaTotal)
+            : undefined;
 
           this.errorMsg = undefined;
         },
