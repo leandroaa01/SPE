@@ -48,6 +48,10 @@ export class MainAdminComponent {
   changePasswordError: string | null = null;
   filterForm: FormGroup;
 
+  imprimirPontoForm: FormGroup;
+  imprimirPontoLoading = false;
+  imprimirPontoError: string | null = null;
+
   constructor(private http: HttpClient, private fb: FormBuilder) {
     this.filterForm = this.fb.group({
       nome: ['']
@@ -82,6 +86,12 @@ export class MainAdminComponent {
       matricula: ['', Validators.required],
       senhaNova: ['', Validators.required],
       senhaConfirmacao: ['', Validators.required]
+    });
+
+    this.imprimirPontoForm = this.fb.group({
+      username: ['', Validators.required],
+      dataInicio: ['', Validators.required],
+      dataFim: ['', Validators.required],
     });
   }
 
@@ -451,6 +461,124 @@ export class MainAdminComponent {
           this.changePasswordSuccess = false;
           this.changePasswordError = err?.error?.message || 'Erro ao atualizar senha.';
         }
+      });
+  }
+
+  private parseBrDateToYmd(value: string): string | null {
+    const raw = (value || '').trim();
+    const match = raw.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+    if (!match) {
+      return null;
+    }
+
+    const day = Number(match[1]);
+    const month = Number(match[2]);
+    const year = Number(match[3]);
+
+    if (
+      !Number.isFinite(day) ||
+      !Number.isFinite(month) ||
+      !Number.isFinite(year) ||
+      month < 1 ||
+      month > 12 ||
+      day < 1 ||
+      day > 31
+    ) {
+      return null;
+    }
+
+    // Valida data real (ex.: 31/02 inválido)
+    const date = new Date(year, month - 1, day);
+    if (
+      date.getFullYear() !== year ||
+      date.getMonth() !== month - 1 ||
+      date.getDate() !== day
+    ) {
+      return null;
+    }
+
+    const dd = String(day).padStart(2, '0');
+    const mm = String(month).padStart(2, '0');
+    const yyyy = String(year).padStart(4, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
+  imprimirPontoBolsista(): void {
+    this.imprimirPontoError = null;
+
+    if (this.imprimirPontoForm.invalid) {
+      this.imprimirPontoError = 'Preencha username, data de início e data de término.';
+      return;
+    }
+
+    const username = String(this.imprimirPontoForm.value.username || '').trim();
+    const dataInicioBr = String(this.imprimirPontoForm.value.dataInicio || '').trim();
+    const dataFimBr = String(this.imprimirPontoForm.value.dataFim || '').trim();
+
+    if (!username) {
+      this.imprimirPontoError = 'Informe o username do bolsista.';
+      return;
+    }
+
+    if (!dataInicioBr || !dataFimBr) {
+      this.imprimirPontoError = 'Selecione as datas de início e término.';
+      return;
+    }
+
+    const dataInicioYmd = this.parseBrDateToYmd(dataInicioBr);
+    const dataFimYmd = this.parseBrDateToYmd(dataFimBr);
+
+    if (!dataInicioYmd || !dataFimYmd) {
+      this.imprimirPontoError = 'Formato de data inválido. Use dd/mm/aaaa.';
+      return;
+    }
+
+    // API espera ISO com timezone Z.
+    const dataInicioIso = `${dataInicioYmd}T00:00:00.000Z`;
+    const dataFimIso = `${dataFimYmd}T23:59:59.999Z`;
+
+    if (dataInicioYmd > dataFimYmd) {
+      this.imprimirPontoError = 'A data de início não pode ser maior que a data de término.';
+      return;
+    }
+
+    this.imprimirPontoLoading = true;
+
+    const headers = this.buildAuthHeaders();
+    const url = 'http://localhost:8080/spe/api/admin/imprimir-ponto/bolsista/';
+
+    this.http
+      .get(url, {
+        headers,
+        params: {
+          username,
+          dataInicio: dataInicioIso,
+          dataFim: dataFimIso,
+        },
+        responseType: 'blob',
+      })
+      .subscribe({
+        next: (blob: Blob) => {
+          this.imprimirPontoLoading = false;
+
+          const safeUser = username.replace(/[^a-zA-Z0-9_-]+/g, '_');
+          const downloadName = `ponto_${safeUser}_${new Date().getTime()}.pdf`;
+
+          const fileUrl = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = fileUrl;
+          link.download = downloadName;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(fileUrl);
+        },
+        error: (err) => {
+          this.imprimirPontoLoading = false;
+          console.error('Erro ao imprimir ponto (admin):', err);
+          this.imprimirPontoError =
+            err?.error?.message || err?.message || 'Erro ao gerar o PDF.';
+        },
       });
   }
 

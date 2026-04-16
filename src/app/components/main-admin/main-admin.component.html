@@ -177,9 +177,9 @@
   </section>
 
   <section class="buttons">
-    <button class="button-one-popup-lithg" type="button" data-bs-toggle="modal"data-bs-target="#staticBackdrop2">Cadastrar Usuário</button>
+    <button class="button-one-popup-lithg" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">Cadastrar Usuário</button>
     <button class="button-one-popup" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop3">Recuperar Senha </button>
-    <button class="button-one-popup-lithg" type="button" data-bs-toggle="modal"data-bs-target="#staticBackdrop5">Imprimir Ponto</button>
+    <button class="button-one-popup-lithg" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop5">Imprimir Ponto</button>
 
   </section>
 
@@ -358,17 +358,37 @@
         <div class="modal-header">
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class=" imprimir-bolsista">
+
+        <div class="imprimir-bolsista" [formGroup]="imprimirPontoForm">
           <label>Username:</label>
-          <input type="text" placeholder="Digite o username do bolsista">
-          <label>Data de inico:</label>
-          <input type="date" value="11/03/2026">
+          <input type="text" placeholder="Digite o username do bolsista" formControlName="username">
+
+          <label>Data de início:</label>
+          <input
+            type="text"
+            inputmode="numeric"
+            placeholder="dd/mm/aaaa"
+            maxlength="10"
+            formControlName="dataInicio"
+          >
+
           <label>Data de término:</label>
-          <input type="date" value="11/03/2026">
+          <input
+            type="text"
+            inputmode="numeric"
+            placeholder="dd/mm/aaaa"
+            maxlength="10"
+            formControlName="dataFim"
+          >
+
+          <div *ngIf="imprimirPontoError" class="msg-error">{{ imprimirPontoError }}</div>
         </div>
+
         <div class="modal-footer">
-          <button class="button-one-popup" data-bs-dismiss="modal">Imprimir</button>
-          <button class="button-one-popup-lithg" data-bs-dismiss="modal">Cancelar</button>
+          <button class="button-one-popup" type="button" (click)="imprimirPontoBolsista()" [disabled]="imprimirPontoLoading || imprimirPontoForm.invalid">
+            {{ imprimirPontoLoading ? 'Imprimindo...' : 'Imprimir' }}
+          </button>
+          <button class="button-one-popup-lithg" type="button" data-bs-dismiss="modal">Cancelar</button>
         </div>
       </div>
     </div>
