@@ -1,8 +1,7 @@
 <app-header></app-header>
 <section class="container">
-  <div *ngIf="alertaMsg" class="alert"
-    [ngClass]="{'alert-success': alertaTipo === 'success', 'alert-danger': alertaTipo === 'error'}"
-    style="margin-top: 10px;">
+  <div *ngIf="alertaMsg" class="alert alerta-msg"
+    [ngClass]="{'alert-success': alertaTipo === 'success', 'alert-danger': alertaTipo === 'error'}">
     {{ alertaMsg }}
   </div>
   <div class="tempo">
@@ -11,7 +10,7 @@
   </div>
 
   <div class="botoes">
-    <button class="button-one" (click)="registrarPonto()">Registrar entrada</button>
+    <button class="button-one" (click)="registrarPonto()">{{ textoBotaoPonto }}</button>
     <button class="button-two" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Justificar horas</button>
   </div>
   <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"

@@ -46,6 +46,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   justificativaObs: string = '';
   justificativaEnviando = false;
 
+  private proximoRegistro: 'entrada' | 'saida' | undefined;
+
+  private readonly storageKeyProximoRegistro = 'spe:ponto:proximoRegistro';
+
   constructor(private pontoService: PontoService, private http: HttpClient) { }
   get justificativaFormValida(): boolean {
     return !!(
@@ -74,13 +78,13 @@ export class HomeComponent implements OnInit, OnDestroy {
       justificativa: this.justificativaObs
     };
     this.http.post('http://localhost:8080/spe/api/bolsista/justificar-ponto', body, { headers })
-    
+
       .subscribe({
         next: () => {
           this.alertaMsg = 'Justificativa enviada com sucesso!';
           this.alertaTipo = 'success';
           this.justificativaEnviando = false;
-          // Limpar formulário 
+          // Limpar formulário
           //console.log(headers);
           this.justificativaMotivo = '';
           this.justificativaData = '';
@@ -106,6 +110,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.carregarEstadoPonto();
     if (this.hora) {
       this.agora = this.hora;
       return;
@@ -118,6 +123,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       next: (msg) => {
         this.alertaMsg = msg;
         this.alertaTipo = 'success';
+
+        this.atualizarProximoRegistroPeloRetorno(msg);
         setTimeout(() => {
           this.alertaMsg = undefined;
           this.alertaTipo = undefined;
@@ -133,6 +140,12 @@ export class HomeComponent implements OnInit, OnDestroy {
         }, 3000);
       }
     });
+  }
+
+  get textoBotaoPonto(): string {
+    if (this.proximoRegistro === 'entrada') return 'Registrar entrada';
+    if (this.proximoRegistro === 'saida') return 'Registrar saída';
+    return 'Registrar entrada';
   }
 
   ngOnDestroy(): void {
@@ -175,5 +188,43 @@ export class HomeComponent implements OnInit, OnDestroy {
     const mes = Object.values(Meses)[d.getMonth()] || '';
     const ano = d.getFullYear();
     return `${dia} de ${mes} de ${ano}`;
+  }
+
+  private atualizarProximoRegistroPeloRetorno(mensagem: string): void {
+    const normalizada = (mensagem || '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase();
+
+    // Se o backend indicar o que acabou de registrar, alterna pro próximo.
+    if (normalizada.includes('entrada')) {
+      this.proximoRegistro = 'saida';
+      this.salvarEstadoPonto();
+      return;
+    }
+    if (normalizada.includes('saida')) {
+      this.proximoRegistro = 'entrada';
+      this.salvarEstadoPonto();
+      return;
+    }
+
+    // Se a mensagem não trouxer essa informação, mantém o estado atual.
+  }
+
+  private salvarEstadoPonto(): void {
+    if (!this.proximoRegistro) {
+      localStorage.removeItem(this.storageKeyProximoRegistro);
+      return;
+    }
+    localStorage.setItem(this.storageKeyProximoRegistro, this.proximoRegistro);
+  }
+
+  private carregarEstadoPonto(): void {
+    const valor = localStorage.getItem(this.storageKeyProximoRegistro);
+    if (valor === 'entrada' || valor === 'saida') {
+      this.proximoRegistro = valor;
+    } else {
+      this.proximoRegistro = undefined;
+    }
   }
 }
