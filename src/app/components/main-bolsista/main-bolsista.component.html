@@ -93,7 +93,7 @@
               <td>{{ ponto.horasDeEntrada ? (ponto.horasDeEntrada | date:'dd/MM/yyyy') : '–' }}</td>
               <td>{{ ponto.horasDeEntrada ? (ponto.horasDeEntrada | date:'HH:mm') : '–' }}</td>
               <td>{{ ponto.horasDeSaida ? (ponto.horasDeSaida | date:'HH:mm') : '–' }}</td>
-              <td>{{ ponto.qtdDeHorasFeitas ? ponto.qtdDeHorasFeitas : '-' }}</td>
+              <td>{{ ponto.qtdDeHorasFeitas ?  formatDuracaoHoras(ponto.qtdDeHorasFeitas) : '-' }}</td>
             </tr>
             <tr *ngIf="pontosExibidos.length === 0">
               <td colspan="4">Nenhum ponto registrado nos últimos 5 dias.</td>
@@ -116,7 +116,7 @@
             <tr>
               <th>Motivo</th>
               <th>Data</th>
-              <th>Duração(Hrs)</th>
+              <th>Duração</th>
               <th>Status</th>
               <th>Ação</th>
             </tr>

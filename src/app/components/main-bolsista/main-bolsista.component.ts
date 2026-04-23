@@ -63,11 +63,11 @@ export class MainBolsistaComponent implements OnInit {
   isAdminView = false;
   adminBolsistaId: number | null = null;
 
-  formatDuracaoHoras(qtdDeHoras: number | null | undefined): string {
+  formatDuracaoHoras(qtdDeHoras: number | String | null | undefined): string {
     if (qtdDeHoras == null || Number.isNaN(qtdDeHoras)) {
       return '-';
     }
-    const totalMinutes = Math.round(qtdDeHoras * 60);
+    const totalMinutes = Math.round(Number(qtdDeHoras) * 60);
     const hours = Math.floor(totalMinutes / 60);
     const minutes = totalMinutes % 60;
     return `${hours}:${minutes.toString().padStart(2, '0')}`;

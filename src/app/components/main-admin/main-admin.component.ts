@@ -15,7 +15,7 @@ import { JustificativaListagemItem } from './justificativa-listagem.model';
   standalone: true,
   imports: [RouterLink, HeaderComponent, CommonModule, ReactiveFormsModule],
   templateUrl: './main-admin.component.html',
-  styleUrl: './main-admin.component.scss'
+  styleUrl: './main-admin.component.scss',
 })
 export class MainAdminComponent {
   private readonly MAX_PONTOS_BOLSISTAS_EXIBIDOS = 10;
@@ -52,14 +52,17 @@ export class MainAdminComponent {
   imprimirPontoLoading = false;
   imprimirPontoError: string | null = null;
 
-  constructor(private http: HttpClient, private fb: FormBuilder) {
+  constructor(
+    private http: HttpClient,
+    private fb: FormBuilder,
+  ) {
     this.filterForm = this.fb.group({
-      nome: ['']
+      nome: [''],
     });
 
     this.updateJustificativaForm = this.fb.group({
       status: ['EMANALISE', Validators.required],
-      observacoes: ['']
+      observacoes: [''],
     });
 
     this.editBolsistaForm = this.fb.group({
@@ -69,7 +72,7 @@ export class MainAdminComponent {
       email: ['', [Validators.required, Validators.email]],
       role: ['BOLSISTA', Validators.required],
       situacao: ['ATIVO', Validators.required],
-      cargo: ['', Validators.required]
+      cargo: ['', Validators.required],
     });
 
     this.registerForm = this.fb.group({
@@ -79,13 +82,13 @@ export class MainAdminComponent {
       password: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       roles: ['BOLSISTA', Validators.required],
-      cargo: ['', Validators.required]
+      cargo: ['', Validators.required],
     });
 
     this.changePasswordForm = this.fb.group({
       matricula: ['', Validators.required],
       senhaNova: ['', Validators.required],
-      senhaConfirmacao: ['', Validators.required]
+      senhaConfirmacao: ['', Validators.required],
     });
 
     this.imprimirPontoForm = this.fb.group({
@@ -102,6 +105,16 @@ export class MainAdminComponent {
     this.loadJustificativas();
   }
 
+  formatDuracaoHoras(qtdDeHoras: number | String | null | undefined): string {
+    if (qtdDeHoras == null || Number.isNaN(qtdDeHoras)) {
+      return '-';
+    }
+    const totalMinutes = Math.round(Number(qtdDeHoras) * 60);
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    return `${hours}:${minutes.toString().padStart(2, '0')}`;
+  }
+
   private normalizeText(value: string | null | undefined): string {
     return (value ?? '').trim().toLowerCase();
   }
@@ -116,20 +129,28 @@ export class MainAdminComponent {
   }
 
   get bolsistasFiltrados(): BolsistaListagemItem[] {
-    return (this.bolsistas ?? []).filter((b) => this.matchesNome((b as any).nome));
+    return (this.bolsistas ?? []).filter((b) =>
+      this.matchesNome((b as any).nome),
+    );
   }
 
   get pontosBolsistasFiltrados(): PontoBolsistaListagemItem[] {
-    return (this.pontosBolsistasExibidos ?? []).filter((p) => this.matchesNome(p?.nome));
+    return (this.pontosBolsistasExibidos ?? []).filter((p) =>
+      this.matchesNome(p?.nome),
+    );
   }
 
   get justificativasFiltradas(): JustificativaListagemItem[] {
-    return (this.justificativas ?? []).filter((j) => this.matchesNome((j as any).nomeBolsista));
+    return (this.justificativas ?? []).filter((j) =>
+      this.matchesNome((j as any).nomeBolsista),
+    );
   }
 
   private buildAuthHeaders(): HttpHeaders | undefined {
     const token = localStorage.getItem('auth_token');
-    return token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : undefined;
+    return token
+      ? new HttpHeaders({ Authorization: `Bearer ${token}` })
+      : undefined;
   }
 
   private parseDateMs(value: string | null | undefined): number {
@@ -144,13 +165,18 @@ export class MainAdminComponent {
 
   get pontosBolsistasExibidos(): PontoBolsistaListagemItem[] {
     return [...(this.pontosBolsistas ?? [])]
-      .sort((a, b) => this.parseDateMs(b?.horaDeEntrada) - this.parseDateMs(a?.horaDeEntrada))
+      .sort(
+        (a, b) =>
+          this.parseDateMs(b?.horaDeEntrada) -
+          this.parseDateMs(a?.horaDeEntrada),
+      )
       .slice(0, this.MAX_PONTOS_BOLSISTAS_EXIBIDOS);
   }
 
   private loadTecnicoInfo(): void {
     const headers = this.buildAuthHeaders();
-    this.http.get<TecnicoInfo>('http://localhost:8080/spe/api/admin/me', { headers })
+    this.http
+      .get<TecnicoInfo>('http://localhost:8080/spe/api/admin/me', { headers })
       .subscribe({
         next: (data) => {
           this.tecnicoInfo = data;
@@ -159,7 +185,7 @@ export class MainAdminComponent {
         error: () => {
           this.tecnicoInfo = undefined;
           this.errorMsg = 'Erro ao carregar dados do técnico.';
-        }
+        },
       });
   }
 
@@ -168,13 +194,16 @@ export class MainAdminComponent {
     this.bolsistasError = null;
 
     const headers = this.buildAuthHeaders();
-    this.http.get<BolsistaListagemItem[]>('http://localhost:8080/spe/api/admin/listagem/bolsistas', { headers })
+    this.http
+      .get<
+        BolsistaListagemItem[]
+      >('http://localhost:8080/spe/api/admin/listagem/bolsistas', { headers })
       .subscribe({
         next: (data) => {
           const list = Array.isArray(data) ? data : [];
           this.bolsistas = list.map((b: any) => ({
             ...b,
-            dataCriacao: b?.dataCriacao ?? b?.data_criacao
+            dataCriacao: b?.dataCriacao ?? b?.data_criacao,
           }));
           this.bolsistasLoading = false;
         },
@@ -182,7 +211,7 @@ export class MainAdminComponent {
           this.bolsistas = [];
           this.bolsistasLoading = false;
           this.bolsistasError = 'Erro ao carregar bolsistas.';
-        }
+        },
       });
   }
 
@@ -191,13 +220,13 @@ export class MainAdminComponent {
     this.pontosBolsistasError = null;
 
     const headers = this.buildAuthHeaders();
-    this.http.get<PontoBolsistaListagemItem[] | PontoBolsistaListagemItem>(
-      'http://localhost:8080/spe/api/admin/pontos/bolsistas/listagem',
-      { headers }
-    )
+    this.http
+      .get<
+        PontoBolsistaListagemItem[] | PontoBolsistaListagemItem
+      >('http://localhost:8080/spe/api/admin/pontos/bolsistas/listagem', { headers })
       .subscribe({
         next: (data) => {
-          const list = Array.isArray(data) ? data : (data ? [data] : []);
+          const list = Array.isArray(data) ? data : data ? [data] : [];
           this.pontosBolsistas = list;
           this.pontosBolsistasLoading = false;
         },
@@ -205,7 +234,7 @@ export class MainAdminComponent {
           this.pontosBolsistas = [];
           this.pontosBolsistasLoading = false;
           this.pontosBolsistasError = 'Erro ao carregar pontos dos bolsistas.';
-        }
+        },
       });
   }
 
@@ -214,16 +243,16 @@ export class MainAdminComponent {
     this.justificativasError = null;
 
     const headers = this.buildAuthHeaders();
-    this.http.get<JustificativaListagemItem[] | JustificativaListagemItem>(
-      'http://localhost:8080/spe/api/admin/listagem/justificativas',
-      { headers }
-    )
+    this.http
+      .get<
+        JustificativaListagemItem[] | JustificativaListagemItem
+      >('http://localhost:8080/spe/api/admin/listagem/justificativas', { headers })
       .subscribe({
         next: (data) => {
-          const list = Array.isArray(data) ? data : (data ? [data] : []);
+          const list = Array.isArray(data) ? data : data ? [data] : [];
           this.justificativas = list.map((j: any) => ({
             ...j,
-            idBolsista: j?.idBolsista ?? j?.bolsistaId ?? j?.id_bolsista
+            idBolsista: j?.idBolsista ?? j?.bolsistaId ?? j?.id_bolsista,
           }));
           this.justificativasLoading = false;
         },
@@ -231,7 +260,7 @@ export class MainAdminComponent {
           this.justificativas = [];
           this.justificativasLoading = false;
           this.justificativasError = 'Erro ao carregar justificativas.';
-        }
+        },
       });
   }
 
@@ -246,7 +275,11 @@ export class MainAdminComponent {
     }
 
     const upper = raw.toUpperCase();
-    if (upper === 'EMANALISE' || upper === 'EM_ANALISE' || upper === 'EM-ANALISE') {
+    if (
+      upper === 'EMANALISE' ||
+      upper === 'EM_ANALISE' ||
+      upper === 'EM-ANALISE'
+    ) {
       return 'Em-Analise';
     }
 
@@ -284,22 +317,13 @@ export class MainAdminComponent {
     return 'badge-analyze';
   }
 
-  formatHorasFeitas(qtdDeHorasFeitas: number | null | undefined): string {
-    if (qtdDeHorasFeitas == null || Number.isNaN(qtdDeHorasFeitas)) {
-      return '-';
-    }
-    return `${qtdDeHorasFeitas} Hrs`;
-  }
+  // formatHorasFeitas(qtdDeHorasFeitas: number | null | undefined): string {
+  //   if (qtdDeHorasFeitas == null || Number.isNaN(qtdDeHorasFeitas)) {
+  //     return '-';
+  //   }
+  //   return `${qtdDeHorasFeitas}`;
+  // }
 
-  formatDuracaoHoras(qtdDeHoras: number | null | undefined): string {
-    if (qtdDeHoras == null || Number.isNaN(qtdDeHoras)) {
-      return '-';
-    }
-    const totalMinutes = Math.round(qtdDeHoras * 60);
-    const hours = Math.floor(totalMinutes / 60);
-    const minutes = totalMinutes % 60;
-    return `${hours}:${minutes.toString().padStart(2, '0')}`;
-  }
 
   getDuracaoHorasInteiras(qtdDeHoras: number | null | undefined): string {
     if (qtdDeHoras == null || Number.isNaN(qtdDeHoras)) {
@@ -342,7 +366,8 @@ export class MainAdminComponent {
     const id = this.selectedJustificativa.id;
     const idBolsista = (this.selectedJustificativa as any).idBolsista;
     if (idBolsista == null) {
-      this.updateJustificativaError = 'Backend não retornou idBolsista nesta listagem.';
+      this.updateJustificativaError =
+        'Backend não retornou idBolsista nesta listagem.';
       return;
     }
 
@@ -366,8 +391,9 @@ export class MainAdminComponent {
       error: (err) => {
         this.updateJustificativaLoading = false;
         this.updateJustificativaSuccess = false;
-        this.updateJustificativaError = err?.error?.message || 'Erro ao atualizar justificativa.';
-      }
+        this.updateJustificativaError =
+          err?.error?.message || 'Erro ao atualizar justificativa.';
+      },
     });
   }
 
@@ -383,7 +409,7 @@ export class MainAdminComponent {
       email: (bolsista.email || '').trim(),
       role: 'BOLSISTA',
       situacao: (bolsista.situacao || 'ATIVO').toString().toUpperCase(),
-      cargo: (bolsista.cargo || '').trim( )
+      cargo: (bolsista.cargo || '').trim(),
     });
   }
 
@@ -408,37 +434,53 @@ export class MainAdminComponent {
       },
       error: (err) => {
         this.editBolsistaSuccess = false;
-        this.editBolsistaError = err?.error?.message || 'Erro ao editar bolsista.';
-      }
+        this.editBolsistaError =
+          err?.error?.message || 'Erro ao editar bolsista.';
+      },
     });
   }
 
   onRegisterSubmit() {
-    console.log('submit registerForm', this.registerForm.value, this.registerForm.valid);
+    console.log(
+      'submit registerForm',
+      this.registerForm.value,
+      this.registerForm.valid,
+    );
     if (this.registerForm.invalid) return;
     const body: AdminRegister = this.registerForm.value;
     const headers = this.buildAuthHeaders();
-    this.http.post('http://localhost:8080/spe/api/admin/register', body, { headers, responseType: 'text' }).subscribe({
-      next: (data) => {
-        //console.log('Resposta cadastro:', data);
-        this.registerSuccess = true;
-        this.registerError = null;
-        this.registerForm.reset({ roles: 'BOLSISTA' });
-        this.loadBolsistas();
-      },
-      error: (err) => {
-       // console.log(err);
-        this.registerSuccess = false;
-        this.registerError = err?.error?.message || 'Erro ao cadastrar usuário.';
-      }
-    });
+    this.http
+      .post('http://localhost:8080/spe/api/admin/register', body, {
+        headers,
+        responseType: 'text',
+      })
+      .subscribe({
+        next: (data) => {
+          //console.log('Resposta cadastro:', data);
+          this.registerSuccess = true;
+          this.registerError = null;
+          this.registerForm.reset({ roles: 'BOLSISTA' });
+          this.loadBolsistas();
+        },
+        error: (err) => {
+          // console.log(err);
+          this.registerSuccess = false;
+          this.registerError =
+            err?.error?.message || 'Erro ao cadastrar usuário.';
+        },
+      });
   }
 
   onChangePassword() {
-    console.log('submit changePasswordForm', this.changePasswordForm.value, this.changePasswordForm.valid);
+    console.log(
+      'submit changePasswordForm',
+      this.changePasswordForm.value,
+      this.changePasswordForm.valid,
+    );
     if (this.changePasswordForm.invalid) return;
 
-    const { matricula, senhaNova, senhaConfirmacao } = this.changePasswordForm.value;
+    const { matricula, senhaNova, senhaConfirmacao } =
+      this.changePasswordForm.value;
     if (senhaNova !== senhaConfirmacao) {
       this.changePasswordSuccess = false;
       this.changePasswordError = 'As senhas não coincidem.';
@@ -448,10 +490,14 @@ export class MainAdminComponent {
     const body = { matricula, senhaNova, senhaConfirmacao };
     const headers = this.buildAuthHeaders();
 
-    this.http.put('http://localhost:8080/spe/api/admin/mudar-senha/bolsista/', body, { headers, responseType: 'text' })
+    this.http
+      .put('http://localhost:8080/spe/api/admin/mudar-senha/bolsista/', body, {
+        headers,
+        responseType: 'text',
+      })
       .subscribe({
         next: (data) => {
-         // console.log('Resposta mudar senha:', data);
+          // console.log('Resposta mudar senha:', data);
           this.changePasswordSuccess = true;
           this.changePasswordError = null;
           this.changePasswordForm.reset();
@@ -459,8 +505,9 @@ export class MainAdminComponent {
         error: (err) => {
           //console.log(err);
           this.changePasswordSuccess = false;
-          this.changePasswordError = err?.error?.message || 'Erro ao atualizar senha.';
-        }
+          this.changePasswordError =
+            err?.error?.message || 'Erro ao atualizar senha.';
+        },
       });
   }
 
@@ -507,12 +554,15 @@ export class MainAdminComponent {
     this.imprimirPontoError = null;
 
     if (this.imprimirPontoForm.invalid) {
-      this.imprimirPontoError = 'Preencha username, data de início e data de término.';
+      this.imprimirPontoError =
+        'Preencha username, data de início e data de término.';
       return;
     }
 
     const username = String(this.imprimirPontoForm.value.username || '').trim();
-    const dataInicioBr = String(this.imprimirPontoForm.value.dataInicio || '').trim();
+    const dataInicioBr = String(
+      this.imprimirPontoForm.value.dataInicio || '',
+    ).trim();
     const dataFimBr = String(this.imprimirPontoForm.value.dataFim || '').trim();
 
     if (!username) {
@@ -538,7 +588,8 @@ export class MainAdminComponent {
     const dataFimIso = `${dataFimYmd}T23:59:59.999Z`;
 
     if (dataInicioYmd > dataFimYmd) {
-      this.imprimirPontoError = 'A data de início não pode ser maior que a data de término.';
+      this.imprimirPontoError =
+        'A data de início não pode ser maior que a data de término.';
       return;
     }
 
@@ -581,5 +632,4 @@ export class MainAdminComponent {
         },
       });
   }
-
 }
