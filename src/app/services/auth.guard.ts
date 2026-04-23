@@ -5,11 +5,11 @@ import { AuthService } from './auth.service';
 export const authGuard: CanActivateFn = (route, state) => {
     const auth = inject(AuthService);
     const router = inject(Router);
-    const token = auth.getToken();
-    if (!token) {
-        setTimeout(() => router.navigate(['/login']), 0);
-        return false;
+
+    if (!auth.isAuthenticated()) {
+        return router.parseUrl('/login');
     }
+
     const requiredRole = route.data?.['role'] as string | string[] | undefined;
     if (requiredRole) {
         const userRoles = auth.getNormalizedRoles();
@@ -17,8 +17,7 @@ export const authGuard: CanActivateFn = (route, state) => {
         const hasAccess = requiredRoles.some((role) => userRoles.includes(role));
 
         if (!hasAccess) {
-            setTimeout(() => router.navigate([auth.getDefaultRouteByRole()]), 0);
-            return false;
+            return router.parseUrl(auth.getDefaultRouteByRole());
         }
     }
 

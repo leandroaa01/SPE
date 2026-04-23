@@ -18,8 +18,10 @@ export class AuthService {
 
     constructor(private http: HttpClient) {
         const token = this.getToken();
-        if (token) {
+        if (token && this.isTokenValid(token)) {
             this.userInfoSubject.next(this.decodeToken(token));
+        } else {
+            this.logout();
         }
     }
 
@@ -39,7 +41,35 @@ export class AuthService {
     }
 
     getToken(): string | null {
-        return localStorage.getItem(this.tokenKey);
+        const raw = localStorage.getItem(this.tokenKey);
+        const trimmed = raw?.trim?.() ?? '';
+        if (!trimmed || trimmed === 'null' || trimmed === 'undefined') {
+            return null;
+        }
+        return trimmed;
+    }
+
+    isAuthenticated(): boolean {
+        const token = this.getToken();
+        if (!token || !this.isTokenValid(token)) {
+            return false;
+        }
+        const payload = this.decodeToken(token);
+        if (!payload) {
+            return false;
+        }
+
+        // JWT exp é em segundos
+        const exp = payload?.exp;
+        if (typeof exp === 'number') {
+            const nowSeconds = Math.floor(Date.now() / 1000);
+            if (exp <= nowSeconds) {
+                this.logout();
+                return false;
+            }
+        }
+
+        return true;
     }
 
     logout() {
@@ -78,8 +108,38 @@ export class AuthService {
 
     decodeToken(token: string): any {
         try {
-            const payload = token.split('.')[1];
-            return JSON.parse(atob(payload));
+            const parts = token.split('.');
+            if (parts.length !== 3) {
+                return null;
+            }
+            const payloadJson = this.base64UrlToJson(parts[1]);
+            if (!payloadJson) {
+                return null;
+            }
+            return JSON.parse(payloadJson);
+        } catch {
+            return null;
+        }
+    }
+
+    private isTokenValid(token: string): boolean {
+        const trimmed = token?.trim?.() ?? '';
+        if (!trimmed || trimmed === 'null' || trimmed === 'undefined') {
+            return false;
+        }
+        const parts = trimmed.split('.');
+        if (parts.length !== 3) {
+            return false;
+        }
+        // payload precisa ser decodificável
+        return this.base64UrlToJson(parts[1]) !== null;
+    }
+
+    private base64UrlToJson(base64Url: string): string | null {
+        try {
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const padded = base64.padEnd(base64.length + ((4 - (base64.length % 4)) % 4), '=');
+            return atob(padded);
         } catch {
             return null;
         }

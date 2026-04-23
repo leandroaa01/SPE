@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from "../header/header.component";
 import { PontoService } from '../../services/ponto.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 export enum Meses {
   Janeiro = 'Janeiro',
@@ -50,7 +52,24 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private readonly storageKeyProximoRegistro = 'spe:ponto:proximoRegistro';
 
-  constructor(private pontoService: PontoService, private http: HttpClient) { }
+  constructor(
+    private pontoService: PontoService,
+    private http: HttpClient,
+    private auth: AuthService,
+    private router: Router
+  ) { }
+
+  get isAuthenticated(): boolean {
+    return this.auth.isAuthenticated();
+  }
+
+  private exigirLogin(): boolean {
+    if (this.auth.isAuthenticated()) {
+      return true;
+    }
+    this.router.navigate(['/login']);
+    return false;
+  }
   get justificativaFormValida(): boolean {
     return !!(
       this.justificativaMotivo &&
@@ -63,9 +82,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   enviarJustificativa(): void {
+    if (!this.exigirLogin()) return;
     if (!this.justificativaFormValida) return;
     this.justificativaEnviando = true;
-    const token = localStorage.getItem('auth_token');
+    const token = this.auth.getToken();
     const headers = token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : undefined;
     // Montar data/hora no formato ISO
     const dataIso = this.justificativaData ? new Date(this.justificativaData).toISOString() : '';
@@ -119,6 +139,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   registrarPonto(): void {
+    if (!this.exigirLogin()) return;
     this.pontoService.registrarPonto().subscribe({
       next: (msg) => {
         this.alertaMsg = msg;
@@ -140,6 +161,15 @@ export class HomeComponent implements OnInit, OnDestroy {
         }, 3000);
       }
     });
+  }
+
+  onJustificarClick(event: Event): void {
+    if (this.auth.isAuthenticated()) {
+      return;
+    }
+    event.preventDefault();
+    event.stopPropagation();
+    this.router.navigate(['/login']);
   }
 
   get textoBotaoPonto(): string {
